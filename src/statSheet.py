@@ -2,7 +2,7 @@
 """
 Class for generating stat sheet.
 """
-import helpers as help
+import src.helpers as help
 SKILL_LIST = "src/tables/skillSummary.txt"
 
 class StatBlock:
@@ -11,24 +11,29 @@ class StatBlock:
         # Introduction Stats
         self.name = "creatureName"
         self.short_description = "short description of creature"
-        self.cr = 1
-        self.xp = 400           # BASED OFF cr
+        self.cr = "1"
+        self.xp = "400"           # BASED OFF cr
         self.race = "none"
         self.classes = []
         self.alignment = "N"
         self.size = "Medium"
         self.type = "humanoid"
         self.subtypes = ""
-        self.initiative = 0     # CALCULATED
+        self.initiative = "0"     # CALCULATED
         self.senses = []
         self.auras = []
 
         # Defense
-        self.ac = 10            # CALCULATED
-        self.hp = 10            # CALCULATED
-        self.fortitude = 0      # CALCULATED
-        self.reflex = 0         # CALCULATED
-        self.will = 0           # CALCULATED
+        self.ac = "10"            # CALCULATED
+        self.ac_touch = "10"      # CALCULATED
+        self.ac_flat_footed = "10"# CALCULATED
+        self.ac_modifiers = "(armor size etc)"
+        self.hp = "10"            # CALCULATED
+        self.hd = "1"
+        self.hd_size = "8"
+        self.fortitude = "0"      # CALCULATED
+        self.reflex = "0"         # CALCULATED
+        self.will = "0"           # CALCULATED
         self.defensive_abilities = []
         self.dr = ""
         self.immunities = []
@@ -37,11 +42,11 @@ class StatBlock:
         self.weaknessess = ""
 
         # Offense
-        self.speed = 30
+        self.speed = "30"
         self.attacks_melee = []
         self.attacks_ranged = []
-        self.space = 5
-        self.reach = 5
+        self.space = "5"
+        self.reach = "5"
         self.special_attacks = []
         self.spell_like_abilities = []
         self.spells_known_prepared = []
@@ -50,16 +55,16 @@ class StatBlock:
         self.tactics = "" # Before Combat, During Combat, Morale
 
         # Statistics
-        self.strength = 10
-        self.dexterity = 10
-        self.constitution = 10
-        self.intelligence = 10
-        self.wisdom = 10
-        self.charisma = 10
+        self.strength = "10"
+        self.dexterity = "10"
+        self.constitution = "10"
+        self.intelligence = "10"
+        self.wisdom = "10"
+        self.charisma = "10"
 
-        self.bab = 0
-        self.cmb = 0
-        self.cmd = 10
+        self.bab = "0"
+        self.cmb = "0"
+        self.cmd = "10"
 
         self.feats = []
 
@@ -81,7 +86,7 @@ class StatBlock:
 
         self.stat_block_string = ""
 
-    def generate_stat_block_d20pfsrd(self):
+    def generate_stat_block_string_d20pfsrd(self):
         "generates a statblock as per d20pfsrd standard"
         stat_block_string = ""
         stat_block_string += self.name + "\n\n\n\n"
@@ -103,8 +108,25 @@ class StatBlock:
         for sense in self.senses:
             stat_block_string += sense
             stat_block_string += ", "
+        stat_block_string.rstrip(2)
+        stat_block_string += "; "
+        stat_block_string += "Perception +" + self.initiative
+        
+        if self.auras:
+            for aura in self.auras:
+                stat_block_string += aura + ", "
             stat_block_string.rstrip(2)
-            stat_block_string += "; "
-            stat_block_string += "Perception +" self.initiative
+            stat_block_string += "\n"
+
+        stat_block_string += "\nDEFENSE\n\n"
+        stat_block_string += "AC " + self.ac + ", "
+        stat_block_string += "touch " + self.ac_touch + ", "
+        stat_block_string += "flat-footed " + self.ac_flat_footed + "\n"
+
+        stat_block_string += "hp " + self.hp + " "
+        stat_block_string += self.hd + "d" + self.hd_size + "+" + "\n"# NEED TO ADD HP MODIFIER HERE. CON OR CHA OR WHATEVER IT IS FOR THE CREATURE
+        stat_block_string += "Fort +" + self.fortitude + ", Ref +" + self.reflex + ", Will +" + self.will +"\n"
+
+        stat_block_string += ""
 
         return stat_block_string
