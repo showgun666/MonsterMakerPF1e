@@ -7,14 +7,14 @@ SKILL_LIST = "src/tables/skillSummary.txt"
 
 class StatBlock:
     "stat block class"
-    def __init__(self) -> None:
+    def __init__(self):
         # Introduction Stats
         self.name = "creatureName"
         self.short_description = "short description of creature"
         self.cr = "1"
         self.xp = "400"           # BASED OFF cr
         self.race = "none"
-        self.classes = []
+        self.classes = []         # Contains information for stats to be used later
         self.alignment = "N"
         self.size = "Medium"
         self.type = "humanoid"
@@ -34,15 +34,17 @@ class StatBlock:
         self.fortitude = "0"      # CALCULATED
         self.reflex = "0"         # CALCULATED
         self.will = "0"           # CALCULATED
+        self.good_saves = []      # WILL BE USED FROM CLASS INSTEAD
+        self.bad_saves = []
         self.defensive_abilities = []
-        self.dr = ""
-        self.immunities = []
-        self.resistances = []
-        self.spell_resistance = ""
-        self.weaknessess = ""
+        self.dr = "5/Bludgeoning"
+        self.immunities = ["Cold", "Sonic"]
+        self.resistances = ["Acid 10","Electricity 5"]
+        self.spell_resistance = "18"
+        self.weaknesses = "Fire"
 
         # Offense
-        self.speed = "30"
+        self.speed = ["30ft."]
         self.attacks_melee = []
         self.attacks_ranged = []
         self.space = "5"
@@ -52,7 +54,7 @@ class StatBlock:
         self.spells_known_prepared = []
 
         # Tactics
-        self.tactics = "" # Before Combat, During Combat, Morale
+        self.tactics = ""         # Before Combat, During Combat, Morale
 
         # Statistics
         self.strength = "10"
@@ -88,35 +90,29 @@ class StatBlock:
 
     def generate_stat_block_string_d20pfsrd(self):
         "generates a statblock as per d20pfsrd standard"
+
         stat_block_string = ""
-        stat_block_string += self.name + "\n\n\n\n"
+        stat_block_string += self.name + "\n"
         stat_block_string += self.short_description + "\n\n"
-        stat_block_string += self.name + str(self.cr) + "\n\n"
+        stat_block_string += self.name + "CR " + str(self.cr) + "\n\n"
         stat_block_string += "xp " + str(self.xp) + "\n"
         stat_block_string += self.alignment + " " + self.size + " " + self.type
 
         if self.subtypes:
             stat_block_string += " ("
-            for subtype in self.subtypes:
-                stat_block_string += subtype
-                stat_block_string += ", "
-            stat_block_string.rstrip(2)
+            stat_block_string += help.comma_separated_string_from_list(self.subtypes)
             stat_block_string += ")"
-
+        stat_block_string += "\n"
         stat_block_string += "Init +" + self.initiative + "; "
         stat_block_string += "Senses "
-        for sense in self.senses:
-            stat_block_string += sense
-            stat_block_string += ", "
-        stat_block_string.rstrip(2)
-        stat_block_string += "; "
+        if self.senses:
+            stat_block_string += help.comma_separated_string_from_list(self.senses)
+            stat_block_string += "; "
         stat_block_string += "Perception +" + self.initiative
         
         if self.auras:
-            for aura in self.auras:
-                stat_block_string += aura + ", "
-            stat_block_string.rstrip(2)
-            stat_block_string += "\n"
+            stat_block_string += help.comma_separated_string_from_list(self.auras)
+        stat_block_string += "\n"
 
         stat_block_string += "\nDEFENSE\n\n"
         stat_block_string += "AC " + self.ac + ", "
@@ -127,6 +123,36 @@ class StatBlock:
         stat_block_string += self.hd + "d" + self.hd_size + "+" + "\n"# NEED TO ADD HP MODIFIER HERE. CON OR CHA OR WHATEVER IT IS FOR THE CREATURE
         stat_block_string += "Fort +" + self.fortitude + ", Ref +" + self.reflex + ", Will +" + self.will +"\n"
 
-        stat_block_string += ""
+        defenses = []
+        if self.dr:
+            defenses.append("DR +" + self.dr)
+        if self.immunities:
+            defenses.append("Immune " + help.comma_separated_string_from_list(self.immunities))
+        if self.resistances:
+            defenses.append("Resistance " + help.comma_separated_string_from_list(self.resistances))
+        if self.spell_resistance:
+            defenses.append("SR " + self.spell_resistance)
+        defense_string = ""
+        for defense in defenses:
+            defense_string += defense + "; "
+        stat_block_string += defense_string.rstrip("; ")
+        
+        stat_block_string += "\n"
 
+        if self.weaknesses:
+            stat_block_string += "Weaknesses vulnerability to "
+            stat_block_string += help.comma_separated_string_from_list(self.weaknesses)
+            stat_block_string += "\n"
+
+        stat_block_string += "\nOFFENSE\n\n"
+
+        stat_block_string += "Speed "
+        stat_block_string += help.comma_separated_string_from_list(self.speed)
+        stat_block_string += "\n"
+
+
+        stat_block_string += ""
+        stat_block_string += ""
+        stat_block_string += ""
+        stat_block_string += ""
         return stat_block_string

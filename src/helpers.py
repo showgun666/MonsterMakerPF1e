@@ -21,3 +21,14 @@ def generate_list_of_dictionaries(text_file):
             row += 1
 
     return data
+
+def comma_separated_string_from_list(list):
+    "Generates a comma separated string"
+    comma_separated_string = ""
+    if len(list) > 1:
+        for i in list:
+            comma_separated_string += i + ", "
+    else:
+        comma_separated_string += list[0]
+
+    return comma_separated_string.rstrip(", ")
