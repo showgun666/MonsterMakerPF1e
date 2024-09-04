@@ -1,0 +1,14 @@
+Type;Hit Die;Base Attack Bonus (BAB);Good Saving Throws;Skill Ranks*;Class Skills
+Aberration;8;0.75;Will;4;Acrobatics, Climb, Escape Artist, Fly, Intimidate, Knowledge (pick one), Perception, Spellcraft, Stealth, Survival, and Swim.
+Animal;8;0.75;Fort, Ref;2;Acrobatics, Climb, Fly, Perception, Stealth, and Swim.
+Construct;10;1;—;2;None
+Dragon;12;1;Fort, Ref, Will;6;Appraise, Bluff, Climb, Craft, Diplomacy, Fly, Heal, Intimidate, Knowledge (all), Linguistics, Perception, Sense Motive, Spellcraft, Stealth, Survival, Swim, and Use Magic Device.
+Fey;6;0.5;Ref, Will;6;Acrobatics, Bluff, Climb, Craft, Diplomacy, Disguise, Escape Artist, Fly, Knowledge (geography), Knowledge (local), Knowledge (nature), Perception, Perform, Sense Motive, Sleight of Hand, Stealth, Swim, Use Magic Device.
+Humanoid;8;0.75;1;2;Climb, Craft, Handle Animal, Heal, Profession, Ride, and Survival (plus any gained from class levels.)
+Magical beast;10;1;Fort, Ref;2;Acrobatics, Climb, Fly, Perception, Stealth, Swim.
+Monstrous humanoid;10;1;Ref, Will;4;Climb, Craft, Fly, Intimidate, Perception, Ride, Stealth, Survival, and Swim.
+Ooze;8;0.75;—;2;None
+Outsider;10;1;2;6;Bluff, Craft, Knowledge (planes), Perception, Sense Motive, and Stealth (plus 4 additional.)
+Plant;8;0.75;Fort;2;Perception and Stealth.
+Undead;8;0.75;Will;4;Climb, Disguise, Fly, Intimidate, Knowledge (arcana), Knowledge (religion), Perception, Sense Motive, Spellcraft, and Stealth.
+Vermin;8;0.75;Fort;2;None

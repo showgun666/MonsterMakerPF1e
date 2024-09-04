@@ -1,0 +1,36 @@
+Skill;Alc;Bbn;Brd;Cav;Clr;Drd;Ftr;Gun;Inq;Mag;Mnk;Ora;Pal;Rgr;Rog;Sor;Sum;Wit;Wiz;Untrained;Armor Check Penalty;Key Ability
+Acrobatics; ;C;C; ; ; ; ;C; ; ;C; ; ; ;C; ; ; ; ;Yes;Yes;Dex
+Appraise;C; ;C; ;C; ; ; ; ; ; ; ; ; ;C;C; ; ;C;Yes; ;Int
+Bluff; ; ;C;C; ; ; ;C;C; ; ; ; ; ;C;C; ; ; ;Yes; ;Cha
+Climb; ;C;C;C; ;C;C;C;C;C;C; ; ;C;C; ; ; ; ;Yes;Yes;Str
+Craft;C;C;C;C;C;C;C;C;C;C;C;C;C;C;C;C;C;C;C;Yes; ;Int
+Diplomacy; ; ;C;C;C; ; ; ;C; ; ;C;C; ;C; ; ; ; ;Yes; ;Cha
+Disable Device;C; ; ; ; ; ; ; ; ; ; ; ; ; ;C; ; ; ; ;No;Yes;Dex
+Disguise; ; ;C; ; ; ; ; ;C; ; ; ; ; ;C; ; ; ; ;Yes; ;Cha
+Escape Artist; ; ;C; ; ; ; ; ; ; ;C; ; ; ;C; ; ; ; ;Yes;Yes;Dex
+Fly;C; ; ; ; ;C; ; ; ;C; ; ; ; ; ;C;C;C;C;Yes;Yes;Dex
+Handle Animal; ;C; ;C; ;C;C;C; ; ; ; ;C;C; ; ;C; ; ;No; ;Cha
+Heal;C; ; ; ;C;C; ;C;C; ; ;C;C;C; ; ; ;C; ;Yes; ;Wis
+Intimidate; ;C;C;C; ; ;C;C;C;C;C; ; ;C;C;C; ;C; ;Yes; ;Cha
+Knowledge (arcana);C; ;C; ;C; ; ; ;C;C; ; ; ; ; ;C;C;C;C;No; ;Int
+Knowledge (dungeoneering); ; ;C; ; ; ;C; ;C;C; ; ; ;C;C; ;C; ;C;No; ;Int
+Knowledge (engineering); ; ;C; ; ; ;C;C; ; ; ; ; ; ; ; ;C; ;C;No; ;Int
+Knowledge (geography); ; ;C; ; ;C; ; ; ; ; ; ; ;C; ; ;C; ;C;No; ;Int
+Knowledge (history); ; ;C; ;C; ; ; ; ; ;C;C; ; ; ; ;C;C;C;No; ;Int
+Knowledge (local); ; ;C; ; ; ; ;C; ; ; ; ; ; ;C; ;C; ;C;No; ;Int
+Knowledge (nature);C;C;C; ; ;C; ; ;C; ; ; ; ;C; ; ;C;C;C;No; ;Int
+Knowledge (nobility); ; ;C; ;C; ; ; ; ; ; ; ;C; ; ; ;C; ;C;No; ;Int
+Knowledge (planes); ; ;C; ;C; ; ; ;C;C; ;C; ; ; ; ;C;C;C;No; ;Int
+Knowledge (religion); ; ;C; ;C; ; ; ;C; ;C;C;C; ; ; ;C; ;C;No; ;Int
+Linguistics; ; ;C; ;C; ; ; ; ; ; ; ; ; ;C; ;C; ;C;No; ;Int
+Perception;C;C;C; ; ;C; ;C;C; ;C; ; ;C;C; ; ; ; ;Yes; ;Wis
+Perform; ; ;C; ; ; ; ; ; ; ;C; ; ; ;C; ; ; ; ;Yes; ;Cha
+Profession;C; ;C;C;C;C;C;C;C;C;C;C;C;C;C;C;C;C;C;No; ;Wis
+Ride; ;C; ;C; ;C;C;C;C;C;C; ;C;C; ; ;C; ; ;Yes;Yes;Dex
+Sense Motive; ; ;C;C;C; ; ; ;C; ;C;C;C; ;C; ; ; ; ;Yes; ;Wis
+Sleight of Hand;C; ;C; ; ; ; ;C; ; ; ; ; ; ;C; ; ; ; ;No;Yes;Dex
+Spellcraft;C; ;C; ;C;C; ; ;C;C; ;C;C;C; ;C;C;C;C;No; ;Int
+Stealth; ; ;C; ; ; ; ; ;C; ;C; ; ;C;C; ; ; ; ;Yes;Yes;Dex
+Survival;C;C; ; ; ;C;C;C;C; ; ; ; ;C; ; ; ; ; ;Yes; ;Wis
+Swim; ;C; ;C; ;C;C;C;C;C;C; ; ;C;C; ; ; ; ;Yes;Yes;Str
+Use Magic Device;C; ;C; ; ; ; ; ; ;C; ; ; ; ;C;C;C;C; ;No; ;Cha
