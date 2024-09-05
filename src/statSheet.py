@@ -2,8 +2,11 @@
 """
 Class for generating stat sheet.
 """
-import src.helpers as help
+import src.helpers as helper
 SKILL_LIST = "src/tables/skillSummary.txt"
+CREATURE_HIT_DICE = "src/tables/creatureHitDice.txt"
+CREATURE_STATISTICS_BY_TYPE = "src/tables/creatureStatisticsByType.txt"
+MONSTER_STATISTICS_BY_CR = "src/tables/monsterStatisticsByCR.txt"
 
 class StatBlock:
     "stat block class"
@@ -76,7 +79,7 @@ class StatBlock:
                       'Improved Vital Strike', 'Iron Will',
                       'Multiattack', 'Power Attack', 'Vital Strike']
 
-        self.skills = help.generate_list_of_dictionaries(SKILL_LIST)
+        self.skills = helper.generate_list_of_dictionaries(SKILL_LIST)
 
         self.languages = ['Common', 'Draconic', 'Dwarven', 'Orc']
 
@@ -94,6 +97,7 @@ class StatBlock:
 
         self.stat_block_string = ""
 
+
     def generate_stat_block_string_d20pfsrd(self):
         "generates a statblock as per d20pfsrd standard"
 
@@ -106,18 +110,18 @@ class StatBlock:
 
         if self.subtypes:
             stat_block_string += " ("
-            stat_block_string += help.comma_separated_string_from_list(self.subtypes)
+            stat_block_string += helper.comma_separated_string_from_list(self.subtypes)
             stat_block_string += ")"
         stat_block_string += "\n"
         stat_block_string += "Init +" + self.initiative + "; "
         stat_block_string += "Senses "
         if self.senses:
-            stat_block_string += help.comma_separated_string_from_list(self.senses)
+            stat_block_string += helper.comma_separated_string_from_list(self.senses)
             stat_block_string += "; "
         stat_block_string += "Perception +" + self.initiative
         
         if self.auras:
-            stat_block_string += help.comma_separated_string_from_list(self.auras)
+            stat_block_string += helper.comma_separated_string_from_list(self.auras)
         stat_block_string += "\n"
 
         stat_block_string += "\nDEFENSE\n\n"
@@ -133,9 +137,9 @@ class StatBlock:
         if self.dr:
             defenses.append("DR +" + self.dr)
         if self.immunities:
-            defenses.append("Immune " + help.comma_separated_string_from_list(self.immunities))
+            defenses.append("Immune " + helper.comma_separated_string_from_list(self.immunities))
         if self.resistances:
-            defenses.append("Resistance " + help.comma_separated_string_from_list(self.resistances))
+            defenses.append("Resistance " + helper.comma_separated_string_from_list(self.resistances))
         if self.spell_resistance:
             defenses.append("SR " + self.spell_resistance)
         defense_string = ""
@@ -147,13 +151,13 @@ class StatBlock:
 
         if self.weaknesses:
             stat_block_string += "Weaknesses vulnerability to "
-            stat_block_string += help.comma_separated_string_from_list(self.weaknesses)
+            stat_block_string += helper.comma_separated_string_from_list(self.weaknesses)
             stat_block_string += "\n"
 
         stat_block_string += "\nOFFENSE\n\n"
 
         stat_block_string += "Speed "
-        stat_block_string += help.comma_separated_string_from_list(self.speed)
+        stat_block_string += helper.comma_separated_string_from_list(self.speed)
         stat_block_string += "\n"
 
         if self.attacks_melee:
