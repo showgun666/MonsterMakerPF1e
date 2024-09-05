@@ -16,7 +16,6 @@ def generate_list_of_dictionaries(text_file):
             row_values = line.split(";")
             for i, _ in enumerate(columns):
                 dictionary[columns[i].replace("\n", "")] = row_values[i].replace("\n", "")
-            dictionary["Skill Ranks"] = "0" # Adding skill ranks as well
             data.append(dictionary)
             row += 1
 
