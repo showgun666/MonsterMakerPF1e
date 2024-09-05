@@ -1,36 +1,36 @@
-Skill;Alc;Bbn;Brd;Cav;Clr;Drd;Ftr;Gun;Inq;Mag;Mnk;Ora;Pal;Rgr;Rog;Sor;Sum;Wit;Wiz;Untrained;Armor Check Penalty;Key Ability
-Acrobatics; ;C;C; ; ; ; ;C; ; ;C; ; ; ;C; ; ; ; ;Yes;Yes;Dex
-Appraise;C; ;C; ;C; ; ; ; ; ; ; ; ; ;C;C; ; ;C;Yes; ;Int
-Bluff; ; ;C;C; ; ; ;C;C; ; ; ; ; ;C;C; ; ; ;Yes; ;Cha
-Climb; ;C;C;C; ;C;C;C;C;C;C; ; ;C;C; ; ; ; ;Yes;Yes;Str
-Craft;C;C;C;C;C;C;C;C;C;C;C;C;C;C;C;C;C;C;C;Yes; ;Int
-Diplomacy; ; ;C;C;C; ; ; ;C; ; ;C;C; ;C; ; ; ; ;Yes; ;Cha
-Disable Device;C; ; ; ; ; ; ; ; ; ; ; ; ; ;C; ; ; ; ;No;Yes;Dex
-Disguise; ; ;C; ; ; ; ; ;C; ; ; ; ; ;C; ; ; ; ;Yes; ;Cha
-Escape Artist; ; ;C; ; ; ; ; ; ; ;C; ; ; ;C; ; ; ; ;Yes;Yes;Dex
-Fly;C; ; ; ; ;C; ; ; ;C; ; ; ; ; ;C;C;C;C;Yes;Yes;Dex
-Handle Animal; ;C; ;C; ;C;C;C; ; ; ; ;C;C; ; ;C; ; ;No; ;Cha
-Heal;C; ; ; ;C;C; ;C;C; ; ;C;C;C; ; ; ;C; ;Yes; ;Wis
-Intimidate; ;C;C;C; ; ;C;C;C;C;C; ; ;C;C;C; ;C; ;Yes; ;Cha
-Knowledge (arcana);C; ;C; ;C; ; ; ;C;C; ; ; ; ; ;C;C;C;C;No; ;Int
-Knowledge (dungeoneering); ; ;C; ; ; ;C; ;C;C; ; ; ;C;C; ;C; ;C;No; ;Int
-Knowledge (engineering); ; ;C; ; ; ;C;C; ; ; ; ; ; ; ; ;C; ;C;No; ;Int
-Knowledge (geography); ; ;C; ; ;C; ; ; ; ; ; ; ;C; ; ;C; ;C;No; ;Int
-Knowledge (history); ; ;C; ;C; ; ; ; ; ;C;C; ; ; ; ;C;C;C;No; ;Int
-Knowledge (local); ; ;C; ; ; ; ;C; ; ; ; ; ; ;C; ;C; ;C;No; ;Int
-Knowledge (nature);C;C;C; ; ;C; ; ;C; ; ; ; ;C; ; ;C;C;C;No; ;Int
-Knowledge (nobility); ; ;C; ;C; ; ; ; ; ; ; ;C; ; ; ;C; ;C;No; ;Int
-Knowledge (planes); ; ;C; ;C; ; ; ;C;C; ;C; ; ; ; ;C;C;C;No; ;Int
-Knowledge (religion); ; ;C; ;C; ; ; ;C; ;C;C;C; ; ; ;C; ;C;No; ;Int
-Linguistics; ; ;C; ;C; ; ; ; ; ; ; ; ; ;C; ;C; ;C;No; ;Int
-Perception;C;C;C; ; ;C; ;C;C; ;C; ; ;C;C; ; ; ; ;Yes; ;Wis
-Perform; ; ;C; ; ; ; ; ; ; ;C; ; ; ;C; ; ; ; ;Yes; ;Cha
-Profession;C; ;C;C;C;C;C;C;C;C;C;C;C;C;C;C;C;C;C;No; ;Wis
-Ride; ;C; ;C; ;C;C;C;C;C;C; ;C;C; ; ;C; ; ;Yes;Yes;Dex
-Sense Motive; ; ;C;C;C; ; ; ;C; ;C;C;C; ;C; ; ; ; ;Yes; ;Wis
-Sleight of Hand;C; ;C; ; ; ; ;C; ; ; ; ; ; ;C; ; ; ; ;No;Yes;Dex
-Spellcraft;C; ;C; ;C;C; ; ;C;C; ;C;C;C; ;C;C;C;C;No; ;Int
-Stealth; ; ;C; ; ; ; ; ;C; ;C; ; ;C;C; ; ; ; ;Yes;Yes;Dex
-Survival;C;C; ; ; ;C;C;C;C; ; ; ; ;C; ; ; ; ; ;Yes; ;Wis
-Swim; ;C; ;C; ;C;C;C;C;C;C; ; ;C;C; ; ; ; ;Yes;Yes;Str
-Use Magic Device;C; ;C; ; ; ; ; ; ;C; ; ; ; ;C;C;C;C; ;No; ;Cha
+Skill;Alc;Bbn;Brd;Cav;Clr;Drd;Ftr;Gun;Inq;Mag;Mnk;Ora;Pal;Rgr;Rog;Sor;Sum;Wit;Wiz;Untrained;Armor Check Penalty;Key Ability;Skill Ranks
+Acrobatics; ;C;C; ; ; ; ;C; ; ;C; ; ; ;C; ; ; ; ;Yes;Yes;Dex;0
+Appraise;C; ;C; ;C; ; ; ; ; ; ; ; ; ;C;C; ; ;C;Yes; ;Int;0
+Bluff; ; ;C;C; ; ; ;C;C; ; ; ; ; ;C;C; ; ; ;Yes; ;Cha;0
+Climb; ;C;C;C; ;C;C;C;C;C;C; ; ;C;C; ; ; ; ;Yes;Yes;Str;0
+Craft;C;C;C;C;C;C;C;C;C;C;C;C;C;C;C;C;C;C;C;Yes; ;Int;0
+Diplomacy; ; ;C;C;C; ; ; ;C; ; ;C;C; ;C; ; ; ; ;Yes; ;Cha;0
+Disable Device;C; ; ; ; ; ; ; ; ; ; ; ; ; ;C; ; ; ; ;No;Yes;Dex;0
+Disguise; ; ;C; ; ; ; ; ;C; ; ; ; ; ;C; ; ; ; ;Yes; ;Cha;0
+Escape Artist; ; ;C; ; ; ; ; ; ; ;C; ; ; ;C; ; ; ; ;Yes;Yes;Dex;0
+Fly;C; ; ; ; ;C; ; ; ;C; ; ; ; ; ;C;C;C;C;Yes;Yes;Dex;0
+Handle Animal; ;C; ;C; ;C;C;C; ; ; ; ;C;C; ; ;C; ; ;No; ;Cha;0
+Heal;C; ; ; ;C;C; ;C;C; ; ;C;C;C; ; ; ;C; ;Yes; ;Wis;0
+Intimidate; ;C;C;C; ; ;C;C;C;C;C; ; ;C;C;C; ;C; ;Yes; ;Cha;0
+Knowledge (arcana);C; ;C; ;C; ; ; ;C;C; ; ; ; ; ;C;C;C;C;No; ;Int;0
+Knowledge (dungeoneering); ; ;C; ; ; ;C; ;C;C; ; ; ;C;C; ;C; ;C;No; ;Int;0
+Knowledge (engineering); ; ;C; ; ; ;C;C; ; ; ; ; ; ; ; ;C; ;C;No; ;Int;0
+Knowledge (geography); ; ;C; ; ;C; ; ; ; ; ; ; ;C; ; ;C; ;C;No; ;Int;0
+Knowledge (history); ; ;C; ;C; ; ; ; ; ;C;C; ; ; ; ;C;C;C;No; ;Int;0
+Knowledge (local); ; ;C; ; ; ; ;C; ; ; ; ; ; ;C; ;C; ;C;No; ;Int;0
+Knowledge (nature);C;C;C; ; ;C; ; ;C; ; ; ; ;C; ; ;C;C;C;No; ;Int;0
+Knowledge (nobility); ; ;C; ;C; ; ; ; ; ; ; ;C; ; ; ;C; ;C;No; ;Int;0
+Knowledge (planes); ; ;C; ;C; ; ; ;C;C; ;C; ; ; ; ;C;C;C;No; ;Int;0
+Knowledge (religion); ; ;C; ;C; ; ; ;C; ;C;C;C; ; ; ;C; ;C;No; ;Int;0
+Linguistics; ; ;C; ;C; ; ; ; ; ; ; ; ; ;C; ;C; ;C;No; ;Int;0
+Perception;C;C;C; ; ;C; ;C;C; ;C; ; ;C;C; ; ; ; ;Yes; ;Wis;0
+Perform; ; ;C; ; ; ; ; ; ; ;C; ; ; ;C; ; ; ; ;Yes; ;Cha;0
+Profession;C; ;C;C;C;C;C;C;C;C;C;C;C;C;C;C;C;C;C;No; ;Wis;0
+Ride; ;C; ;C; ;C;C;C;C;C;C; ;C;C; ; ;C; ; ;Yes;Yes;Dex;0
+Sense Motive; ; ;C;C;C; ; ; ;C; ;C;C;C; ;C; ; ; ; ;Yes; ;Wis;0
+Sleight of Hand;C; ;C; ; ; ; ;C; ; ; ; ; ; ;C; ; ; ; ;No;Yes;Dex;0
+Spellcraft;C; ;C; ;C;C; ; ;C;C; ;C;C;C; ;C;C;C;C;No; ;Int;0
+Stealth; ; ;C; ; ; ; ; ;C; ;C; ; ;C;C; ; ; ; ;Yes;Yes;Dex;0
+Survival;C;C; ; ; ;C;C;C;C; ; ; ; ;C; ; ; ; ; ;Yes; ;Wis;0
+Swim; ;C; ;C; ;C;C;C;C;C;C; ; ;C;C; ; ; ; ;Yes;Yes;Str;0
+Use Magic Device;C; ;C; ; ; ; ; ; ;C; ; ; ; ;C;C;C;C; ;No; ;Cha;0

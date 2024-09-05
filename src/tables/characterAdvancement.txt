@@ -1,4 +1,4 @@
-Character Level;Experience Slow;Experience Medium;Experience Fa;Feats;Ability Score;Weal PC;Weal NPC Basic;Weal NPC Heroic
+Character Level;Experience Slow;Experience Medium;Experience Fast;Feats;Ability Score;Wealth PC;Wealth NPC Basic;Wealth NPC Heroic
 1;—;—;—;1;—;By Class;260;390
 2;3000;2000;1300;—;—;1000;390;780
 3;7500;5000;3300;2;—;3000;780;1650
