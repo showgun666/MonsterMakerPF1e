@@ -41,38 +41,44 @@ class StatBlock:
         self.immunities = ["Cold", "Sonic"]
         self.resistances = ["Acid 10","Electricity 5"]
         self.spell_resistance = "18"
-        self.weaknesses = "Fire"
+        self.weaknesses = ["Fire"]
 
         # Offense
-        self.speed = ["30ft."]
-        self.attacks_melee = []
-        self.attacks_ranged = []
-        self.space = "5"
-        self.reach = "5"
-        self.special_attacks = []
+        self.speed = ["30 ft."]
+        self.attacks_melee = ['bite +25 (2d8+15)', '2 claws +25 (2d6+10)', '2 wings +23 (1d8+5)', 'tail slap +23 (2d6+15)'] # GENERATED WITH METHOD
+        self.attacks_ranged = ['bow +25 (2d8+15)']
+        self.space = "15 ft."
+        self.reach = "5 ft. (10 ft. with bite)"
+        self.special_attacks = ['breath weapon (50-ft. cone, DC 24, 12d10 fire)', 'crush (Small Creatures, DC 24, 2d8+15)']
         self.spell_like_abilities = []
+        self.caster_level = "17th" # 1st / 3rd / 4th need to fix
+        self.concentration = "+20" # Standard to have + or - here.
         self.spells_known_prepared = []
 
         # Tactics
         self.tactics = ""         # Before Combat, During Combat, Morale
 
         # Statistics
-        self.strength = "10"
-        self.dexterity = "10"
-        self.constitution = "10"
-        self.intelligence = "10"
-        self.wisdom = "10"
-        self.charisma = "10"
+        self.attributes = {
+            "Str": "10",
+            "Dex": "10",
+            "Con": "10",
+            "Int": "10",
+            "Wis": "10",
+            "Cha": "10"}
 
-        self.bab = "0"
-        self.cmb = "0"
-        self.cmd = "10"
+        self.bab = "+17"
+        self.cmb = "+29"
+        self.cmd = "39 (43 vs. trip)"
 
-        self.feats = []
+        self.feats = ['Cleave', 'Greater Vital Strike',
+                      'Improved Initiative', 'Improved Iron Will',
+                      'Improved Vital Strike', 'Iron Will',
+                      'Multiattack', 'Power Attack', 'Vital Strike']
 
         self.skills = help.generate_list_of_dictionaries(SKILL_LIST)
 
-        self.languages = []
+        self.languages = ['Common', 'Draconic', 'Dwarven', 'Orc']
 
         self.special_qualities = []
 
@@ -150,6 +156,73 @@ class StatBlock:
         stat_block_string += help.comma_separated_string_from_list(self.speed)
         stat_block_string += "\n"
 
+        if self.attacks_melee:
+            melee_string = "Melee "
+            for melee_attack in self.attacks_melee:
+                melee_string += melee_attack + ", "
+            stat_block_string += melee_string.rstrip(", ") + "\n"
+        if self.attacks_ranged:
+            ranged_string = "Ranged "
+            for ranged_attack in self.attacks_ranged:
+                ranged_string += ranged_attack + ", "
+            stat_block_string += ranged_string.rstrip(", ") + "\n"
+
+        stat_block_string += "Space " + self.space + "; "
+        stat_block_string += "Reach " + self.reach
+        stat_block_string += "\n"
+
+        if self.special_attacks:
+            special_attack_string = "Special Attacks "
+            for special_attack in self.special_attacks:
+                special_attack_string += special_attack + ", "
+            stat_block_string += special_attack_string.rstrip(", ") + "\n"
+        
+        if self.spell_like_abilities:
+            spell_like_abilities_string = "Spell-like Abilities "
+            spell_like_abilities_string += "(" + self.caster_level + ", " + self.concentration + ")\n"
+            ### WE ADD MAGIC AND SPELLS LATER. NOT IMPORTANT FOR ALL CREATURES WITHOUT THEM SO NOT PART OF CORE CORE CORE
+        
+        stat_block_string += "\nSTATISTICS\n\n"
+        attributes_string = ""
+        for attribute, score in self.attributes.items():
+            attributes_string += attribute + " " + score + ", "
+        stat_block_string += attributes_string.rstrip(", ") + "\n"
+        
+        stat_block_string += "BAB " + self.bab + "; CMB " + self.cmb + "; CMD " + self.cmd + "\n"
+
+        if self.feats:
+            feats_string = "Feats "
+            for feat in self.feats:
+                feats_string += feat + ", "
+            stat_block_string += feats_string.rstrip(", ") + "\n"
+
+        ### NEED TO MAKE SOMETHING MORE SOPHISTICATED FOR SKILL BONUSES LATER ###
+        trained_skills_list = []
+        for i in self.skills:
+            if int(i["Skill Ranks"]) > 0:
+                trained_skills_list.append(i["Skill"] + " +" + i["Skill Ranks"])
+        if trained_skills_list:
+            trained_skills_string = "Skills "
+            for i in trained_skills_list:
+                trained_skills_string += i + ", "
+            stat_block_string += trained_skills_string.rstrip(", ") + "\n"
+
+
+        if self.languages:
+            languages_string = "Languages "
+            for language in self.languages:
+                languages_string += language + ", "
+            stat_block_string += languages_string.rstrip(", ") + "\n"
+
+
+        if self.special_abilities:
+            stat_block_string += "\nSPECIAL ABILITIES\n\n"
+            special_abilities_string = ""
+            for special_ability in self.special_abilities:
+                special_abilities_string += special_ability + ", "
+            stat_block_string += special_abilities_string.rstrip(", ") + "\n"
+
+        ### NEED TO ADD ECOLOGY STUFF AS WELL
 
         stat_block_string += ""
         stat_block_string += ""
