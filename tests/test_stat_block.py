@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #pylint: disable=protected-access
-"Test module for Trie class"
+"Test module for StatBlock class"
 
 import unittest
 from src.statSheet import StatBlock

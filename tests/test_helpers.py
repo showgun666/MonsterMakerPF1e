@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #pylint: disable=protected-access
-"Test module for Trie class"
+"Test module for Helpers Module"
 
 import unittest
 import src.helpers as helpers
