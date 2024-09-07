@@ -5,6 +5,7 @@ Class for creature
 import ability_scores as ability_scores_class
 import src.creature_type as creature_type_class
 import src.skills as skills_class
+import src.helpers as helper_module
 from src.constants import * # Continuously check that this * import is not loading unneccessary stuff.
 
 class Creature:
