@@ -3,7 +3,8 @@
 Class for skills
 """
 import src.helpers as helper_module
-from src.constants import * # Continuously check that this * import is not loading unneccessary stuff.
+import src.exceptions as exceptions_module
+from src.constants import SKILL_LIST
 
 class Skills:
     "Skills class for creature"
@@ -11,11 +12,9 @@ class Skills:
         self.skills = helper_module.generate_list_of_dictionaries(SKILL_LIST)
         self.class_skills_list = class_skill_list
 
-    def get_class_skills_by_type(self):
+    """    def set_class_skills_list(self):
         "sets class skills according to type"
-        if self.creature_type_statistics["Class Skills"] != "None":
-            type_class_skills = self.creature_type_statistics["Class Skills"].split(", ")
-
+        type_class_skills = self.class_skills_list
         i = len(type_class_skills) - 1
         while i >= 0:
             if "Knowledge (pick one)" == type_class_skills[i]:
@@ -34,7 +33,7 @@ class Skills:
                 for skill in self.skills:
                     if "Knowledge" in skill["Skill"]:
                         type_class_skills.append(skill["Skill"])
-        return type_class_skills
+        return type_class_skills"""
 
     def add_class_skills(self, given_class_skills_list):
         "Adds list of given class skills to the creature class skill list"
@@ -47,9 +46,25 @@ class Skills:
         "Sets class skills for creature."
         self.class_skills_list = class_skills
 
-    def get_creature_type_dictionary(self, creature_type):
-        "get the dictionary for a specific creature type"
-        creature_by_type = helper_module.generate_list_of_dictionaries(CREATURE_STATISTICS_BY_TYPE)
-        for creature_type_dictionary in creature_by_type:
-            if creature_type_dictionary["Type"] == creature_type:
-                return creature_type_dictionary
+    def add_ranks_to_skill(self, skill, ranks=1):
+        "adds ranks to skill"
+        for entry in self.skills:
+            if entry["Skill"] == skill:
+                self.skills[skill] = str(int(entry[skill]) + ranks)
+            else:
+                raise exceptions_module.SearchMiss(f'Skill "{skill}" not found in skill list!')
+
+    def get_skill(self, skill):
+        "returns skill dictionary"
+        return self.skills[skill]
+
+    def add_new_skill(self, skill, untrained, armor_check_penalty, key_ability):
+        "add a new skill to list"
+        self.skills.append(
+            {
+                "Skill":skill,
+                "Untrained":untrained,
+                "Armor Check Penalty":armor_check_penalty,
+                "Key Ability":key_ability,
+            }
+        )
