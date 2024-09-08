@@ -9,10 +9,44 @@ class HitDice:
     def __init__(self):
         self.hit_dice = []
 
-    def add_hit_die(self):
-        "Add a hit die to hit dice"
-        self.hit_dice.append(hd.HitDie())
+    def add_hit_die(self, creature_type):
+        "Add a hit die to hit dice."
+        self.hit_dice.append(hd.HitDie(creature_type))
 
     def remove_hit_die(self, index):
         "Remove a hit die from hit dice"
         self.hit_dice.pop(index)
+
+    def saves_from_hit_dice(self):
+        "Returns saving throw bonus for saves"
+        # Need to check all hit die.
+        # Check how many hit dice have the same Name.
+        # Calculate bonuses based off of that
+        saves_bonuses = [0, 0, 0]
+        # i0 is count how many of that hd exist
+        # i1 contains save progression for that type
+        # Check how many of each hit die we have
+        unique_types = {}
+        for hit_die in self.hit_dice:
+            if hit_die.get_type() not in unique_types:
+                unique_types[hit_die.get_type()] = [1]
+            else:
+                unique_types[hit_die.get_type()][0] += 1
+            unique_types[hit_die.get_type()].append(hit_die.get_save_progression)
+
+        for key, value in unique_types.items():
+            dice = value[0]
+            if value[1][0] == 1:
+                saves_bonuses[0] = (dice // 2) + 2
+            else:
+                saves_bonuses[0] = dice // 3
+            if value[1][1] == 1:
+                saves_bonuses[1] = (dice // 2) + 2
+            else:
+                saves_bonuses[1] = dice // 3
+            if value[1][2] == 1:
+                saves_bonuses[2] = (dice // 2) + 2
+            else:
+                saves_bonuses[2] = dice // 3
+
+        return saves_bonuses
