@@ -5,12 +5,19 @@ Creature type includes character class levels.
 Handles things tied to creature type.
 """
 import src.helpers as helper_module
-from src.constants import CREATURE_STATISTICS_BY_TYPE, GOOD, BAD, WILL, FORT, REF
+from src.constants import CREATURE_STATISTICS_BY_TYPE, CREATURE_HIT_DICE, GOOD, BAD, WILL, FORT, REF, SKILL_LIST
 
 class CreatureType:
     "Class for handling creature types"
     def __init__(self, given_creature_type="Humanoid"):
         self.creature_type_statistics = self.creature_type_dictionary(given_creature_type)
+        self.creature_type_statistics["Hit Die"] = float(self.creature_type_statistics["Hit Die"])
+        bab = float(self.creature_type_statistics["Base Attack Bonus (BAB)"])
+        self.creature_type_statistics["Base Attack Bonus (BAB)"] = bab
+        sr = int(self.creature_type_statistics["Skill Ranks"])
+        self.creature_type_statistics["Skill Ranks"] = sr
+
+        self.saving_throw_progression = [None, None, None]
         self.set_save_progression(self.creature_type_statistics["Good Saving Throws"])
         self.saving_throw_progression = self.get_save_progressions()
 
@@ -32,16 +39,24 @@ class CreatureType:
         return float(self.creature_type_statistics["Base Attack Bonus (BAB)"])
 
 
-    def class_skills(self):
+    def set_class_skills(self):
         "returns class skills according to type as list"
         class_skill_list = []
         if self.creature_type_statistics["Class Skills"] != "None":
             class_skill_list = self.creature_type_statistics["Class Skills"].split(", ")
+
+        for index, _ in enumerate(class_skill_list):
+            if class_skill_list[index] == "Knowledge (all)":
+                for entry in helper_module.generate_list_of_dictionaries(SKILL_LIST):
+                    if "Knowledge" in entry["Skill"]:
+                        class_skill_list.append(entry["Skill"])
+                class_skill_list.pop(index)
+                break
         return class_skill_list
 
     def skill_ranks_per_hd(self):
         "returns integer how many skill ranks type gain per hd"
-        return int(self.creature_type_statistics["Skill Ranks"])
+        return self.creature_type_statistics["Skill Ranks"]
 
 
     def set_save_progression(self, good_saves_list):
@@ -65,6 +80,15 @@ class CreatureType:
     def get_save_progressions(self):
         "returns save progressions as a list"
         return self.saving_throw_progression
+
+
+    def hit_dice_by_cr(self, cr):
+        "returns how many hit dice are expected for a given CR of type"
+        cr_statistics = helper_module.generate_list_of_dictionaries(CREATURE_HIT_DICE)
+        for i, _ in enumerate(cr_statistics):
+            if cr_statistics[i]["Creature Type"] == str(self):
+                hit_dice_amount = cr_statistics[i][str(cr)]
+        return int(hit_dice_amount)
 
 
     def __str__(self):

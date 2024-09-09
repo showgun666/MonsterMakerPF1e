@@ -7,30 +7,24 @@ from src.constants import STR, DEX, CON, INT, WIS, CHA
 class AbilityScores:
     "Class for handling ability_scores in creature class"
     def __init__(self, ability_scores_string="10 10 10 10 10 10"):
-        ability_scores = ability_scores_string.split(" ")
-        self._ability_scores = [
-            ability_scores[STR],
-            ability_scores[DEX],
-            ability_scores[CON],
-            ability_scores[INT],
-            ability_scores[WIS],
-            ability_scores[CHA]
-        ]
+        self._ability_scores = ability_scores_string.split(" ")
+        for i, score in enumerate(self.get_ability_scores()):
+            self.set_ability_score(i, int(score))
 
-    def set_ability_score(self, ability_score):
+    def set_ability_score(self, ability_score, score):
         "set one of the ability_scores value"
         if ability_score == STR:
-            self.set_strength_score(ability_score)
+            self.set_strength_score(score)
         elif ability_score == DEX:
-            self.set_dexterity_score(ability_score)
+            self.set_dexterity_score(score)
         elif ability_score == CON:
-            self.set_constitution_score(ability_score)
+            self.set_constitution_score(score)
         elif ability_score == INT:
-            self.set_intelligence_score(ability_score)
+            self.set_intelligence_score(score)
         elif ability_score == WIS:
-            self.set_wisdom_score(ability_score)
+            self.set_wisdom_score(score)
         elif ability_score == CHA:
-            self.set_charisma_score(ability_score)
+            self.set_charisma_score(score)
 
     def get_ability_score(self, ability_score):
         "get one of the ability scores's value"

@@ -14,5 +14,3 @@ class TestHelpers(unittest.TestCase):
         "test that the function can generate skill list"
 
         skills = helpers.generate_list_of_dictionaries(TEXT_FILE)
-
-        print(skills)

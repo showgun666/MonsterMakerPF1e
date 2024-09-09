@@ -4,7 +4,7 @@ Class for skills
 """
 import src.helpers as helper_module
 import src.exceptions as exceptions_module
-from src.constants import SKILL_LIST
+from src.constants import SKILL_LIST, STR, DEX, CON, INT, WIS, CHA
 
 class Skills:
     "Skills class for creature"
@@ -12,28 +12,32 @@ class Skills:
         self.skills = helper_module.generate_list_of_dictionaries(SKILL_LIST)
         self.class_skills_list = class_skill_list
 
-    """    def set_class_skills_list(self):
-        "sets class skills according to type"
-        type_class_skills = self.class_skills_list
-        i = len(type_class_skills) - 1
-        while i >= 0:
-            if "Knowledge (pick one)" == type_class_skills[i]:
-                # PICK A KNOWLEDGE THAT IS NOT A CLASS SKILL
-                # FOR NOW WE JUST POP IT. IT IS BROKEN
-                # FIX THIS LATER
-                type_class_skills.pop(i)
-                i -= 1
-            elif "plus" in type_class_skills[i]:
-                # FIX THIS ANOTHER TIME
-                # ONE CASE IS FOR CLASS SKILLS COMBINED WITH CREATURE TYPE
-                # ONE CASE IS FOR OUTSIDERS THAT HAVE +4
-                type_class_skills.pop(i)
-            elif "Knowledge (all)" in type_class_skills[i]:
-                type_class_skills.pop(i)
-                for skill in self.skills:
-                    if "Knowledge" in skill["Skill"]:
-                        type_class_skills.append(skill["Skill"])
-        return type_class_skills"""
+        for skill in self.skills:
+            skill["Skill Ranks"] = int(skill["Skill Ranks"])
+            if skill["Untrained"] == "Yes":
+                skill["Untrained"] = True
+            else:
+                skill["Untrained"] = False
+
+            if skill["Armor Check Penalty"] == "Yes":
+                skill["Armor Check Penalty"] = True
+            else:
+                skill["Armor Check Penalty"] = False
+
+            if skill["Key Ability"] == "Str":
+                skill["Key Ability"] = STR
+            elif skill["Key Ability"] == "Dex":
+                skill["Key Ability"] = DEX
+            elif skill["Key Ability"] == "Con":
+                skill["Key Ability"] = CON
+            elif skill["Key Ability"] == "Int":
+                skill["Key Ability"] = INT
+            elif skill["Key Ability"] == "Wis":
+                skill["Key Ability"] = WIS
+            elif skill["Key Ability"] == "Cha":
+                skill["Key Ability"] = CHA
+            else:
+                raise exceptions_module.SearchMiss(f'{skill["Key Ability"]} not a legal key ability score.')
 
     def add_class_skills(self, given_class_skills_list):
         "Adds list of given class skills to the creature class skill list"
@@ -48,15 +52,18 @@ class Skills:
 
     def add_ranks_to_skill(self, skill, ranks=1):
         "adds ranks to skill"
-        for entry in self.skills:
+        for index, entry in enumerate(self.skills):
             if entry["Skill"] == skill:
-                self.skills[skill] = str(int(entry[skill]) + ranks)
-            else:
-                raise exceptions_module.SearchMiss(f'Skill "{skill}" not found in skill list!')
+                self.skills[index]["Skill Ranks"] = entry["Skill Ranks"] + ranks
+                return
+        raise exceptions_module.SearchMiss(f'Skill "{skill}" not found in skill list!')
 
     def get_skill(self, skill):
         "returns skill dictionary"
-        return self.skills[skill]
+        for i, _ in enumerate(self.skills):
+            if self.skills[i]["Skill"] == skill:
+                return self.skills[i]
+        raise exceptions_module.SearchMiss(f'Skill "{skill}" not found in skill list!')
 
     def add_new_skill(self, skill, untrained, armor_check_penalty, key_ability):
         "add a new skill to list"
@@ -68,3 +75,10 @@ class Skills:
                 "Key Ability":key_ability,
             }
         )
+
+    def remove_skill(self, skill):
+        """Remove a skill. returns skill name popped"""
+        for i, _ in enumerate(self.skills):
+            if self.skills[i]["Skill"] == skill:
+                return self.skills.pop(i)
+        raise exceptions_module.SearchMiss(f'Skill "{skill}" not found in skill list!')
