@@ -1,0 +1,13 @@
+Natural Attacks;Fine;Dim.;Tiny;Small;Medium;Large;Huge;Gargantuan;Colossal
+Bite;1;1d2;1d3;1d4;1d6;1d8;2d6;2d8;4d6
+Claw;–;1;1d2;1d3;1d4;1d6;1d8;2d6;2d8
+Gore;1;1d2;1d3;1d4;1d6;1d8;2d6;2d8;4d6
+Hoof;–;1;1d2;1d3;1d4;1d6;1d8;2d6;2d8
+Tentacle;–;1;1d2;1d3;1d4;1d6;1d8;2d6;2d8
+Wing;–;1;1d2;1d3;1d4;1d6;1d8;2d6;2d8
+Pincers;1;1d2;1d3;1d4;1d6;1d8;2d6;2d8;4d6
+Tail Slap;1;1d2;1d3;1d4;1d6;1d8;2d6;2d8;4d6
+Slam;–;1;1d2;1d3;1d4;1d6;1d8;2d6;2d8
+Sting;–;1;1d2;1d3;1d4;1d6;1d8;2d6;2d8
+Talons;–;1;1d2;1d3;1d4;1d6;1d8;2d6;2d8
+Other;–;1;1d2;1d3;1d4;1d6;1d8;2d6;2d8

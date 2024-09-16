@@ -1,0 +1,14 @@
+Creature Size;Size Modifier;Special Size Modifier;Size Modifier to Fly;Size Modifier to Stealth;Space;Natural Reach;Typical Height/Length;Typical Weight
+Fine;+8;-8;+8;+16;1/2 ft.;0;6″ or less;1/8 lb. or less
+Diminutive;+4;-4;+6;+12;1 ft.;0;6″ to 1 ft.;1/8 lb. – 1 lb.
+Tiny;+2;-2;+4;+8;2-1/2 ft.;0;1′ to 2 ft.;1-8 lbs.
+Small;+1;-1;+2;+4;5 ft.;5 ft.;2′ to 4 ft.;8-60 lbs.
+Medium;+0;+0;+0;+0;5 ft.;5 ft.;4′ to 8 ft.;60-500 lbs.
+Large (tall);-1;+1;-2;-4;10 ft.;10 ft.;8′ to 16 ft.;500-4000 lbs.
+Large (long);-1;+1;-2;-4;10 ft.;5 ft.;8′ to 16 ft.;500-4000 lbs.
+Huge (tall);-2;+2;-4;-8;15 ft.;15 ft.;16′ to 32 ft.;2-16 tons
+Huge (long);-2;+2;-4;-8;15 ft.;10 ft.;16′ to 32 ft.;2-16 tons
+Gargantuan (tall);-4;+4;-6;-12;20 ft.;20 ft.;32′ to 64 ft.;16 – 125 tons
+Gargantuan (long);-4;+4;-6;-12;20 ft.;15 ft.;32′ to 64 ft.;16 – 125 tons
+Colossal (tall);-8;+8;-8;-16;30 ft.;30 ft.;64 ft. or more;125 tons or more
+Colossal (long);-8;+8;-8;-16;30 ft.;20 ft.;64 ft. or more;125 tons or more
