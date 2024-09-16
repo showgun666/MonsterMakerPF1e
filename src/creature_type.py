@@ -5,13 +5,14 @@ Creature type includes character class levels.
 Handles things tied to creature type.
 """
 import src.helpers as helper_module
-from src.constants import CREATURE_STATISTICS_BY_TYPE, CREATURE_HIT_DICE, GOOD, BAD, WILL, FORT, REF, SKILL_LIST
+from src.constants import CREATURE_STATISTICS_BY_TYPE, CREATURE_HIT_DICE
+from src.constants import GOOD, BAD, WILL, FORT, REF, SKILL_LIST
 
 class CreatureType:
     "Class for handling creature types"
     def __init__(self, given_creature_type="Humanoid"):
         self.creature_type_statistics = self.creature_type_dictionary(given_creature_type)
-        self.creature_type_statistics["Hit Die"] = float(self.creature_type_statistics["Hit Die"])
+        self.creature_type_statistics["Hit Die"] = int(self.creature_type_statistics["Hit Die"])
         bab = float(self.creature_type_statistics["Base Attack Bonus (BAB)"])
         self.creature_type_statistics["Base Attack Bonus (BAB)"] = bab
         sr = int(self.creature_type_statistics["Skill Ranks"])
@@ -24,9 +25,7 @@ class CreatureType:
     def creature_type_dictionary(self, creature_type):
         "get the dictionary for a specific creature type"
         creature_by_type = helper_module.generate_list_of_dictionaries(CREATURE_STATISTICS_BY_TYPE)
-        for creature_type_dictionary in creature_by_type:
-            if creature_type_dictionary["Type"] == creature_type:
-                return creature_type_dictionary
+        return next((ct for ct in creature_by_type if ct["Type"] == creature_type), None)
 
 
     def hd_size(self):
