@@ -24,6 +24,7 @@ class TestHitDie(unittest.TestCase):
         self.assertEqual(self.hd.get_hit_die(), 8)
         self.assertNotEqual(self.hd.get_hit_die(), "8")
         self.assertNotEqual(self.hd.get_hit_die(), 6)
+
     def test_get_bab(self):
         """get_bab returns correct value"""
         self.assertEqual(self.hd.get_bab(), 0.75)
