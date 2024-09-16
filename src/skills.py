@@ -9,10 +9,10 @@ from src.constants import SKILL_LIST, STR, DEX, CON, INT, WIS, CHA
 class Skills:
     "Skills class for creature"
     def __init__(self, class_skill_list):
-        self.skills = helper_module.generate_list_of_dictionaries(SKILL_LIST)
+        self._skills = helper_module.generate_list_of_dictionaries(SKILL_LIST)
         self.class_skills_list = class_skill_list
 
-        for skill in self.skills:
+        for skill in self._skills:
             skill["Skill Ranks"] = int(skill["Skill Ranks"])
             if skill["Untrained"] == "Yes":
                 skill["Untrained"] = True
@@ -37,7 +37,10 @@ class Skills:
             elif skill["Key Ability"] == "Cha":
                 skill["Key Ability"] = CHA
             else:
-                raise exceptions_module.SearchMiss(f'{skill["Key Ability"]} not a legal key ability score.')
+                raise exceptions_module.SearchMiss(f'''
+{skill["Key Ability"]} not a legal key ability score.
+                                                   ''')
+            skill["Modifier"] = 0 ### <--- NEED TO WRITE TEST FOR THIS PART
 
     def add_class_skills(self, given_class_skills_list):
         "Adds list of given class skills to the creature class skill list"
@@ -50,24 +53,25 @@ class Skills:
         "Sets class skills for creature."
         self.class_skills_list = class_skills
 
-    def add_ranks_to_skill(self, skill, ranks=1):
-        "adds ranks to skill"
-        for index, entry in enumerate(self.skills):
+    def find_skill(self, skill):
+        """Finds given skill"""
+        for entry in self._skills:
             if entry["Skill"] == skill:
-                self.skills[index]["Skill Ranks"] = entry["Skill Ranks"] + ranks
-                return
-        raise exceptions_module.SearchMiss(f'Skill "{skill}" not found in skill list!')
+                return entry
+        raise exceptions_module.SearchMiss(f'Skill "{skill}" not found')
 
-    def get_skill(self, skill):
-        "returns skill dictionary"
-        for i, _ in enumerate(self.skills):
-            if self.skills[i]["Skill"] == skill:
-                return self.skills[i]
+    def add_skill_ranks(self, skill, ranks=1):
+        "adds ranks to skill, to subtract att negative number"
+        found_skill = self.find_skill(skill)
+        if skill == found_skill["Skill"]:
+### SHOULD NOT BE ABLE TO ADD SKILL RANKS HIGHER THAN AMOUNT OF HD
+            found_skill["Skill Ranks"] += ranks
+            return
         raise exceptions_module.SearchMiss(f'Skill "{skill}" not found in skill list!')
 
     def add_new_skill(self, skill, untrained, armor_check_penalty, key_ability):
         "add a new skill to list"
-        self.skills.append(
+        self._skills.append(
             {
                 "Skill":skill,
                 "Untrained":untrained,
@@ -78,7 +82,7 @@ class Skills:
 
     def remove_skill(self, skill):
         """Remove a skill. returns skill name popped"""
-        for i, _ in enumerate(self.skills):
-            if self.skills[i]["Skill"] == skill:
-                return self.skills.pop(i)
+        for i, _ in enumerate(self._skills):
+            if self._skills[i]["Skill"] == skill:
+                return self._skills.pop(i)
         raise exceptions_module.SearchMiss(f'Skill "{skill}" not found in skill list!')
