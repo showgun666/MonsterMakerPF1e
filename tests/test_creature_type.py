@@ -55,3 +55,9 @@ class TestSkills(unittest.TestCase):
         self.assertEqual(self.creature_type.hit_dice_by_cr(1), 2)
         self.assertEqual(self.creature_type.hit_dice_by_cr(2), 3)
         self.assertEqual(self.creature_type.hit_dice_by_cr(5), 7)
+
+        self.creature_type = CreatureType("Dragon")
+        self.assertEqual(self.creature_type.hit_dice_by_cr(1), 2)
+        self.assertEqual(self.creature_type.hit_dice_by_cr(2), 3)
+        self.assertEqual(self.creature_type.hit_dice_by_cr(5), 6)
+        self.assertEqual(self.creature_type.hit_dice_by_cr(20), 29)

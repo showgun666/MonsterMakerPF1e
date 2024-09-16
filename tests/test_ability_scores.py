@@ -64,3 +64,10 @@ class TestAbilityScores(unittest.TestCase):
         self.assertEqual(self.ability_scores.get_ability_modifier(WIS), 15)
         self.assertEqual(self.ability_scores.get_ability_modifier(CHA), 100)
         self.assertNotEqual(self.ability_scores.get_ability_modifier(CHA), "100")
+        self.ability_scores.set_ability_score(STR, 9)
+        self.ability_scores.set_ability_score(DEX, 10)
+        self.ability_scores.set_ability_score(CON, 11)
+        self.assertEqual(self.ability_scores.get_ability_modifier(STR), -1)
+        self.assertEqual(self.ability_scores.get_ability_modifier(DEX), 0)
+        self.assertEqual(self.ability_scores.get_ability_modifier(CON), 0)
+

@@ -26,15 +26,15 @@ class TestSkills(unittest.TestCase):
     def test_init(self):
         """init works as expected"""
         self.assertEqual(self.skills.class_skills_list[0], 'Acrobatics')
-        self.assertTrue(isinstance(self.skills.skills, list))
-        self.assertTrue(isinstance(self.skills.skills[0], dict))
-        self.assertEqual("Acrobatics", self.skills.skills[0]["Skill"])
-        self.assertEqual(self.skills.skills[0]["Skill Ranks"], 0)
+        self.assertTrue(isinstance(self.skills._skills, list))
+        self.assertTrue(isinstance(self.skills._skills[0], dict))
+        self.assertEqual("Acrobatics", self.skills._skills[0]["Skill"])
+        self.assertEqual(self.skills._skills[0]["Skill Ranks"], 0)
 
-        self.assertEqual(self.skills.get_skill("Acrobatics")["Skill"], "Acrobatics")
-        self.assertEqual(self.skills.get_skill("Acrobatics")["Untrained"], True)
-        self.assertEqual(self.skills.get_skill("Acrobatics")["Armor Check Penalty"], True)
-        self.assertEqual(self.skills.get_skill("Acrobatics")["Key Ability"], DEX)
+        self.assertEqual(self.skills.find_skill("Acrobatics")["Skill"], "Acrobatics")
+        self.assertEqual(self.skills.find_skill("Acrobatics")["Untrained"], True)
+        self.assertEqual(self.skills.find_skill("Acrobatics")["Armor Check Penalty"], True)
+        self.assertEqual(self.skills.find_skill("Acrobatics")["Key Ability"], DEX)
 
 
     def test_set_class_skills(self):
@@ -46,39 +46,41 @@ class TestSkills(unittest.TestCase):
 
     def test_add_ranks_to_skill(self):
         """can add ranks to skills"""
-        self.skills.add_ranks_to_skill("Acrobatics", 3)
-        self.skills.add_ranks_to_skill("Acrobatics", 3)
-        self.skills.add_ranks_to_skill("Diplomacy", 2)
-        self.assertEqual(self.skills.skills[0]["Skill Ranks"], 6)
-        self.assertEqual(self.skills.skills[5]["Skill Ranks"], 2)
+        self.skills.add_skill_ranks("Acrobatics", 3)
+        self.skills.add_skill_ranks("Acrobatics", 3)
+        self.skills.add_skill_ranks("Diplomacy", 2)
+        self.assertEqual(self.skills._skills[0]["Skill Ranks"], 6)
+        self.assertEqual(self.skills._skills[5]["Skill Ranks"], 2)
+        self.skills.add_skill_ranks("Acrobatics", -3)
+        self.assertEqual(self.skills._skills[0]["Skill Ranks"], 3)
 
     def test_add_ranks_to_skill_miss_exception(self):
         """Trying to get a skill that doesn't exist raises SearchMiss"""
         with self.assertRaises(SearchMiss):
-            self.skills.add_ranks_to_skill("Carousing", 1)
+            self.skills.add_skill_ranks("Carousing", 1)
 
-    def test_get_skill(self):
+    def test_find_skill(self):
         """can get selected skill"""
-        self.assertEqual(self.skills.get_skill("Acrobatics")["Skill"], "Acrobatics")
+        self.assertEqual(self.skills.find_skill("Acrobatics")["Skill"], "Acrobatics")
 
     def test_get_skill_search_miss_exception(self):
         """Trying to get a skill that doesn't exist raises SearchMiss"""
         with self.assertRaises(SearchMiss):
-            self.skills.get_skill("Carousing")
+            self.skills.find_skill("Carousing")
 
     def test_add_new_skill(self):
         """can add new skill"""
         self.skills.add_new_skill("Carousing", True, False, CON)
-        self.assertEqual(self.skills.get_skill("Carousing")["Skill"], "Carousing")
-        self.assertEqual(self.skills.get_skill("Carousing")["Untrained"], True)
-        self.assertEqual(self.skills.get_skill("Carousing")["Armor Check Penalty"], False)
-        self.assertEqual(self.skills.get_skill("Carousing")["Key Ability"], CON)
+        self.assertEqual(self.skills.find_skill("Carousing")["Skill"], "Carousing")
+        self.assertEqual(self.skills.find_skill("Carousing")["Untrained"], True)
+        self.assertEqual(self.skills.find_skill("Carousing")["Armor Check Penalty"], False)
+        self.assertEqual(self.skills.find_skill("Carousing")["Key Ability"], CON)
 
     def test_remove_skill(self):
         """Can remove a skill"""
         self.skills.remove_skill("Acrobatics")
         with self.assertRaises(SearchMiss):
-            self.skills.get_skill("Acrobatics")
+            self.skills.find_skill("Acrobatics")
 
     def test_remove_skill_search_miss_exception(self):
         """Trying to remove skill that doesn't exist raises searchmiss exception"""

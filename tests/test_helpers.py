@@ -14,3 +14,8 @@ class TestHelpers(unittest.TestCase):
         "test that the function can generate skill list"
 
         skills = helpers.generate_list_of_dictionaries(TEXT_FILE)
+
+    def test_generate_dictionary_list_from_nonexistent_file_raises_error(self):
+        "generating list of dictionaries from nonexistent file raises error"
+        with self.assertRaises(FileNotFoundError):
+            helpers.generate_list_of_dictionaries("nonexistent.txt")
