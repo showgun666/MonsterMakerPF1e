@@ -5,6 +5,9 @@ SKILL_LIST = "src/tables/skillSummary.txt"
 CREATURE_HIT_DICE = "src/tables/creatureHitDice.txt"
 CREATURE_STATISTICS_BY_TYPE = "src/tables/creatureStatisticsByType.txt"
 MONSTER_STATISTICS_BY_CR = "src/tables/monsterStatisticsByCR.txt"
+CREATURE_SIZES = "src/tables/creatureSizes.txt"
+EXPERIENCE_POINT_AWARDS = "src/tables/experiencePointAwards.txt"
+NATURAL_ATTACKS = "src/naturalAttacks.txt"
 
 # INDEX VALUES OF ATTRIBUTE SCORES
 STR = 0
