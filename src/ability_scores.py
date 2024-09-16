@@ -4,10 +4,14 @@ Class for ability scores and all things closely related.
 """
 
 from src.constants import STR, DEX, CON, INT, WIS, CHA
+from src.exceptions import LengthInvalid
 class AbilityScores:
     "Class for handling ability_scores in creature class"
     def __init__(self, ability_scores_string="10 10 10 10 10 10"):
         self._ability_scores = ability_scores_string.split(" ")
+        if len(self._ability_scores) != 6:
+            raise LengthInvalid(f'Ability scores need to contain exactly 6 items. Given Ability scores: {self._ability_scores}')
+
         for i, score in enumerate(self.get_ability_scores()):
             self.set_ability_score(i, int(score))
 
@@ -28,20 +32,15 @@ class AbilityScores:
 
     def get_ability_score(self, ability_score):
         "get one of the ability scores's value"
-        requested_ability_score = None
-        if ability_score == STR:
-            requested_ability_score = self.get_strength_score()
-        elif ability_score == DEX:
-            requested_ability_score = self.get_dexterity_score()
-        elif ability_score == CON:
-            requested_ability_score = self.get_constitution_score()
-        elif ability_score == INT:
-            requested_ability_score = self.get_intelligence_score()
-        elif ability_score == WIS:
-            requested_ability_score = self.get_wisdom_score()
-        elif ability_score == CHA:
-            requested_ability_score = self.get_charisma_score()
-        return requested_ability_score
+        ability_map = {
+            STR: self.get_strength_score,
+            DEX: self.get_dexterity_score,
+            CON: self.get_constitution_score,
+            INT: self.get_intelligence_score,
+            WIS: self.get_wisdom_score,
+            CHA: self.get_charisma_score
+        }
+        return ability_map[ability_score]()
 
     def get_ability_modifier(self, ability_score):
         "get one of the ability scores modifier"
