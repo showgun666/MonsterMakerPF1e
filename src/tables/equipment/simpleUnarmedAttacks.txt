@@ -1,0 +1,3 @@
+Unarmed Attacks;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
+Gauntlet;2;1d2;1d3;x2;—;1;B;—;PZO1110
+Unarmed strike;—;1d2;1d3;x2;—;—;B;nonlethal;PZO1110

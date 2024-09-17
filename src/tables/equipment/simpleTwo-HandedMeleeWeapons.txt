@@ -1,0 +1,11 @@
+Two-Handed Melee Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
+Bayonet;5;1d4;1d6;x2;—;1;P;—;PZO1115
+Boarding pike;8;1d6;1d8;x3;—;9;P;brace, reach;PPC:Pirates
+Kumade;5;1d4;1d6;x3;—;4;P;grapple;PZO9468
+Kumade, collapsible;10;1d4;1d6;x3;—;4;P;grapple;PZO9468
+Lantern staff;15;1d4;1d6;×2;—;9;B;see text;PPZO94102
+Longspear;5;1d6;1d8;x3;—;9;P;brace, reach;PZO1110
+Quarterstaff;—;1d4/1d4;1d6/1d6;x2;—;4;B;double, monk;PZO1110
+Spear;2;1d6;1d8;x3;20;6;P;brace;PZO1110
+Spear, boar;5;1d6;1d8;x2;—;8;P;brace, see text;PZO1115
+Spear, weighted;10;1d6/1d4;1d8/1d6;x3/x2;—;8;B or P;brace, double;PZO9468

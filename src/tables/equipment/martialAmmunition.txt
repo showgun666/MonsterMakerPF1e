@@ -1,0 +1,22 @@
+Ammunition;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
+Arrows, common (20);1;—;—;—;—;3;P;—;PZO1110
+Arrows/bolts, barbed (20);2;see text;see text;see text;see text;3;P;grapple;PPC:RTT
+Arrow, bleeding (1);360;see text;see text;see text;see text;see text;see text;see text;PPC:Elves
+Arrows, blunt (20);2;—;—;—;—;3;B;see text;PZO1115
+Arrow, distance (iron-tipped) (20);1;—;—;—;—;4;—;—;PRG:UC
+Arrow, durable (1);1;see text;see text;see text;see text;see text;see text;see text;PPC:Elves
+Arrow, dye (1);1;see text;see text;see text;see text;4;—;see text;PPC:Elves
+Arrows, flight (20);2;—;—;—;see text;3;P;see text;PZO1115
+Arrows/bolts, incendiary (20);10;see text;see text;see text;see text;3;see text;see text;PPC:RTT
+Arrow, lodestone (1);10;see text;see text;see text;see text;see text;see text;see text;PPC:Elves
+Arrow, pheromone (1);15;see text;see text;see text;see text;see text;see text;see text;PPC:Elves
+Arrows/bolts, pronged (20);2;see text;see text;see text;see text;3;see text;see text;PPC:RTT
+Arrow, raining (1);30;see text;see text;see text;see text;see text;see text;see text;PPC:Elves
+Arrow, slow burn (1);150;see text;see text;see text;see text;see text;see text;see text;PPC:Elves
+Arrow, smoke (1);10;—;—;—;—;—;P;see text;PZO1115
+Arrow, splintercloud (1);25;see text;see text;see text;see text;see text;see text;see text;PPC:Elves
+Arrow, tanglefoot (1);20;see text;see text;see text;see text;see text;see text;see text;PPC:Elves
+Arrow, thistle (1);1;—;—;—;—;0.15 lbs;P;see text;PPZO9410
+Arrow, throwing (1);5;see text;see text;see text;see text;0.5;see text;see text;PPC:RTT
+Arrow, trip (1);25;see text;see text;see text;see text;see text;see text;see text;PPC:Elves
+Arrows, whistling (20);2;—;—;—;—;3;—;—;PZO1118

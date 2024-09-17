@@ -1,0 +1,23 @@
+Two-Handed Melee Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
+Bardiche;13;1d8;1d10;19-20/x2;—;14;S;brace, reach, see text;PZO1115
+Bec de corbin;15;1d8;1d10;x3;—;12;B or P;brace, reach, see text;PZO1115
+Bill;11;1d6;1d8;x3;—;11;S;brace, disarm, reach, see text;PZO1115
+Earth breaker;40;1d10;2d6;x3;—;14;B;—;PZO9226-Revised
+Falchion;75;1d6;2d4;18–20/x2;—;8;S;—;PZO1110
+Flail, heavy;15;1d8;1d10;19-20/x2;—;10;B;disarm, trip;PZO1110
+Glaive;8;1d8;1d10;x3;—;10;S;reach;PZO1110
+Glaive-guisarme;12;1d8;1d10;x3;—;10;S;brace, reach, see text;PZO1115
+Greataxe;20;1d10;1d12;x3;—;12;S;—;PZO1110
+Greatclub;5;1d8;1d10;x2;—;8;B;—;PZO1110
+Greatsword;50;1d10;2d6;19-20/x2;—;8;S;—;PZO1110
+Guisarme;9;1d6;2d4;x3;—;12;S;reach, trip;PZO1110
+Halberd;10;1d8;1d10;x3;—;12;P or S;brace, trip;PZO1110
+Hammer, lucerne;15;1d10;1d12;x2;—;12;B or P;brace, reach, see text;PZO1115
+Horsechopper;10;1d8;1d10;x3;—;12;P or S;reach, trip;PZO1121
+Lance;10;1d6;1d8;x3;—;10;P;reach;PZO1110
+Ogre hook;24;1d8;1d10;x3;—;10;P;trip;PZO9226-Revised
+Pickaxe;14;1d6;1d8;x4;—;12;P;—;PAP14
+Planson;10;1d8;1d10;x2;—;10;B or P;brace;PZO9468
+Ranseur;10;1d6;2d4;x3;—;12;P;disarm, reach;PZO1110
+Scythe;18;1d6;2d4;x4;—;10;P or S;trip;PZO1110
+Spear, syringe;100;1d6;1d8;x3;20;6;P;brace, see text;PPZO9410

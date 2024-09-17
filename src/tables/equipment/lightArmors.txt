@@ -1,0 +1,20 @@
+Armor;Cost;Armor/Shield Bonus;Maximum Dex Bonus;Armor Check Penalty;Arcane Spell Failure Chance;Speed 30; Speed 20;Weight;Source
+Armored kilt;20;1;6;0;0;30;20;10;PPZO9410
+Dancing scarves;150;See text;—;0;—;30;20;8;PPZO94102
+Haramaki;3;1;—;0;0;30;20;1;PRG:UE
+Padded;5;1;8;0;5;30;20;10;PZO1110
+Quilted cloth;100;1;8;0;10;30;20;15;PZO1115
+Reinforced tunic;1;1;5;0;5;30;20;5;PPZO94102
+Silken ceremonial armor;30;1;—;0;0;30;20;8;PRG:UE
+Lamellar cuirass;15;2;4;0;5;30;20;8;PRG:UE
+Leather;10;2;6;0;10;30;20;15;PZO1110
+Rosewood armor;50;2;6;0;10;30;20;15;PPZO9410
+Hell Knight leather;30;3;5;-1;15;30;20;25;PRG:AG
+Hide shirt;20;3;4;-1;15;30;20;18;VBoL
+Leaf armor;500;3;5;0;15;30;20;20;PCS:ISWG
+Parade armor;25;3;5;-1;15;30;20;20;PPZO9410
+Spider-silk bodysuit;850;3;6;-1;10;30;20;4;PPZO94102
+Studded leather;25;3;5;-1;15;30;20;20;PZO1110
+Wooden;20;3;3;-1;15;30;20;25;PZO1115
+Chain shirt;100;4;4;-2;20;30;20;25;PZO1110
+Lamellar (leather);60;4;3;-2;20;30;20;25;PRG:UE
