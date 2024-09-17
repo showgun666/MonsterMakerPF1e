@@ -1,0 +1,31 @@
+Light Melee Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
+Axe, boarding;6;1d4;1d6;x3;—;3;P or S;—;PPZO94102
+Axe, throwing;8;1d4;1d6;x2;10;2;S;—;PZO1110
+Blade boot;25;1d3;1d4;x2;—;2;P;see text;PPZO9410
+Cat-o’-nine-tails;1;1d3;1d4;x2;—;1;S;disarm, nonlethal;PPZO94102
+Claw blades;305;1d3;1d4;x2;—;2;B or S;see text;PZO1121
+Dagger, dueling;12;1d3;1d4;19–20/×2;10;1;P or S;see text;PPZO94102
+Dogslicer;8;1d4;1d6;19-20/x2;—;1;S;fragile;PZO1121
+Hammer, light;1;1d3;1d4;x2;20;2;B;—;PZO1110
+Gladius;15;1d4;1d6;19-20/x2;—;3;P or S;performance;PZO1118
+Handaxe;6;1d4;1d6;x3;—;3;S;—;PZO1110
+Katar, tri-bladed;6;1d3;1d4;×4;—;2;P;—;PPZO94102
+Knife, switchblade;5;1d3;1d4;19-20/x2;10;1;P;—;PPZO9410
+Kobold tail attachment, long lash;15;1d4;1d6;x2;—;1;S;reach;PZO1121
+Kobold tail attachment, (pounder);1;1d6;1d8;x2;—;4;B;—;PZO1121
+Kobold tail attachment, (razored);3;1d6;1d8;19-20/x2;—;2;S;—;PZO1121
+Kobold tail attachment, (spiked);3;1d6;1d8;x3;—;2;P;—;PZO1121
+Kobold tail attachment, (sweeper);7;1d4;1d6;x2;—;3;B;trip;PZO1121
+Kukri;8;1d3;1d4;18–20/x2;—;2;S;—;PZO1110
+Machete;10;1d4;1d6;19-20/x2;—;2;S;—;PZO9468
+Pick, light;4;1d3;1d4;x4;—;3;P;—;PZO1110
+Ratfolk tailblade;11;1d2;1d3;x2;—;0.5;S;—;PZO1121
+Sap;1;1d4;1d6;x2;—;2;B;nonlethal;PZO1110
+Sea-knife;8;1d3;1d4;19-20/x2;—;1;S;—;PZO1121
+Shield, light;3/9;1d2;1d3;x2;—;special;B;—;PZO1110
+Spiked armor;special;1d4;1d6;x2;—;special;P;—;PZO1110
+Spiked shield, light;13/19;1d3;1d4;x2;—;special;P;—;PZO1110
+Starknife;24;1d3;1d4;x3;20;3;P;—;PZO1110
+Sword, butterfly (2);20;1d3;1d4;19-20/x2;—;1;S;Monk;PZO1110
+Sword, short;10;1d4;1d6;19-20/x2;—;2;P;—;PZO1110
+War razor;8;1d3;1d4;19-20/x2;—;1;S;—;PZO9226-Revised

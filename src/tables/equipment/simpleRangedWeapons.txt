@@ -1,0 +1,11 @@
+Ranged Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
+Blowgun;2;1;1d2;x2;20;1;P;—;PZO1110
+Crossbow, heavy;50;1d8;1d10;19-20/x2;120;8;P;—;PZO1110
+Crossbow, heavy (underwater);100;1d8;1d10;19-20/x2;120;8;P;—;PZO1121
+Crossbow, light;35;1d6;1d8;19-20/x2;80;4;P;—;PZO1110
+Crossbow, light (underwater);70;1d6;1d8;19-20/x2;80;4;P;—;PZO1121
+Dart;5;1d3;1d4;x2;20;0.5;P;—;PZO1110
+Javelin;1;1d4;1d6;x2;30;2;P;—;PZO1110
+Sling;—;1d3;1d4;x2;50;—;B;—;PZO1110
+Stingchuck;—;1d3;1d4;x2;10;9;B;see text;PPZO9410
+Stonebow;35;1d4;1d6;x2;50;4;B;—;PPC:RTT

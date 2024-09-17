@@ -1,0 +1,17 @@
+Armor;Cost;Armor/Shield Bonus;Maximum Dex Bonus;Armor Check Penalty;Arcane Spell Failure Chance;Speed 30;Speed 20;Weight;Source
+Banded mail;250;7;1;-6;35;202;152;35;PZO1110
+Field plate;1200;7;1;-5;35;202;152;50;PCS:ISWG
+Kusari gusoku;350;7;1;-7;35;202;152;45;PRG:UE
+Lamellar (iron);200;7;0;-7;40;202;152;50;PRG:UE
+Splint mail;200;7;0;-7;40;202;152;45;PZO1110
+Tatami-do;1000;7;3;-6;35;202;152;45;PRG:UE
+Fortress plate;2100;8;0;-7;40;20;15;75;PPZO94102
+Half-plate;600;8;0;-7;40;202;152;50;PZO1110
+Half-plate (agile);850;8;0;-7;40;20;15;55;PZO1115
+Hell Knight half-plate;850;8;0;-7;40;202;152;50;PRG:AG
+Lamellar (stone coat);500;8;0;-7;40;202;152;45;PRG:UE
+O-yoroi;1700;8;2;-6;35;202;152;45;PRG:UE
+Full plate;1500;9;1;-6;35;202;152;50;PZO1110
+Gray Maiden plate;1500;9;1;-6;35;202;152;50;PRG:AG
+Hell Knight plate;2000;9;1;-5;35;202;152;50;PCS:ISWG
+Stoneplate;1800;9;1;-6;35;152;102;75;PCS:ISWG

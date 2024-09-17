@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #pylint: disable=protected-access
-"Test module for Trie class"
+"Test module for Helpers Module"
 
 import unittest
 import src.helpers as helpers
@@ -15,4 +15,7 @@ class TestHelpers(unittest.TestCase):
 
         skills = helpers.generate_list_of_dictionaries(TEXT_FILE)
 
-        print(skills)
+    def test_generate_dictionary_list_from_nonexistent_file_raises_error(self):
+        "generating list of dictionaries from nonexistent file raises error"
+        with self.assertRaises(FileNotFoundError):
+            helpers.generate_list_of_dictionaries("nonexistent.txt")

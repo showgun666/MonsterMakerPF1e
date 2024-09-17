@@ -1,0 +1,18 @@
+Ranged Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
+Ammentum;—;1d4;1d6;x2;50;1;P;performance;PZO1118
+Chakram;1;1d6;1d8;x2;30;1;S;—;PZO1115
+Dart, jolting;100;1d3;1d4;x2;20;0.5;P;see text;PZO1121
+Hunga munga;4;1d4;1d6;x2;15;3;P;—;PPZO9410
+Hurlbat;8;1d4;1d6;x3;10;2;P and S;—;PPC:RTT
+Longbow;75;1d6;1d8;x3;100;3;P;—;PZO1110
+Longbow, composite (+0);100;1d6;1d8;x3;110;3;P;Strength (-);PZO1110
+Longbow, composite (+1);200;1d6;1d8;x3;110;3;P;Strength (12);PZO1110
+Longbow, composite (+2);300;1d6;1d8;x3;110;3;P;Strength (14);PZO1110
+Longbow, composite (+3);400;1d6;1d8;x3;110;3;P;Strength (16);PZO1110
+Longbow, composite (+4);500;1d6;1d8;x3;110;3;P;Strength (18);PZO1110
+Longbow, composite (+5);600;1d6;1d8;x3;110;3;P;Strength (20);PZO1110
+Pilum;5;1d6;1d8;x2;20;4;P;see text;PZO1115
+Shortbow;30;1d4;1d6;x3;60;2;P;—;PZO1110
+Shortbow, composite;75;1d4;1d6;x3;70;2;P;—;PZO1110
+Spear-sling;50;1d6;1d8;x3;see text;2;P;see text;PPC:RTT
+Throwing arrow cord;—;1d3;1d4;x2;60;—;P;—;PPC:RTT

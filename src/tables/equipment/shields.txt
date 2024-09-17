@@ -1,0 +1,15 @@
+Shield;Cost;Armor/Shield Bonus;Maximum Dex Bonus;Armor Check Penalty;Arcane Spell Failure Chance;Speed 30;Speed 20;Weight;Source
+Buckler;5;1;—;-1;5;—;—;5;PZO1110
+Klar;12;1;—;-1;5;—;—;6;PCS:ISWG
+Madu, leather;30;1;—;-2;5;—;—;5;PPZO9410
+Madu, steel;40;1;—;-2;5;—;—;6;PPZO9410
+Shield, light steel;9;1;—;-1;5;—;—;6;PZO1110
+Shield, light steel (quickdraw);59;1;—;-2;5;—;—;7;PZO1115
+Shield, light wooden;3;1;—;-1;5;—;—;5;PZO1110
+Shield, light wooden (quickdraw);53;1;—;-2;5;—;—;6;PZO1115
+Shield, heavy steel;20;2;—;-2;15;—;—;15;PZO1110
+Shield, heavy wooden;7;2;—;–2;15;—;—;10;PZO1110
+Shield, tower;30;43;2;-10;50;—;—;45;PZO1110
+Snarlshield, steel;50;2;—;-3;15;—;—;20;PPZO94102
+Snarlshield, wooden;37;2;—;-3;15;—;—;15;PPZO94102
+War-shield, dwarven;50;1;—;-1;20;—;—;8;PPZO94102

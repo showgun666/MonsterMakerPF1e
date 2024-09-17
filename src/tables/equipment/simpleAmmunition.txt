@@ -1,0 +1,9 @@
+Ammunition;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
+Bolt(s), crossbow (10);1;—;—;—;—;1;—;—;PZO1110
+Bolt(s), acid (1);40;—;—;—;—;0.1;—;see text;PAP15
+Bolt(s), Drow poison (1);100;—;—;—;—;0.1;—;see text;PAP15
+Bolt(s), fire (1);50;—;—;—;—;0.1;—;see text;PAP15
+Bullet(s), groaning (10);2;—;—;—;—;5;—;see text;PPZO9410
+Bullet(s), sling (10);1;—;—;—;—;5;—;—;PZO1110
+Bullet(s), smoke (10);100;—;—;—;—;5;—;see text;PCS
+Dart(s), blowgun (10);5;—;—;—;—;1;—;—;PZO1110
