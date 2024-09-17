@@ -10,33 +10,34 @@ MONSTER_STATISTICS_BY_CR = "src/tables/monsterStatisticsByCR.txt"
 
 class StatBlock:
     "stat block class"
-    def __init__(self):
+    def __init__(self, creature):
         # Introduction Stats
         self.name = "creatureName"
         self.short_description = "short description of creature"
-        self.cr = "1"
-        self.xp = "400"           # BASED OFF cr
+        self.cr = creature.get_cr()
+        self.xp = creature.get_xp_reward_by_cr(self.cr)           # BASED OFF cr
         self.race = "none"
         self.classes = []         # Contains information for stats to be used later
         self.alignment = "N"
-        self.size = "Medium"
-        self.type = "humanoid"
+        self.size = creature.size["Creature Size"]
+        self.type = "NotSet"
         self.subtypes = ""
-        self.initiative = "0"     # CALCULATED
+        self.initiative = creature.secondary_attributes.get_bonus(1)     # CALCULATED
         self.senses = []
         self.auras = []
 
         # Defense
-        self.ac = "10"            # CALCULATED
-        self.ac_touch = "10"      # CALCULATED
-        self.ac_flat_footed = "10"# CALCULATED
+        self.ac = creature.secondary_attributes.calculate_difficulty_class(1)            # CALCULATED
+        self.ac_touch = creature.secondary_attributes.calculate_difficulty_class(1)      # CALCULATED
+        self.ac_flat_footed = creature.secondary_attributes.calculate_difficulty_class(1)# CALCULATED
         self.ac_modifiers = "(armor size etc)"
-        self.hp = "10"            # CALCULATED
-        self.hd = "1"
-        self.hd_size = "8"
-        self.fortitude = "0"      # CALCULATED
-        self.reflex = "0"         # CALCULATED
-        self.will = "0"           # CALCULATED
+        self.hp, self.bonus_hp = creature.secondary_attributes.get_hit_points(2)            # CALCULATED
+        self.hd = str(len(creature.hit_dice.get_hit_dice()))
+        self.hd_size = "8" #NEED TO BE ABLE TO GENERATE THE HP STRING BASED ON HIT DICE
+        saves = creature.find_saves()
+        self.fortitude = saves[0]
+        self.reflex = saves[1]
+        self.will = saves[2]
         self.good_saves = []      # WILL BE USED FROM CLASS INSTEAD
         self.bad_saves = []
         self.defensive_abilities = []
@@ -47,7 +48,10 @@ class StatBlock:
         self.weaknesses = ["Fire"]
 
         # Offense
-        self.speed = ["30 ft."]
+        self.speed = []
+        for key, value in creature.secondary_attributes.speed.items():
+            if value:
+                self.speed.append(key + " " + str(value) + " ft.")
         self.attacks_melee = ['bite +25 (2d8+15)', '2 claws +25 (2d6+10)', '2 wings +23 (1d8+5)', 'tail slap +23 (2d6+15)'] # GENERATED WITH METHOD
         self.attacks_ranged = ['bow +25 (2d8+15)']
         self.space = "15 ft."
@@ -63,12 +67,13 @@ class StatBlock:
 
         # Statistics
         self.attributes = {
-            "Str": "10",
-            "Dex": "10",
-            "Con": "10",
-            "Int": "10",
-            "Wis": "10",
-            "Cha": "10"}
+            "str":creature.ability_scores.get_ability_score(0),
+            "dex":creature.ability_scores.get_ability_score(1),
+            "con":creature.ability_scores.get_ability_score(2),
+            "int":creature.ability_scores.get_ability_score(3),
+            "wis":creature.ability_scores.get_ability_score(4),
+            "cha":creature.ability_scores.get_ability_score(5),
+            }
 
         self.bab = "+17"
         self.cmb = "+29"
@@ -79,7 +84,7 @@ class StatBlock:
                       'Improved Vital Strike', 'Iron Will',
                       'Multiattack', 'Power Attack', 'Vital Strike']
 
-        self.skills = helper.generate_list_of_dictionaries(SKILL_LIST)
+        self.skills = creature.skills
 
         self.languages = ['Common', 'Draconic', 'Dwarven', 'Orc']
 
@@ -113,25 +118,25 @@ class StatBlock:
             stat_block_string += helper.comma_separated_string_from_list(self.subtypes)
             stat_block_string += ")"
         stat_block_string += "\n"
-        stat_block_string += "Init +" + self.initiative + "; "
+        stat_block_string += "Init +" + str(self.initiative) + "; "
         stat_block_string += "Senses "
         if self.senses:
             stat_block_string += helper.comma_separated_string_from_list(self.senses)
             stat_block_string += "; "
-        stat_block_string += "Perception +" + self.initiative
-        
+        stat_block_string += "Perception +" + str(self.skills.find_skill("Perception")["Modifier"])
+
         if self.auras:
             stat_block_string += helper.comma_separated_string_from_list(self.auras)
         stat_block_string += "\n"
 
         stat_block_string += "\nDEFENSE\n\n"
-        stat_block_string += "AC " + self.ac + ", "
-        stat_block_string += "touch " + self.ac_touch + ", "
-        stat_block_string += "flat-footed " + self.ac_flat_footed + "\n"
+        stat_block_string += "AC " + str(self.ac) + ", "
+        stat_block_string += "touch " + str(self.ac_touch) + ", "
+        stat_block_string += "flat-footed " + str(self.ac_flat_footed) + "\n"
 
-        stat_block_string += "hp " + self.hp + " "
-        stat_block_string += self.hd + "d" + self.hd_size + "+" + "\n"# NEED TO ADD HP MODIFIER HERE. CON OR CHA OR WHATEVER IT IS FOR THE CREATURE
-        stat_block_string += "Fort +" + self.fortitude + ", Ref +" + self.reflex + ", Will +" + self.will +"\n"
+        stat_block_string += "hp " + str(self.hp) + " ("
+        stat_block_string += str(self.hd) + "d" + str(self.hd_size) + "+" + str(self.bonus_hp) + ")\n"# NEED TO ADD HP MODIFIER HERE. CON OR CHA OR WHATEVER IT IS FOR THE CREATURE
+        stat_block_string += "Fort +" + str(self.fortitude) + ", Ref +" + str(self.reflex) + ", Will +" + str(self.will) +"\n"
 
         defenses = []
         if self.dr:
@@ -180,18 +185,18 @@ class StatBlock:
             for special_attack in self.special_attacks:
                 special_attack_string += special_attack + ", "
             stat_block_string += special_attack_string.rstrip(", ") + "\n"
-        
+
         if self.spell_like_abilities:
             spell_like_abilities_string = "Spell-like Abilities "
             spell_like_abilities_string += "(" + self.caster_level + ", " + self.concentration + ")\n"
             ### WE ADD MAGIC AND SPELLS LATER. NOT IMPORTANT FOR ALL CREATURES WITHOUT THEM SO NOT PART OF CORE CORE CORE
-        
+
         stat_block_string += "\nSTATISTICS\n\n"
         attributes_string = ""
         for attribute, score in self.attributes.items():
-            attributes_string += attribute + " " + score + ", "
+            attributes_string += attribute + " " + str(score) + ", "
         stat_block_string += attributes_string.rstrip(", ") + "\n"
-        
+
         stat_block_string += "BAB " + self.bab + "; CMB " + self.cmb + "; CMD " + self.cmd + "\n"
 
         if self.feats:
@@ -202,7 +207,7 @@ class StatBlock:
 
         ### NEED TO MAKE SOMETHING MORE SOPHISTICATED FOR SKILL BONUSES LATER ###
         trained_skills_list = []
-        for i in self.skills:
+        for i in self.skills._skills:
             if int(i["Skill Ranks"]) > 0:
                 trained_skills_list.append(i["Skill"] + " +" + i["Skill Ranks"])
         if trained_skills_list:
