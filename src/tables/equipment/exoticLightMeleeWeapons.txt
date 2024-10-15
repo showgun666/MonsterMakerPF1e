@@ -1,0 +1,28 @@
+Light Melee Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
+Aklys;5;1d4;1d6;x2;20;2;B;performance, trip;PZO1118
+Axe-Gauntlet, Dwarven Light;16;1d4;1d6;x3;—;5;S;blocking, disarm;PPC:HftF
+Axe, knuckle;9;1d4;1d6;x3;—;2;S;monk, performance;PZO1118
+Barbazu beard;25;1d3;1d4;x2;—;5 lbs;S;see text;PPC:Devils
+Battle poi;5;1d3;1d4 (fire);x2;—;2;fire;—;PPZO9410
+Dagger, swordbreaker;10;1d3;1d4;x2;—;3;S;disarm, sunder;PZO1115
+Flying Talon;15;1d3;1d4;x2;10;5;P;disarm, trip;PPZO94102
+Gnome pincher;10;1d4;1d6;x2;—;2;B;disarm, see text;PZO9468
+Halfling rope-shot;1;1d4;1d6;x2;—;1;B;disarm;PZO9468
+Helmet, dwarven boulder;20;1d3;1d4;x2;—;10;B;see text;PZO1121
+Kama;2;1d4;1d6;x2;—;2;S;monk, trip;PZO1110
+Knife, butterfly;5;1d3;1d4;19-20/x2;—;1;P or S;—;PPZO9410
+Knife, deer horn;10;1d3;1d4;x3;20;3;P;blocking, monk;PZO9468
+Maulaxe, dwarven;25;1d4;1d6;x3;10;5;B or S;—;PPZO9410
+Nunchaku;2;1d4;1d6;x2;—;2;B;disarm, monk;PZO1110
+Quadrens;8;1d4;1d6;19-20/x2;—;2;P;performance;PZO1118
+Razor, drow;25;1d3;1d4;18–20/×2;—;2;S;see text;PPZO94102
+Rope gauntlet;2;1d3;1d4;x2;—;2;B (or S);—;PPZO9410
+Sabre, sawtoothAA1;35;1d6;1d8;19-20/x2;—;2;S;—;PPZO9410
+Sai;1;1d3;1d4;x2;—;1;B;disarm, monk;PZO1110
+Sanpkhang;60;1d3;1d4;19–20/×2;—;1;P or S;monk, see text;PPZO94102
+Siangham;3;1d4;1d6;x2;—;1;P;monk;PZO1110
+Sica;10;1d4;1d6;x2;—;2;S;performance;PZO1118
+Thorn bracer;30;1d4;1d6;x2;—;3;P;—;PCS
+War-shield, dwarven;50;1d4;1d6;×2;—;8;P or S;see text;PPZO94102
+Waveblade;5;1d4;1d6;18–20/×2;—;2;P or S;monk, see text;PPZO94102
+Whip, scorpion;5;1d3;1d4;x2;—;3;S;disarm, performance, reach, trip;PZO1118
