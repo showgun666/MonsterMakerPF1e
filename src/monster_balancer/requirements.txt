@@ -1,0 +1,86 @@
+THIS SPRINT
+1 Access to the tables for monster creation.
+
+
+2 Determine based on integer values what expected CR value a given statistic is closest to.
+    CR 10 AC == 24
+    Given AC == 20
+    Determined CR for AC == 7.0
+    
+    Given AC == 26
+    Determined CR for AC == 11.5
+
+    previous value + next value + given value / 3 == expected value
+
+    The above works for:
+        HP          # Integer
+        AC          # Integer
+        Good save   # Integer
+        Poor save   # Integer
+        Primary DC
+
+3 Determine CR value for the following:
+        Attack (High or low based on flag, otherwise same as #2)
+
+        Damage Average + high and low to see maximum and minimum values for that CR, requires #5
+
+        Secondary DC (THIS IS THE MINIMUM VALUE) # Needs minimum DC value tagged as used for offense
+
+4 Need to determine Damage:
+    Need high value and low value to see the outer limits for what is considered that CR value for dmg.
+    Average value to have a static value to aim for. This can actually be a boolean, so long as final value is rounded to an integer.
+
+5 overlap handling for damage values.
+    Sometimes the high value for CR is higher than the low value for the CR++.
+    Damage CR 2
+        Low == 7
+        High == 10
+        Average == 17/2 == 8.5
+    Damage CR 3
+        Low == 9
+        High == 13
+        Average == 22/2 == 11
+    
+    get average values
+    find average value between the average values
+    average of averages == 19.5/2 == 9.75
+
+    use this value for determining high and low instead.
+    If the value goes above or below this value, also check if it is still within the original high and low, which would still be considered within reason of this CR.
+
+6 Check if AC values is within 5 of target CR AC.
+
+7 Attributes that we Need
+    Target CR (The CR that we are aiming for and originating our scale from)
+    Suggested CR (The CR that the app determines that the creature probably has based on values for defense and offense)
+    Offensive CR (The calculated offensive CR of creature)
+    Defensive CR (The calculated defensive CR of creature)
+
+    HP
+    AC
+    Saves
+
+    Damage
+    Attack
+    DC
+
+    Toggle for Attack based or DC based offense
+
+8 Determine Offensive CR
+
+9 Determine Defensive CR
+
+10 Determine suggested CR
+    This should be done based off of determined offensive and defensive CR.
+
+    I personally believe if a CR is very close by decimals to a different CR than the whole number, then it should be rounded in that direction
+    but within .26 and .74 or something it might be better to round down for high offense / low defense and round up for vice versa
+
+BONUS
+    Primary attack Ranged Toggle (Flying + ranged combo at lower levels is dangerous af and might be cause for +1CR bump)
+    Flying Toggle
+    Incorporeal Toggle (Incorporeal at low level is dangerous af and might be grounds for doubling hp values for calc)
+    Swarm toggle (Swarms at low level is dangerous af and might be grounds for doubling hp values for calc)
+
+NEXT SPRINT
+    Monster tiers
