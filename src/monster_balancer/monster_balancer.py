@@ -34,7 +34,6 @@ def determine_cr_float(statistic, given_value):
 
     This function will return the determined CR value depending on given_value 
     """
-
     statistic_column = get_statistic_column(statistic)
     # Iterate through and find the right row in column.
     index = 0
@@ -61,3 +60,47 @@ def determine_cr_float(statistic, given_value):
         index += 1
     ### ERROR HANDLING HERE?
     return round(return_value, 2)
+
+def armor_class_deviated(armor_class, target_cr):
+    """
+    Checks if armor class is deviating by 6 or more from target cr AC.
+    Returns True if armor class deviates too much.
+    Returns HIGH and LOW respectively as a string to determine in what direction the AC is differing.
+    Returns MID if the AC is within the confines of what is deemed reasonable by the system.
+    """
+    ac_column = get_statistic_column("Armor Class")
+    origin_ac = ac_column[int(target_cr)]
+
+    if origin_ac > int(armor_class) + 5:
+        return -1
+    elif origin_ac < int(armor_class) - 5:
+        return 1
+    else:
+        return 0
+
+def get_damage_range_average_column():
+    """
+    returns a new damage column that contains average values.
+    float values.
+    """
+    average_damage_column = []
+    for row in MONSTER_STATISTICS:
+        average_damage_column.append((row["Average Damage High"] + row["Average Damage Low"]) / 2)
+
+    return average_damage_column
+
+def get_attack_column(primary_weapon_user):
+    """
+    retrieves the attack column for high attack if true and low attack if false
+    """
+    if primary_weapon_user:
+        return get_statistic_column("High Attack")
+    return get_statistic_column("Low Attack")
+
+def get_dc_column(primary_ability_user):
+    """
+    retrieves the DC column for primary ability DC if true and secondary DC if false
+    """
+    if primary_ability_user:
+        return get_statistic_column("Primary Ability DC")
+    return get_statistic_column("Secondary Ability DC")
