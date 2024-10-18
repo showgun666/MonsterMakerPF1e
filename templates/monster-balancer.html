@@ -1,0 +1,105 @@
+{% include 'header.html' %}
+
+<div class="container" role="main">
+    <div class="page-header">
+        <h1>Monster Balancer</h1>
+    </div>
+    <div>
+        {% include 'sliders/target-cr.html' %}
+        {% include 'sliders/armor-class.html' %}
+        {% include 'sliders/hit-points.html' %}
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const crSlider = document.getElementById('crSlider');
+        const crSliderValueDisplay = document.getElementById('crSliderValue');
+
+        const acSlider = document.getElementById('acSlider');
+        const acSliderValueDisplay = document.getElementById('acSliderValue');
+        const average_ac_for_cr = document.getElementById('average_ac_for_cr');
+        const messageDisplay = document.getElementById('acDeviationMessage');
+    
+        const hpSlider = document.getElementById('hpSlider');
+        const hpSliderValueDisplay = document.getElementById('hpSliderValue');
+
+        function updateSliderCR() {
+            const crSliderValue = crSlider.value;
+            crSliderValueDisplay.textContent = crSliderValue;
+
+
+            const requestCR = fetch('/update-monster-balancer-cr', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ crSliderValue: crSliderValue})
+            })
+            .then(response => response.json())
+            .then((crData) => {
+                average_ac_for_cr.textContent = crData.average_ac_for_cr;
+
+                if (crData.average_ac_for_cr !== undefined) {
+
+                    if (crData.ac_deviation < 0) {
+                        messageDisplay.textContent = "Observe that the AC of the creature is very low for the target CR! If a creature's AC deviates by more than 5 from the target AC, then the CR of the creature will change.";
+                    } else if (crData.ac_deviation > 0) {
+                        messageDisplay.textContent = "Observe that the AC of the creature is very high for the target CR! If a creature's AC deviates by more than 5 from the target AC, then the CR of the creature will change.";
+                    } else {
+                        messageDisplay.textContent = ""; // Clear the message if deviation is 0
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+        function updateSliders() {
+            const acSliderValue = acSlider.value;
+            acSliderValueDisplay.textContent = acSliderValue;
+
+            const hpSliderValue = hpSlider.value;
+            hpSliderValueDisplay.textContent = hpSliderValue;
+
+            const requestAC = fetch('/update-monster-balancer-ac', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ acSliderValue: acSliderValue})
+            });
+
+            const requestHP = fetch('/update-monster-balancer-hp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ hpSliderValue: hpSliderValue })
+            });
+
+            Promise.all([requestAC, requestHP])
+                .then(responses => Promise.all(responses.map(response => response.json())))
+                .then(([acData, hpData]) => {
+
+                    if (acData !== undefined) {
+
+                        if (acData.ac_deviation < 0) {
+                            messageDisplay.textContent = "Observe that the AC of the creature is very low for the target CR! If a creature's AC deviates by more than 5 from the target AC, then the CR of the creature will change.";
+                        } else if (acData.ac_deviation > 0) {
+                            messageDisplay.textContent = "Observe that the AC of the creature is very high for the target CR! If a creature's AC deviates by more than 5 from the target AC, then the CR of the creature will change.";
+                        } else {
+                            messageDisplay.textContent = ""; // Clear the message if deviation is 0
+                        }
+                    }
+
+                    // Update the content based on the CR data if needed
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        crSlider.addEventListener('input', updateSliderCR);
+        acSlider.addEventListener('input', updateSliders);
+        hpSlider.addEventListener('input', updateSliders);
+    });
+</script>
+
+{% include 'footer.html' %}

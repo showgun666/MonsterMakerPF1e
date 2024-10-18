@@ -1,0 +1,10 @@
+<form method="POST" action="{{ url_for('monster_balancer') }}">
+    <div>
+        <h3>Hit Points</h3>
+        <input type="range" id="hpSlider" min="{{ min_hp }}" max="{{ max_hp }}" value="{{ current_hp }}">
+        <p>Slider Value: <span id="hpSliderValue">{{ current_hp }}</span></p>
+        <p>Expected CR for current Hit Points: <span id="average_cr_for_hp">{{ average_cr_for_hp }}</span></p>
+        <p>Average Hit Points for target CR: <span id="average_hp_for_cr">{{ average_hp_for_cr }}</span></p>
+    </div>
+
+</form>
