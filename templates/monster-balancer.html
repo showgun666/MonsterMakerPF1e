@@ -19,10 +19,13 @@
         const acSlider = document.getElementById('acSlider');
         const acSliderValueDisplay = document.getElementById('acSliderValue');
         const average_ac_for_cr = document.getElementById('average_ac_for_cr');
+        const cr_value_for_ac = document.getElementById('crExpectedValue')
         const messageDisplay = document.getElementById('acDeviationMessage');
     
         const hpSlider = document.getElementById('hpSlider');
         const hpSliderValueDisplay = document.getElementById('hpSliderValue');
+        const expected_cr_for_hp = document.getElementById('expected_cr_for_hp')
+        const expected_hp_for_cr = document.getElementById('expected_hp_for_cr')
 
         function updateSliderCR() {
             const crSliderValue = crSlider.value;
@@ -39,6 +42,7 @@
             .then(response => response.json())
             .then((crData) => {
                 average_ac_for_cr.textContent = crData.average_ac_for_cr;
+                expected_hp_for_cr.textContent = crData.expected_hp_for_cr;
 
                 if (crData.average_ac_for_cr !== undefined) {
 
@@ -79,6 +83,8 @@
             Promise.all([requestAC, requestHP])
                 .then(responses => Promise.all(responses.map(response => response.json())))
                 .then(([acData, hpData]) => {
+                    expected_cr_for_hp.textContent = hpData.expected_cr_for_hp;
+                    cr_value_for_ac.textContent = acData.cr_value_for_ac;
 
                     if (acData !== undefined) {
 

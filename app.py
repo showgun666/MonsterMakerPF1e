@@ -55,6 +55,9 @@ def monster_balancer():
         max_ac = max_ac,
         min_hp = min_hp,
         max_hp = max_hp,
+        expected_cr_for_hp = determine_cr_float("Hit Points", int(session["hp"])),
+        expected_hp_for_cr = get_statistic_column("Hit Points")[int(session["cr"])],
+
         )
 
 @app.route('/update-monster-balancer-ac', methods=['POST'])
@@ -89,13 +92,11 @@ def update_content_monster_balancer_cr():
     average_hp_for_cr = get_statistic_column("Hit Points")[int(session["cr"])]
 
     session["ac_deviation"] = armor_class_deviated(session["ac"], session["cr"])
-    session["cr_value_for_ac"] = determine_cr_float("Armor Class", int(session["ac"]))
 
     return jsonify(
         average_ac_for_cr = average_ac_for_cr,
         ac_deviation = session["ac_deviation"],
-        cr_value_for_ac = session["cr_value_for_ac"],
-        average_hp_for_cr = average_hp_for_cr
+        expected_hp_for_cr = average_hp_for_cr,
         )
 
 @app.errorhandler(404)
