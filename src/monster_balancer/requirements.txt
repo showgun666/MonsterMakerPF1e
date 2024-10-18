@@ -1,8 +1,8 @@
 THIS SPRINT
-1 Access to the tables for monster creation.
+# 1 Access to the tables for monster creation.
 
 
-2 Determine based on integer values what expected CR value a given statistic is closest to.
+# 2 Determine based on integer values what expected CR value a given statistic is closest to.
     CR 10 AC == 24
     Given AC == 20
     Determined CR for AC == 7.0
@@ -20,13 +20,13 @@ THIS SPRINT
         Primary DC
 
 3 Determine CR value for the following:
-        Attack (High or low based on flag, otherwise same as #2)
+        # Attack (High or low based on flag, otherwise same as #2)
 
         Damage Average + high and low to see maximum and minimum values for that CR, requires #5
 
         Secondary DC (THIS IS THE MINIMUM VALUE) # Needs minimum DC value tagged as used for offense
 
-4 Need to determine Damage:
+# 4 Need to determine Damage:
     Need high value and low value to see the outer limits for what is considered that CR value for dmg.
     Average value to have a static value to aim for. This can actually be a boolean, so long as final value is rounded to an integer.
 
@@ -48,7 +48,7 @@ THIS SPRINT
     use this value for determining high and low instead.
     If the value goes above or below this value, also check if it is still within the original high and low, which would still be considered within reason of this CR.
 
-6 Check if AC values is within 5 of target CR AC.
+# 6 Check if AC values is within 5 of target CR AC.
 
 7 Attributes that we Need
     Target CR (The CR that we are aiming for and originating our scale from)
@@ -82,5 +82,6 @@ BONUS
     Incorporeal Toggle (Incorporeal at low level is dangerous af and might be grounds for doubling hp values for calc)
     Swarm toggle (Swarms at low level is dangerous af and might be grounds for doubling hp values for calc)
 
-NEXT SPRINT
+FUTURE SPRINTS
     Monster tiers
+    Monster stats below CR 1/2
