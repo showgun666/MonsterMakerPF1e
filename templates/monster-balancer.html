@@ -32,6 +32,7 @@
         const fortSlider = document.getElementById('fortitudeSlider');
         const fortSliderValueDisplay = document.getElementById('fortitudeSliderValue');
         const expected_cr_for_fort = document.getElementById('expected_cr_for_fortitude')
+        const isGoodSaveCheckedFort = document.getElementById('fortitude_is_good_save');
 
         const refSlider = document.getElementById('reflexSlider');
         const refSliderValueDisplay = document.getElementById('reflexSliderValue');
@@ -41,6 +42,7 @@
         const willSlider = document.getElementById('willSlider');
         const willSliderValueDisplay = document.getElementById('willSliderValue');
         const expected_cr_for_will = document.getElementById('expected_cr_for_will')
+        const isGoodSaveCheckedWill = document.getElementById('will_is_good_save');
 
         function updateSliderCR() {
             const crSliderValue = crSlider.value;
@@ -119,49 +121,64 @@
             })
         }
 
-        function updateSlidersRef() {
-            const refSliderValue = refSlider.value;
-            const isGoodSaveCheckedRefChecked = document.getElementById('reflex_is_good_save').checked;
-            refSliderValueDisplay.textContent = refSliderValue;
-            fetch('/update-monster-balancer-saves-ref', {
+        function updateSlidersSave (saveType) {
+            const slider = document.getElementById(`${saveType}Slider`);
+            const sliderValueDisplay = document.getElementById(`${saveType}SliderValue`);
+            const isGoodSaveChecked = document.getElementById(`${saveType}_is_good_save`).checked;
+            const expectedCrForSave = document.getElementById(`expected_cr_for_${saveType}`);
+
+            const sliderValue = slider.value;
+            sliderValueDisplay.textContent = sliderValue
+            fetch('/update-monster-balancer-saves', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    refSliderValue: refSliderValue,
-                    isGoodSave: isGoodSaveCheckedRefChecked,
+                    save: saveType,
+                    sliderValue: sliderValue,
+                    isGoodSave: isGoodSaveChecked,
                 })
             })
             .then(response => response.json())
             .then(saveData => {
                 console.log(saveData);
-                expected_cr_for_reflex.textContent = saveData.expected_cr_for_reflex;
+                expectedCrForSave.textContent = saveData.expected_cr_for_save;
             })
         }
-        function updateIsGoodSaveRef() {
-            const isGoodSaveCheckedRefChecked = document.getElementById('reflex_is_good_save').checked;
-            const refSliderValue = refSlider.value;
-            fetch('/update-monster-balancer-saves-checked-box-ref', {
+        function updateIsGoodSave(saveType) {
+            const isGoodSaveChecked = document.getElementById(`${saveType}_is_good_save`).checked;
+            const slider = document.getElementById(`${saveType}Slider`);
+            const sliderValueDisplay = document.getElementById(`${saveType}SliderValue`);
+            const averageSaveForCr = document.getElementById(`average_save_for_cr_${saveType}`);
+            const expectedCrForSave = document.getElementById(`expected_cr_for_${saveType}`);
+
+            const sliderValue = slider.value;
+            console.log({
+                save: saveType,
+                isGoodSave: isGoodSaveChecked,
+                sliderValue: sliderValue,
+            });
+            fetch('/update-monster-balancer-saves-checked-box', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    isGoodSave: isGoodSaveCheckedRefChecked,
-                    refSliderValue: refSliderValue,
+                    save: saveType,
+                    isGoodSave: isGoodSaveChecked,
+                    sliderValue: sliderValue,
                 })
             })
             .then(response => response.json())
             .then(saveData => {
                 console.log(saveData);
-                const refSlider = document.getElementById('reflexSlider');
-                refSlider.min = saveData.min_save;
-                refSlider.max = saveData.max_save;
-                expected_cr_for_reflex.textContent = saveData.expected_cr_for_reflex;
-                average_save_for_cr_reflex.textContent = saveData.average_save_for_cr_reflex;
-                refSliderValueDisplay.textContent = saveData.ref_slider_value;
-                refSlider.value = saveData.ref_slider_value;
+                slider.min = saveData.min_save;
+                slider.max = saveData.max_save;
+                expectedCrForSave.textContent = saveData.expected_cr_for_save;
+                averageSaveForCr.textContent = saveData.average_save_for_cr;
+                sliderValueDisplay.textContent = saveData.slider_value;
+                slider.value = saveData.slider_value;
             })
         }
         function updateSlidersFort() {
@@ -202,10 +219,13 @@
         crSlider.addEventListener('input', updateSliderCR);
         acSlider.addEventListener('input', updateSlidersAC);
         hpSlider.addEventListener('input', updateSlidersHP);
-        refSlider.addEventListener('input', updateSlidersRef);
-        fortSlider.addEventListener('input', updateSlidersFort);
-        willSlider.addEventListener('input', updateSlidersWill);
-        isGoodSaveCheckedRef.addEventListener('input', updateIsGoodSaveRef);
+        refSlider.addEventListener('input', () => updateSlidersSave('reflex'));
+        fortSlider.addEventListener('input', () => updateSlidersSave('fortitude'));
+        willSlider.addEventListener('input', () => updateSlidersSave('will'));
+        isGoodSaveCheckedRef.addEventListener('change', () => updateIsGoodSave('reflex'));
+        isGoodSaveCheckedFort.addEventListener('change', () => updateIsGoodSave('fortitude'));
+        isGoodSaveCheckedWill.addEventListener('change', () => updateIsGoodSave('will'));
+        
     });
 </script>
 
