@@ -37,6 +37,7 @@ def determine_cr_float(statistic, given_value):
     statistic_column = get_statistic_column(statistic)
     # Iterate through and find the right row in column.
     index = 0
+    given_value = int(given_value)
     for value in statistic_column:
         # If value is exactly same as an average value entry in the table, then simply return that CR value.
         # 0 means CR1/2
