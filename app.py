@@ -17,9 +17,6 @@ ORIGIN_INDEX = 1
 @app.route("/")
 def main():
     """ Main route """
-    session["ac"] = get_statistic_column("Armor Class")[ORIGIN_INDEX]
-    session["cr"] = ORIGIN_INDEX
-    session["hp"] = get_statistic_column("Hit Points")[ORIGIN_INDEX]
     return render_template("index.html")
 
 @app.route("/settings")
@@ -35,6 +32,9 @@ def creature_designer():
 @app.route("/monster-balancer")
 def monster_balancer():
     """ Monster balancer route """
+    session["ac"] = get_statistic_column("Armor Class")[ORIGIN_INDEX]
+    session["cr"] = ORIGIN_INDEX
+    session["hp"] = get_statistic_column("Hit Points")[ORIGIN_INDEX]
     session["average_ac_for_cr"] = get_statistic_column("Armor Class")[int(session["cr"])]
     session["ac_deviation"] = armor_class_deviated(session["ac"], session["cr"])
     session["cr_value_for_ac"] = determine_cr_float("Armor Class", int(session["ac"]))
@@ -65,16 +65,39 @@ def monster_balancer():
 
     average_good_save_for_cr = get_statistic_column("Good Save")[int(session["cr"])]
     average_poor_save_for_cr = get_statistic_column("Poor Save")[int(session["cr"])]
-    expected_cr_for_good_save = determine_cr_float("Good Save", min_good_save)
-    expected_cr_for_poor_save = determine_cr_float("Poor Save", min_poor_save)
 
-    if not session.get("fort", None):
-        session["fort"] = current_saves[saves[0]]
-    if not session.get("ref", None):
-        session["ref"] = current_saves[saves[1]]
+    if not session.get("fortitude", None):
+        session["fortitude"] = current_saves[saves[0]]
+    if not session.get("reflex", None):
+        session["reflex"] = current_saves[saves[1]]
     if not session.get("will", None):
         session["will"] = current_saves[saves[2]]
+    current_saves = {
+        "fortitude": session["fortitude"],
+        "reflex": session["reflex"],
+        "will": session["will"],
+    }
+    expected_cr_for_save = {
+        "fortitude": determine_cr_float("Poor Save", session["fortitude"]),
+        "reflex": determine_cr_float("Poor Save", session["reflex"]),
+        "will": determine_cr_float("Poor Save", session["will"]),
+    }
 
+    if not session.get("attack", None):
+        session["attack"] = get_statistic_column("High Attack")[0]
+    min_attack = get_statistic_column("Low Attack")[0]
+    max_attack = get_statistic_column("High Attack")[-1]
+
+    if session.get('average_attack_for_cr', None):
+        average_attack_for_cr = session['average_attack_for_cr']
+    else:
+        average_attack_for_cr = get_statistic_column("Low Attack")[int(session["cr"])]
+
+    if session.get('expected_cr_for_attack', None):
+        expected_cr_for_attack = session['expected_cr_for_attack']
+    else:
+        expected_cr_for_attack = determine_cr_float("Low Attack", int(session["attack"]))
+    
     return render_template(
         "monster-balancer.html",
         current_ac = session["ac"],
@@ -82,6 +105,7 @@ def monster_balancer():
         current_hp = session["hp"],
         average_ac_for_cr = session["average_ac_for_cr"],
         ac_deviation = session["ac_deviation"],
+        current_saves=current_saves,
         min_ac = min_ac,
         max_ac = max_ac,
         min_hp = min_hp,
@@ -94,69 +118,97 @@ def monster_balancer():
         max_good_save=max_good_save,
         min_poor_save=min_poor_save,
         max_poor_save=max_poor_save,
-        current_saves=current_saves,
         average_good_save_for_cr=average_good_save_for_cr,
         average_poor_save_for_cr=average_poor_save_for_cr,
-        expected_cr_for_good_save=expected_cr_for_good_save,
-        expected_cr_for_poor_save=expected_cr_for_poor_save,
+        expected_cr_for_save=expected_cr_for_save,
+        current_attack=session["attack"],
+        min_attack=min_attack,
+        max_attack=max_attack,
+        average_attack_for_cr=average_attack_for_cr,
+        expected_cr_for_attack=expected_cr_for_attack,
         )
 
-@app.route('/update-monster-balancer-saves-ref', methods=['POST'])
-def update_content_monster_balancer_saves_ref():
+@app.route('/update-monster-balancer-saves', methods=['POST'])
+def update_content_monster_balancer_saves():
     """ Saves Update route for monster balancer"""
-    session["ref"] = request.json['refSliderValue']
+    save = request.json['save']
+    session[save] = request.json['sliderValue']
     if request.json['isGoodSave']:
-        expected_cr_for_reflex = determine_cr_float("Good Save", int(session["ref"]))
+        expected_cr_for_save = determine_cr_float("Good Save", int(session[save]))
     else:
-        expected_cr_for_reflex = determine_cr_float("Poor Save", int(session["ref"]))
+        expected_cr_for_save = determine_cr_float("Poor Save", int(session[save]))
 
     return jsonify(
-        expected_cr_for_reflex=expected_cr_for_reflex,
+        expected_cr_for_save=expected_cr_for_save,
                    )
-@app.route('/update-monster-balancer-saves-checked-box-ref', methods=['POST'])
-def update_content_monster_balancer_saves_checked_box_ref():
+
+@app.route('/update-monster-balancer-saves-checked-box', methods=['POST'])
+def update_content_monster_balancer_saves_checked_box():
     """ Saves Update route for monster balancer"""
-    ref_slider_value = int(request.json['refSliderValue'])
+    slider_value = int(request.json['sliderValue'])
+    save = request.json['save']
 
     if request.json['isGoodSave']:
         min_save = get_statistic_column("Good Save")[0]
         max_save = get_statistic_column("Good Save")[-1]
-        ref_slider_value = max(ref_slider_value, min_save)
-        expected_cr_for_reflex = determine_cr_float("Good Save", ref_slider_value)
-        average_save_for_cr_reflex = get_statistic_column("Good Save")[int(session["cr"])]
+        slider_value = max(slider_value, min_save)
+        expected_cr_for_save = determine_cr_float("Good Save", slider_value)
+        average_save_for_cr = get_statistic_column("Good Save")[int(session["cr"])]
     else:
         min_save = get_statistic_column("Poor Save")[0]
         max_save = get_statistic_column("Poor Save")[-1]
-        ref_slider_value = min(ref_slider_value, max_save)
-        expected_cr_for_reflex = determine_cr_float("Poor Save", ref_slider_value)
-        average_save_for_cr_reflex = get_statistic_column("Poor Save")[int(session["cr"])]
+        slider_value = min(slider_value, max_save)
+        expected_cr_for_save = determine_cr_float("Poor Save", slider_value)
+        average_save_for_cr = get_statistic_column("Poor Save")[int(session["cr"])]
 
-    session["ref"] = ref_slider_value
+    session[save] = slider_value
     return jsonify(
         min_save=min_save,
         max_save=max_save,
-        expected_cr_for_reflex=expected_cr_for_reflex,
-        average_save_for_cr_reflex=average_save_for_cr_reflex,
-        ref_slider_value=ref_slider_value,
+        expected_cr_for_save=expected_cr_for_save,
+        average_save_for_cr=average_save_for_cr,
+        slider_value=slider_value,
                    )
 
-@app.route('/update-monster-balancer-saves-fort', methods=['POST'])
-def update_content_monster_balancer_saves_fort():
-    """ Saves Update route for monster balancer"""
-    session["fort"] = request.json['fortSliderValue']
+@app.route('/update-monster-balancer-attack', methods=['POST'])
+def update_content_monster_balancer_attack():
+    """ Attack Update route for monster balancer"""
+    session["attack"] = request.json['sliderValue']
+    if request.json['primarilyAttacker']:
+        expected_cr_for_attack = determine_cr_float("High Attack", int(session["attack"]))
+    else:
+        expected_cr_for_attack = determine_cr_float("Low Attack", int(session["attack"]))
+    session["expected_cr_for_attack"] = expected_cr_for_attack
 
     return jsonify(
-        expected_cr_for_fort_good=determine_cr_float("Good Save", int(session["fort"])),
-        expected_cr_for_fort_poor=determine_cr_float("Poor Save", int(session["fort"])),
+        expected_cr_for_attack=expected_cr_for_attack,
                    )
-@app.route('/update-monster-balancer-saves-will', methods=['POST'])
-def update_content_monster_balancer_saves_will():
-    """ Saves Update route for monster balancer"""
-    session["will"] = request.json['willSliderValue']
 
+@app.route('/update-monster-balancer-attack-checked-box', methods=['POST'])
+def update_content_monster_balancer_attack_checked_box():
+    """ Attacks Update checked box route for monster balancer"""
+    slider_value = int(request.json['sliderValue'])
+
+    if request.json['primarilyAttacker']:
+        min_value = get_statistic_column("High Attack")[0]
+        max_value = get_statistic_column("High Attack")[-1]
+        slider_value = max(slider_value, min_value)
+        expected_cr_for_value = determine_cr_float("High Attack", slider_value)
+        average_value_for_cr = get_statistic_column("High Attack")[int(session["cr"])]
+    else:
+        min_value = get_statistic_column("Low Attack")[0]
+        max_value = get_statistic_column("Low Attack")[-1]
+        slider_value = min(slider_value, max_value)
+        expected_cr_for_value = determine_cr_float("Low Attack", slider_value)
+        average_value_for_cr = get_statistic_column("Low Attack")[int(session["cr"])]
+
+    session["attack"] = slider_value
     return jsonify(
-        expected_cr_for_will_good=determine_cr_float("Good Save", int(session["will"])),
-        expected_cr_for_will_poor=determine_cr_float("Poor Save", int(session["will"])),
+        min_value=min_value,
+        max_value=max_value,
+        expected_cr_for_value=expected_cr_for_value,
+        average_value_for_cr=average_value_for_cr,
+        slider_value=slider_value,
                    )
 
 @app.route('/update-monster-balancer-ac', methods=['POST'])
@@ -196,12 +248,28 @@ def update_content_monster_balancer_cr():
         average_save_for_cr_reflex = get_statistic_column("Good Save")[int(session["cr"])]
     else:
         average_save_for_cr_reflex = get_statistic_column("Poor Save")[int(session["cr"])]
-    
+    if request.json['isGoodSaveFort']:
+        average_save_for_cr_fortitude = get_statistic_column("Good Save")[int(session["cr"])]
+    else:
+        average_save_for_cr_fortitude = get_statistic_column("Poor Save")[int(session["cr"])]
+    if request.json['isGoodSaveWill']:
+        average_save_for_cr_will = get_statistic_column("Good Save")[int(session["cr"])]
+    else:
+        average_save_for_cr_will = get_statistic_column("Poor Save")[int(session["cr"])]
+
+    if request.json['isPrimarilyAttacker']:
+        average_attack_for_cr = get_statistic_column("High Attack")[int(session["cr"])]
+    else:
+        average_attack_for_cr = get_statistic_column("Low Attack")[int(session["cr"])]
+    session['average_attack_for_cr'] = average_attack_for_cr
     return jsonify(
         average_ac_for_cr = average_ac_for_cr,
         ac_deviation = session["ac_deviation"],
         expected_hp_for_cr = average_hp_for_cr,
         average_save_for_cr_reflex=average_save_for_cr_reflex,
+        average_save_for_cr_fortitude=average_save_for_cr_fortitude,
+        average_save_for_cr_will=average_save_for_cr_will,
+        average_attack_for_cr=average_attack_for_cr,
         )
 
 @app.errorhandler(404)

@@ -9,6 +9,7 @@
         {% include 'sliders/armor-class.html' %}
         {% include 'sliders/hit-points.html' %}
         {% include 'sliders/save-sliders.html' %}
+        {% include 'sliders/attack.html' %}
     </div>
 </div>
 
@@ -18,6 +19,7 @@
         const crSliderValueDisplay = document.getElementById('crSliderValue');
         const average_ac_for_cr = document.getElementById('average_ac_for_cr');
         const average_save_for_cr_reflex = document.getElementById('average_save_for_cr_reflex');
+        const average_attack_for_cr = document.getElementById('average_attack_for_cr');
         const cr_value_for_ac = document.getElementById('crExpectedValue')
         const messageDisplay = document.getElementById('acDeviationMessage');
 
@@ -43,11 +45,19 @@
         const willSliderValueDisplay = document.getElementById('willSliderValue');
         const expected_cr_for_will = document.getElementById('expected_cr_for_will')
         const isGoodSaveCheckedWill = document.getElementById('will_is_good_save');
+    
+        const attackSlider = document.getElementById('attackSlider');
+        const attackSliderValueDisplay = document.getElementById('attackSliderValue');
+        const expectedCrForAttack = document.getElementById('expected_cr_for_attack');
+        const isPrimarilyAttackerCheck = document.getElementById('primarily_attacker');
 
         function updateSliderCR() {
             const crSliderValue = crSlider.value;
             crSliderValueDisplay.textContent = crSliderValue;
             const isGoodSaveCheckedRefChecked = document.getElementById('reflex_is_good_save').checked;
+            const isGoodSaveCheckedFortChecked = document.getElementById('fortitude_is_good_save').checked;
+            const isGoodSaveCheckedWillChecked = document.getElementById('will_is_good_save').checked;
+            const isPrimarilyAttackerChecked = document.getElementById('primarily_attacker').checked;
 
             const requestCR = fetch('/update-monster-balancer-cr', {
                 method: 'POST',
@@ -56,7 +66,10 @@
                 },
                 body: JSON.stringify({
                     crSliderValue: crSliderValue,
-                    isGoodSaveRef: isGoodSaveCheckedRefChecked
+                    isGoodSaveRef: isGoodSaveCheckedRefChecked,
+                    isGoodSaveFort: isGoodSaveCheckedFortChecked,
+                    isGoodSaveWill: isGoodSaveCheckedWillChecked,
+                    isPrimarilyAttacker: isPrimarilyAttackerChecked,
                 })
             })
             .then(response => response.json())
@@ -65,6 +78,9 @@
                 average_ac_for_cr.textContent = crData.average_ac_for_cr;
                 expected_hp_for_cr.textContent = crData.expected_hp_for_cr;
                 average_save_for_cr_reflex.textContent = crData.average_save_for_cr_reflex;
+                average_save_for_cr_fortitude.textContent = crData.average_save_for_cr_fortitude;
+                average_save_for_cr_will.textContent = crData.average_save_for_cr_will;
+                average_attack_for_cr.textContent = crData.average_attack_for_cr;
 
                 if (crData.ac_deviation < 0) {
                     messageDisplay.textContent = "Observe that the AC of the creature is very low for the target CR! If a creature's AC deviates by more than 5 from the target AC, then the CR of the creature will change.";
@@ -146,6 +162,7 @@
                 expectedCrForSave.textContent = saveData.expected_cr_for_save;
             })
         }
+
         function updateIsGoodSave(saveType) {
             const isGoodSaveChecked = document.getElementById(`${saveType}_is_good_save`).checked;
             const slider = document.getElementById(`${saveType}Slider`);
@@ -181,50 +198,81 @@
                 slider.value = saveData.slider_value;
             })
         }
-        function updateSlidersFort() {
-            const fortSliderValue = fortSlider.value;
-            fortSliderValueDisplay.textContent = fortSliderValue;
 
-            fetch('/update-monster-balancer-saves-fort', {
+        function updateSlidersAttack() {
+            const highValuesChecked = document.getElementById(`primarily_attacker`).checked;
+            const slider = document.getElementById(`attackSlider`);
+            const sliderValueDisplay = document.getElementById(`attackSliderValue`);
+            const expectedCrForValue = document.getElementById('expected_cr_for_attack');
+
+            const sliderValue = slider.value;
+            sliderValueDisplay.textContent = sliderValue
+            fetch('/update-monster-balancer-attack', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ fortSliderValue: fortSliderValue })
+                body: JSON.stringify({
+                    sliderValue: sliderValue,
+                    primarilyAttacker: highValuesChecked,
+                })
             })
             .then(response => response.json())
-            .then(saveData => {
-                console.log(saveData);
-                expected_cr_for_fort.textContent = saveData.expected_cr_for_fort;
+            .then(data => {
+                console.log(data);
+                expectedCrForValue.textContent = data.expected_cr_for_attack;
             })
         }
-        function updateSlidersWill() {
-            const willSliderValue = willSlider.value;
-            willSliderValueDisplay.textContent = willSliderValue;
 
-            fetch('/update-monster-balancer-saves-will', {
+
+        function updateHighValueIsChecked() {
+            const highValuesChecked = document.getElementById(`primarily_attacker`).checked;
+            const slider = document.getElementById(`attackSlider`);
+            const sliderValueDisplay = document.getElementById(`attackSliderValue`);
+            const averageValueForCr = document.getElementById(`average_attack_for_cr`);
+            const expectedCrForValue = document.getElementById(`expected_cr_for_attack`);
+
+            const sliderValue = slider.value;
+            console.log({
+                boxChecked: highValuesChecked,
+                sliderValue: sliderValue,
+            });
+            fetch('/update-monster-balancer-attack-checked-box', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ willSliderValue: willSliderValue })
+                body: JSON.stringify({
+                    primarilyAttacker: highValuesChecked,
+                    sliderValue: sliderValue,
+                })
             })
             .then(response => response.json())
-            .then(saveData => {
-                console.log(saveData);
-                expected_cr_for_will.textContent = saveData.expected_cr_for_will;
+            .then(data => {
+                console.log(data);
+                slider.min = data.min_value;
+                slider.max = data.max_value;
+                expectedCrForValue.textContent = data.expected_cr_for_value;
+                averageValueForCr.textContent = data.average_value_for_cr;
+                sliderValueDisplay.textContent = data.slider_value;
+                slider.value = data.slider_value;
             })
         }
 
         crSlider.addEventListener('input', updateSliderCR);
         acSlider.addEventListener('input', updateSlidersAC);
         hpSlider.addEventListener('input', updateSlidersHP);
+
         refSlider.addEventListener('input', () => updateSlidersSave('reflex'));
         fortSlider.addEventListener('input', () => updateSlidersSave('fortitude'));
         willSlider.addEventListener('input', () => updateSlidersSave('will'));
+
         isGoodSaveCheckedRef.addEventListener('change', () => updateIsGoodSave('reflex'));
         isGoodSaveCheckedFort.addEventListener('change', () => updateIsGoodSave('fortitude'));
         isGoodSaveCheckedWill.addEventListener('change', () => updateIsGoodSave('will'));
+
+        isPrimarilyAttackerCheck.addEventListener('change', updateHighValueIsChecked);
+        attackSlider.addEventListener('input', updateSlidersAttack);
         
     });
 </script>
