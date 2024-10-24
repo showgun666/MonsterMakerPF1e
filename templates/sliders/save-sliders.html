@@ -6,7 +6,7 @@
             <input type="checkbox" id="{{ save }}_is_good_save" name="{{ save }}_is_good_save"> Good save?
         </label>
         <input type="range" id="{{ save }}Slider" min="{{ min_poor_save }}" max="{{ max_poor_save }}" value="{{ current_saves[save] }}">
-        <p>Expected CR for Save: <span id="expected_cr_for_{{ save }}">{{ expected_cr_for_good_save }}</span></p>
+        <p>Expected CR for Save: <span id="expected_cr_for_{{ save }}">{{ expected_cr_for_save[save] }}</span></p>
         <p>Average Save for target CR: <span id="average_save_for_cr_{{ save }}">{{ average_save_for_cr }}</span></p>
     </div>
     {% endfor %}
