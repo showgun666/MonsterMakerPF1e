@@ -86,7 +86,7 @@ def monster_balancer():
     if not session.get("attack", None):
         session["attack"] = get_statistic_column("High Attack")[0]
     min_attack = get_statistic_column("Low Attack")[0]
-    max_attack = get_statistic_column("High Attack")[-1]
+    max_attack = get_statistic_column("Low Attack")[-1]
 
     if session.get('average_attack_for_cr', None):
         average_attack_for_cr = session['average_attack_for_cr']
@@ -97,7 +97,22 @@ def monster_balancer():
         expected_cr_for_attack = session['expected_cr_for_attack']
     else:
         expected_cr_for_attack = determine_cr_float("Low Attack", int(session["attack"]))
-    
+
+    if not session.get("dc", None):
+        session["dc"] = get_statistic_column("Primary Ability DC")[0]
+    min_dc = get_statistic_column("Secondary Ability DC")[0]
+    max_dc = get_statistic_column("Secondary Ability DC")[-1]
+
+    if session.get('average_dc_for_cr', None):
+        average_dc_for_cr = session['average_dc_for_cr']
+    else:
+        average_dc_for_cr = get_statistic_column("Secondary Ability DC")[int(session["cr"])]
+
+    if session.get('expected_cr_for_dc', None):
+        expected_cr_for_dc = session['expected_cr_for_dc']
+    else:
+        expected_cr_for_dc = determine_cr_float("Secondary Ability DC", int(session["dc"]))
+
     return render_template(
         "monster-balancer.html",
         current_ac = session["ac"],
@@ -126,6 +141,11 @@ def monster_balancer():
         max_attack=max_attack,
         average_attack_for_cr=average_attack_for_cr,
         expected_cr_for_attack=expected_cr_for_attack,
+        min_dc=min_dc,
+        max_dc=max_dc,
+        average_dc_for_cr=average_dc_for_cr,
+        expected_cr_for_dc=expected_cr_for_dc,
+        current_dc=session["dc"],
         )
 
 @app.route('/update-monster-balancer-saves', methods=['POST'])
@@ -184,6 +204,20 @@ def update_content_monster_balancer_attack():
         expected_cr_for_attack=expected_cr_for_attack,
                    )
 
+@app.route('/update-monster-balancer-dc', methods=['POST'])
+def update_content_monster_balancer_dc():
+    """ DC Update route for monster balancer"""
+    session["dc"] = request.json['sliderValue']
+    if request.json['abilityReliant']:
+        expected_cr_for_dc = determine_cr_float("Primary Ability DC", int(session["dc"]))
+    else:
+        expected_cr_for_dc = determine_cr_float("Secondary Ability DC", int(session["dc"]))
+    session["expected_cr_for_dc"] = expected_cr_for_dc
+
+    return jsonify(
+        expected_cr_for_dc=expected_cr_for_dc,
+                   )
+
 @app.route('/update-monster-balancer-attack-checked-box', methods=['POST'])
 def update_content_monster_balancer_attack_checked_box():
     """ Attacks Update checked box route for monster balancer"""
@@ -203,6 +237,33 @@ def update_content_monster_balancer_attack_checked_box():
         average_value_for_cr = get_statistic_column("Low Attack")[int(session["cr"])]
 
     session["attack"] = slider_value
+    return jsonify(
+        min_value=min_value,
+        max_value=max_value,
+        expected_cr_for_value=expected_cr_for_value,
+        average_value_for_cr=average_value_for_cr,
+        slider_value=slider_value,
+                   )
+
+@app.route('/update-monster-balancer-dc-checked-box', methods=['POST'])
+def update_content_monster_balancer_dc_checked_box():
+    """ DC Update checked box route for monster balancer"""
+    slider_value = int(request.json['sliderValue'])
+
+    if request.json['abilityReliant']:
+        min_value = get_statistic_column("Primary Ability DC")[0]
+        max_value = get_statistic_column("Primary Ability DC")[-1]
+        slider_value = max(slider_value, min_value)
+        expected_cr_for_value = determine_cr_float("Primary Ability DC", slider_value)
+        average_value_for_cr = get_statistic_column("Primary Ability DC")[int(session["cr"])]
+    else:
+        min_value = get_statistic_column("Secondary Ability DC")[0]
+        max_value = get_statistic_column("Secondary Ability DC")[-1]
+        slider_value = min(slider_value, max_value)
+        expected_cr_for_value = determine_cr_float("Secondary Ability DC", slider_value)
+        average_value_for_cr = get_statistic_column("Secondary Ability DC")[int(session["cr"])]
+
+    session["dc"] = slider_value
     return jsonify(
         min_value=min_value,
         max_value=max_value,
@@ -262,6 +323,12 @@ def update_content_monster_balancer_cr():
     else:
         average_attack_for_cr = get_statistic_column("Low Attack")[int(session["cr"])]
     session['average_attack_for_cr'] = average_attack_for_cr
+
+    if request.json['isAbilityReliant']:
+        average_dc_for_cr = get_statistic_column("Primary Ability DC")[int(session["cr"])]
+    else:
+        average_dc_for_cr = get_statistic_column("Secondary Ability DC")[int(session["cr"])]
+    session["average_dc_for_cr"] = average_dc_for_cr
     return jsonify(
         average_ac_for_cr = average_ac_for_cr,
         ac_deviation = session["ac_deviation"],
@@ -270,6 +337,7 @@ def update_content_monster_balancer_cr():
         average_save_for_cr_fortitude=average_save_for_cr_fortitude,
         average_save_for_cr_will=average_save_for_cr_will,
         average_attack_for_cr=average_attack_for_cr,
+        average_dc_for_cr=average_dc_for_cr,
         )
 
 @app.errorhandler(404)
