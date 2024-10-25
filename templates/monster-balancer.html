@@ -4,11 +4,13 @@
     <div class="page-header">
         <h1>Monster Balancer</h1>
     </div>
-    <div>
+    <div class="sliders-grid">
         {% include 'sliders/target-cr.html' %}
         {% include 'sliders/armor-class.html' %}
         {% include 'sliders/hit-points.html' %}
-        {% include 'sliders/save-sliders.html' %}
+        <div class="saves-grid">
+            {% include 'sliders/save-sliders.html' %}
+        </div>
         {% include 'sliders/attack.html' %}
         {% include 'sliders/dice-check.html' %}
     </div>
