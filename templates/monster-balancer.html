@@ -10,6 +10,7 @@
         {% include 'sliders/hit-points.html' %}
         {% include 'sliders/save-sliders.html' %}
         {% include 'sliders/attack.html' %}
+        {% include 'sliders/dice-check.html' %}
     </div>
 </div>
 
@@ -45,11 +46,17 @@
         const willSliderValueDisplay = document.getElementById('willSliderValue');
         const expected_cr_for_will = document.getElementById('expected_cr_for_will')
         const isGoodSaveCheckedWill = document.getElementById('will_is_good_save');
-    
+
         const attackSlider = document.getElementById('attackSlider');
         const attackSliderValueDisplay = document.getElementById('attackSliderValue');
         const expectedCrForAttack = document.getElementById('expected_cr_for_attack');
         const isPrimarilyAttackerCheck = document.getElementById('primarily_attacker');
+
+        const dcSlider = document.getElementById('dcSlider');
+        const dcSliderValueDisplay = document.getElementById('dcSliderValue');
+        const expectedCrForDc = document.getElementById('expected_cr_for_dc');
+        const isReliantOnAbilites = document.getElementById('ability_reliant');
+        const averageDcForCr = document.getElementById('average_dc_for_cr');
 
         function updateSliderCR() {
             const crSliderValue = crSlider.value;
@@ -58,6 +65,7 @@
             const isGoodSaveCheckedFortChecked = document.getElementById('fortitude_is_good_save').checked;
             const isGoodSaveCheckedWillChecked = document.getElementById('will_is_good_save').checked;
             const isPrimarilyAttackerChecked = document.getElementById('primarily_attacker').checked;
+            const isReliantOnAbilitesChecked = document.getElementById('ability_reliant').checked;
 
             const requestCR = fetch('/update-monster-balancer-cr', {
                 method: 'POST',
@@ -70,6 +78,7 @@
                     isGoodSaveFort: isGoodSaveCheckedFortChecked,
                     isGoodSaveWill: isGoodSaveCheckedWillChecked,
                     isPrimarilyAttacker: isPrimarilyAttackerChecked,
+                    isAbilityReliant: isReliantOnAbilitesChecked,
                 })
             })
             .then(response => response.json())
@@ -81,6 +90,7 @@
                 average_save_for_cr_fortitude.textContent = crData.average_save_for_cr_fortitude;
                 average_save_for_cr_will.textContent = crData.average_save_for_cr_will;
                 average_attack_for_cr.textContent = crData.average_attack_for_cr;
+                averageDcForCr.textContent = crData.average_dc_for_cr;
 
                 if (crData.ac_deviation < 0) {
                     messageDisplay.textContent = "Observe that the AC of the creature is very low for the target CR! If a creature's AC deviates by more than 5 from the target AC, then the CR of the creature will change.";
@@ -224,6 +234,68 @@
             })
         }
 
+        function updateSlidersDc() {
+            const highValuesChecked = document.getElementById(`ability_reliant`).checked;
+            const slider = document.getElementById(`dcSlider`);
+            const sliderValueDisplay = document.getElementById(`dcSliderValue`);
+            const expectedCrForValue = document.getElementById('expected_cr_for_dc');
+
+            const sliderValue = slider.value;
+            sliderValueDisplay.textContent = sliderValue
+            console.log({
+                    sliderValue: sliderValue,
+                    abilityReliant: highValuesChecked,
+                })
+            fetch('/update-monster-balancer-dc', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    sliderValue: sliderValue,
+                    abilityReliant: highValuesChecked,
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                expectedCrForValue.textContent = data.expected_cr_for_dc;
+            })
+        }
+
+        function updateHighValueIsCheckedDc() {
+            const highValuesChecked = document.getElementById(`ability_reliant`).checked;
+            const slider = document.getElementById(`dcSlider`);
+            const sliderValueDisplay = document.getElementById(`dcSliderValue`);
+            const averageValueForCr = document.getElementById(`average_dc_for_cr`);
+            const expectedCrForValue = document.getElementById(`expected_cr_for_dc`);
+
+            const sliderValue = slider.value;
+            console.log({
+                boxChecked: highValuesChecked,
+                sliderValue: sliderValue,
+            });
+            fetch('/update-monster-balancer-dc-checked-box', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    abilityReliant: highValuesChecked,
+                    sliderValue: sliderValue,
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                slider.min = data.min_value;
+                slider.max = data.max_value;
+                expectedCrForValue.textContent = data.expected_cr_for_value;
+                averageValueForCr.textContent = data.average_value_for_cr;
+                sliderValueDisplay.textContent = data.slider_value;
+                slider.value = data.slider_value;
+            })
+        }
 
         function updateHighValueIsChecked() {
             const highValuesChecked = document.getElementById(`primarily_attacker`).checked;
@@ -273,6 +345,9 @@
 
         isPrimarilyAttackerCheck.addEventListener('change', updateHighValueIsChecked);
         attackSlider.addEventListener('input', updateSlidersAttack);
+
+        dcSlider.addEventListener('input', updateSlidersDc);
+        isReliantOnAbilites.addEventListener('change', updateHighValueIsCheckedDc);
         
     });
 </script>
