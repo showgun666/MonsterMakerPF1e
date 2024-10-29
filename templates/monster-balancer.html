@@ -12,6 +12,7 @@
             {% include 'sliders/save-sliders.html' %}
         </div>
         {% include 'sliders/attack.html' %}
+        {% include 'sliders/damage.html' %}
         {% include 'sliders/dice-check.html' %}
     </div>
 </div>
@@ -24,8 +25,8 @@
         const average_save_for_cr_reflex = document.getElementById('average_save_for_cr_reflex');
         const average_attack_for_cr = document.getElementById('average_attack_for_cr');
         const cr_value_for_ac = document.getElementById('crExpectedValue')
-        const messageDisplay = document.getElementById('acDeviationMessage');
 
+        const messageDisplay = document.getElementById('acDeviationMessage');
         const acSlider = document.getElementById('acSlider');
         const acSliderValueDisplay = document.getElementById('acSliderValue');
     
@@ -59,6 +60,12 @@
         const expectedCrForDc = document.getElementById('expected_cr_for_dc');
         const isReliantOnAbilites = document.getElementById('ability_reliant');
         const averageDcForCr = document.getElementById('average_dc_for_cr');
+        const messageDisplayDc = document.getElementById('dcDeviationMessage');
+
+        const damageSlider = document.getElementById('damageSlider');
+        const damageSliderValueDisplay = document.getElementById('damageSliderValue');
+        const expectedCrForDamage = document.getElementById('expected_cr_for_damage');
+        const averageDamageForCr = document.getElementById('average_damage_for_cr');
 
         function updateSliderCR() {
             const crSliderValue = crSlider.value;
@@ -93,6 +100,7 @@
                 average_save_for_cr_will.textContent = crData.average_save_for_cr_will;
                 average_attack_for_cr.textContent = crData.average_attack_for_cr;
                 averageDcForCr.textContent = crData.average_dc_for_cr;
+                averageDamageForCr.textContent = crData.average_damage_for_cr;
 
                 if (crData.ac_deviation < 0) {
                     messageDisplay.textContent = "Observe that the AC of the creature is very low for the target CR! If a creature's AC deviates by more than 5 from the target AC, then the CR of the creature will change.";
@@ -262,6 +270,11 @@
             .then(data => {
                 console.log(data);
                 expectedCrForValue.textContent = data.expected_cr_for_dc;
+                if (data.dc_below_minimum) {
+                    messageDisplayDc.textContent = "Observe that the average DC is below the recommended minimum for target CR.";
+                } else {
+                    messageDisplayDc.textContent = ""; // Clear the message if deviation is 0
+                }
             })
         }
 
@@ -332,6 +345,24 @@
                 slider.value = data.slider_value;
             })
         }
+        
+        function updateSlidersDamage() {
+            const damageSliderValue = damageSlider.value;
+            damageSliderValueDisplay.textContent = damageSliderValue;
+
+            fetch('/update-monster-balancer-damage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ damageSliderValue: damageSliderValue })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                expected_cr_for_damage.textContent = data.expected_cr_for_damage;
+            })
+        }
 
         crSlider.addEventListener('input', updateSliderCR);
         acSlider.addEventListener('input', updateSlidersAC);
@@ -350,6 +381,8 @@
 
         dcSlider.addEventListener('input', updateSlidersDc);
         isReliantOnAbilites.addEventListener('change', updateHighValueIsCheckedDc);
+        
+        damageSlider.addEventListener('input', updateSlidersDamage);
         
     });
 </script>

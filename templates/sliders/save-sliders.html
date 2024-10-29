@@ -1,13 +1,13 @@
 {% for save in saves %}
 <form method="POST" action="{{ url_for('monster_balancer') }}" class="save">
     <div>
-        <h3>{{ save|capitalize }} save: <span id="{{ save }}SliderValue">{{ current_saves[save] }}</span></h3>
+        <h3>{{ save|capitalize }} save: <span id="{{ save }}SliderValue"> {{ current_saves[save] }}</span></h3>
         <label>
-            <input type="checkbox" id="{{ save }}_is_good_save" name="{{ save }}_is_good_save"> Good save?
+            <input type="checkbox" id="{{ save }}_is_good_save" name="{{ save }}_is_good_save" {% if saves_checkbox[save] %}checked{% endif %}> Good save?
         </label>
-        <input type="range" id="{{ save }}Slider" min="{{ min_poor_save }}" max="{{ max_poor_save }}" value="{{ current_saves[save] }}">
+        <input type="range" id="{{ save }}Slider" min="{{ min_saves[save] }}" max="{{ max_saves[save] }}" value="{{ current_saves[save] }}">
         <p>Expected CR for Save: <span id="expected_cr_for_{{ save }}">{{ expected_cr_for_save[save] }}</span></p>
-        <p>Average Save for target CR: <span id="average_save_for_cr_{{ save }}">{{ average_save_for_cr }}</span></p>
+        <p>Average {{ save }} bonus for target CR: <span id="average_save_for_cr_{{ save }}">{{ average_saves_for_cr[save] }}</span></p>
     </div>
 </form>
 {% endfor %}

@@ -1,0 +1,8 @@
+<form method="POST" action="{{ url_for('monster_balancer') }}" class="damage">
+    <div>
+        <h3> Average Damage: <span id="damageSliderValue">{{ current_damage }}</span></h3>
+        <input type="range" id="damageSlider" min="{{ min_damage }}" max="{{ max_damage }}" value="{{ current_damage }}">
+        <p>Expected CR for damage: <span id="expected_cr_for_damage">{{ expected_cr_for_damage }}</span></p>
+        <p>Average damage for target CR: <span id="average_damage_for_cr">{{ average_damage_for_cr }}</span></p>
+    </div>
+</form>
