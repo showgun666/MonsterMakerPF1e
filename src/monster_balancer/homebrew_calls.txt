@@ -1,0 +1,5 @@
+Damage value is calculated by taking the average value of high and low stat, without rounding.
+    My reasoning for this is that the rules themselves state that a creature with a value closer to the low damage value would likely have a higher than average attack bonus, and vice versa for high damage value.
+    This is already being reflected on the total CR value presented in the app by taking offensive stats based on Attack, Damage and DC values.
+    Issue that can come from this is that I dont know how much the attack value and damage values respectively affect the offensive CR value, and the effects are very likely larger the further from the average you move with both attack and DC.
+    Reasoning is that having 10% chance to hit would mean you deal 10% of the potential damage on average (roughly speaking -8 to attack from average) while a 90% change to hit(roughly +8 to attack from average) would deal 80% more damage compared to a fair 50/50 hit, and 800% more damage compared to the -8 attack example. 

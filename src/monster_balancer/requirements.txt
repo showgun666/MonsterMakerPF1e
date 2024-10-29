@@ -12,12 +12,12 @@ THIS SPRINT
 
 #    previous value + next value + given value / 3 == expected value
 
-    The above works for:
+#    The above works for:
 #        HP          # Integer
 #        AC          # Integer
 #        Good save   # Integer
 #        Poor save   # Integer
-        Primary DC
+#        Primary DC
 
 3 Determine CR value for the following:
         # Attack (High or low based on flag, otherwise same as #2)
@@ -51,20 +51,20 @@ THIS SPRINT
 # 6 Check if AC values is within 5 of target CR AC.
 
 7 Attributes that we Need
-    Target CR (The CR that we are aiming for and originating our scale from)
+#    Target CR (The CR that we are aiming for and originating our scale from)
     Suggested CR (The CR that the app determines that the creature probably has based on values for defense and offense)
     Offensive CR (The calculated offensive CR of creature)
     Defensive CR (The calculated defensive CR of creature)
 
-    HP
-    AC
-    Saves
+#    HP
+#    AC
+#    Saves
 
     Damage
-    Attack
-    DC
+#    Attack
+#    DC
 
-    Toggle for Attack based or DC based offense
+#    Toggle for Attack based or DC based offense
 
 8 Determine Offensive CR
 
@@ -80,6 +80,10 @@ THIS SPRINT
     Saves could be on one row.
     Offensive should be collected.
     Defensive should be collected.
+
+12 Attack bonus Checkbox
+    For creatures that dont rely on attacks to deal damage, such as pure ability or spell users that lack even touch attacks.
+    We dont want to include the attack bonus into CR calculation because a low attack bonus for a creature that doesnt even use attacks will artificially reduce the CR of the creature in a harmful way.
 
 BONUS
     Primary attack Ranged Toggle (Flying + ranged combo at lower levels is dangerous af and might be cause for +1CR bump)
@@ -111,3 +115,56 @@ FUTURE SPRINTS / Ideas for the project
         Suggested stats based off size stats:
             Minimum damage bonus on attacks
             Minimum bonus to hp
+
+Adding attacks and calculate damage and attack bonus from those
+    Checkboxes:
+        AoE (double damage value)
+        Attack action´
+        Standard action
+        per day
+
+Adding ability score damage (poison)
+    How to calculate poison damage?
+     Normally I would calculate damage over time effects as if they deal damage twice, or two failed saves before a successful save
+        Poison is reapplied and deals its damage with every attack.
+        1 attack per round for 3 rounds with save every 3 attemps, win iniative
+            1 round == 1 instance of damage (Application)
+            2 round == 2 instances of damage (application and DoT)
+            3 round == 1 instance of damage (saved against reapplication and failed against DoT)
+            4 round == 1 instance of damage (Failed against DoT and no reapplication because creature is dead)
+            5 round == 0 instances, saved against DoT
+            Result is that damage dealt from poison is 5 instances over 3 rounds
+        if same scenario but lose initiative:
+            1 round == 2 inst (appl + dot)
+            2 round == 1 inst (dot)
+            3 round == 2 inst (appl + dot)
+            4 round == 0
+            Result is equal but front loaded.
+
+        One big issue with this approach is that poison scales crazy if more attacks can apply poison
+
+        2 attack per round for 3 rounds with save 1 of 3 attemps
+            1 round == 2 instances of damage (applx2)
+            2 round == 2 instances of dmg (applx1, dot)
+            3 round == 2 instances of dmg (applx2, save dot)
+
+            or
+            1 round == 2 inst (applx1, dot)
+            2 round == 2 inst (applx2, save dot)
+            3 round == 2 inst (applx1, dot)
+            4 round == 1 inst (dot)
+            Result == 7 instances in 4 rounds.
+        
+        3 attacks per round.
+            1 round == 3 inst (2appl, dot) +2 dc
+            2 round == 3 inst (2 appl, dot) +6 dc
+            3 round == 3 round (3 appl, dot) +12 dc(probably not saving)
+
+Different modes for:
+    per slider, the option to move per step of the CR column for statistics. example 10 15 20 30 or such instead of 10 11 12 13 14
+    For hit point slider, the option to move per available hp bonus per hd, following hd. hp bonus of +1 +2 +3 +4 then multiplied by number of hd.
+    This mode would be incompatible with the above mode.
+    Also option to increase and decreaes number of hd. Both the standard 1 2 3 4 as well as per cr which could be 1 2 3 5 7 etc, depending on type.
+
+Display actual CR values instead of list indexes for CR.
+    

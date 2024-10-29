@@ -27,6 +27,21 @@ def get_statistic_column(statistic):
         statistic_column.append(int(row[statistic]))
     return statistic_column
 
+def get_average_damage_column():
+    """
+    returns a list that contains the average damage values per CR.
+    index 0 is the lowest CR available.
+    """
+    low_damage_column = get_statistic_column("Average Damage Low")
+    high_damage_column = get_statistic_column("Average Damage High")
+    average_damage_column = []
+    imax = len(low_damage_column)
+    i = 0
+    while i < imax:
+        average_damage_column.append(int(((low_damage_column[i] + high_damage_column[i]) / 2) // 1))
+        i += 1
+    return average_damage_column
+
 def determine_cr_float(statistic, given_value):
     """
     statistic is the statistic that we are looking at, e.g. Hit Points or Armor Class
@@ -34,10 +49,13 @@ def determine_cr_float(statistic, given_value):
 
     This function will return the determined CR value depending on given_value 
     """
-    statistic_column = get_statistic_column(statistic)
+    if statistic != "Damage":
+        statistic_column = get_statistic_column(statistic)
+    else:
+        statistic_column = get_average_damage_column()
     # Iterate through and find the right row in column.
     index = 0
-    given_value = int(given_value)
+    given_value = float(given_value)
     for value in statistic_column:
         # If value is exactly same as an average value entry in the table, then simply return that CR value.
         # 0 means CR1/2
