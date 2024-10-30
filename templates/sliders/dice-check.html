@@ -1,0 +1,12 @@
+<form method="POST" action="{{ url_for('monster_balancer') }}" class="dc slider offensive-slider">
+    <div>
+        <h3> Average DC: <span id="dcSliderValue">{{ current_dc }}</span></h3>
+        <label>
+            <input type="checkbox" id="ability_reliant" name="ability_reliant" {% if ability_reliant %}checked{% endif %}> Relies on spells or abilities in combat?
+        </label>
+        <input type="range" id="dcSlider" min="{{ min_dc }}" max="{{ max_dc }}" value="{{ current_dc }}">
+        <p>Expected CR for DC: <span id="expected_cr_for_dc">{{ expected_cr_for_dc }}</span></p>
+        <p>Average DC for target CR: <span id="average_dc_for_cr">{{ average_dc_for_cr }}</span></p>
+        <p id="dcDeviationMessage"></p>
+    </div>
+</form>

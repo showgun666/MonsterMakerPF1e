@@ -1,0 +1,31 @@
+Ranged Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
+Darts, featherweight (10);1;—;—;—;—;—;—;—;PZO1134
+Bola;5;1d3;1d4;x2;10;2;B;nonlethal, trip;PZO1110
+Bola, Brutal;15;1d3;1d4;x2;10;2;B and P;trip;PZO9226-Revised
+Boomerang;3;1d4;1d6;x2;30;3;B;—;PZO1115
+Bow, thorn;50;1d4;1d6;x3;40;2;P;—;PPZO9410
+Crossbow, crank (heavy);400;1d8;1d10;19-20/x2;120;12;P;—;PPC:RTT
+Crossbow, crank (light);250;1d6;1d8;19-20/x2;80;6;P;—;PPC:RTT
+Crossbow, double;300;1d6;1d8;19-20/x2;80;18;P;—;PZO1115
+Crossbow, hand;100;1d3;1d4;19-20/x2;30;2;P;—;PZO1110
+Crossbow, launching;75;—;—;—;30;8;—;see text;PPZO9410
+Crossbow, repeating heavy;400;1d8;1d10;19-20/x2;120;12;P;—;PZO1110
+Crossbow, repeating light;250;1d6;1d8;19-20/x2;80;6;P;—;PZO1110
+Flask Thrower;25;—;—;—;20;4;—;see text;PPZO94102
+Grappling hook;6;1d4;1d6;x2;10;14;P;grapple;PPC:Pirates
+Hornbow, orc;130;1d8;2d6;×3;80;7;P;—;PPZO94102
+Javelin, stormshaft;35;1d4;1d6;×2;30;3;P;see text;PPZO94102
+Lasso;1;—;—;—;—;5;—;see text;PZO1115
+Net;20;—;—;—;10;6;—;—;PZO1110
+Net, snag;30;see text;see text;—;10;10;P;trip, see text;PZO1121
+Pelletbow, Dwarven Heavy;75;1d4;1d6;19-20/x3;60;8;B;—;PPC:HftF
+Pelletbow, Dwarven Light;50;1d3;1d4;19-20/x3;40;4;B;—;PPC:HftF
+Shield, throwing;+50;1d4;1d6;x2;20;—;B;performance, trip;PZO1118
+Shrillshaft javelin;35;1d4;1d6;x2;30;3;P;see text;PPC:Goblins
+Shuriken (5);1;1;1d2;x2;10;1/2;P;monk;CRB
+Sling, double;10;1d3;1d4;x2;50;1;B;double, see text;PPC:Halflings
+Sling glove;5;1d3;1d4;x2;50;2;B;—;PPZO9410
+Sling staff, halfling;20;1d6;1d8;x3;80;3;B;—;PZO1110
+Sling, stitched;—;1d4;1d6;x2;—;1;B;disarm, trip;PPC:Halflings
+Wrist launcher;200;—;—;—;20;1;P;—;PZO1134
+Wrist launcher, heavy;250;1d3;1d4;19–20/x2;30;2;P;—;PZO1134

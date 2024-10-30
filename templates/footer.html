@@ -1,4 +1,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<h3>Debug Session</h3>
+<ul>
+    {% for key, value in session.items() %}
+    <li>{{ key }}: {{ value }}</li>
+    {% endfor %}
+</ul>
 </body>
 </html>

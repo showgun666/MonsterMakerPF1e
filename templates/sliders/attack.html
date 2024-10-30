@@ -1,0 +1,11 @@
+<form method="POST" action="{{ url_for('monster_balancer') }}" class="attack slider offensive-slider">
+    <div>
+        <h3> Average Attack bonus: <span id="attackSliderValue">{{ current_attack }}</span></h3>
+        <label>
+            <input type="checkbox" id="primarily_attacker" name="primarily_attacker" {% if is_primarily_attacker %}checked{% endif %}> Relies on attacks for damage?
+        </label>
+        <input type="range" id="attackSlider" min="{{ min_attack }}" max="{{ max_attack }}" value="{{ current_attack }}">
+        <p>Expected CR for attack: <span id="expected_cr_for_attack">{{ expected_cr_for_attack }}</span></p>
+        <p>Average attack for target CR: <span id="average_attack_for_cr">{{ average_attack_for_cr }}</span></p>
+    </div>
+</form>

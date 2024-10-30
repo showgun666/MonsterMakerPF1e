@@ -1,0 +1,400 @@
+{% include 'header.html' %}
+
+<div class="container" role="main">
+    <div class="page-header">
+        <h1>Monster Balancer</h1>
+    </div>
+    <div class="sliders-grid">
+        {% include 'sliders/target-cr.html' %}
+        {% include 'sliders/armor-class.html' %}
+        {% include 'sliders/hit-points.html' %}
+        {% include 'components/defensive-cr.html' %}
+        {% include 'components/offensive-cr.html' %}
+        <div class="saves-grid">
+            {% include 'sliders/save-sliders.html' %}
+        </div>
+        {% include 'sliders/attack.html' %}
+        {% include 'sliders/damage.html' %}
+        {% include 'sliders/dice-check.html' %}
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const crSlider = document.getElementById('crSlider');
+        const crSliderValueDisplay = document.getElementById('crSliderValue');
+        const average_ac_for_cr = document.getElementById('average_ac_for_cr');
+        const average_save_for_cr_reflex = document.getElementById('average_save_for_cr_reflex');
+        const average_attack_for_cr = document.getElementById('average_attack_for_cr');
+        const cr_value_for_ac = document.getElementById('crExpectedValue')
+
+        const messageDisplay = document.getElementById('acDeviationMessage');
+        const acSlider = document.getElementById('acSlider');
+        const acSliderValueDisplay = document.getElementById('acSliderValue');
+    
+        const hpSlider = document.getElementById('hpSlider');
+        const hpSliderValueDisplay = document.getElementById('hpSliderValue');
+        const expected_cr_for_hp = document.getElementById('expected_cr_for_hp')
+        const expected_hp_for_cr = document.getElementById('expected_hp_for_cr')
+        
+        const fortSlider = document.getElementById('fortitudeSlider');
+        const fortSliderValueDisplay = document.getElementById('fortitudeSliderValue');
+        const expected_cr_for_fort = document.getElementById('expected_cr_for_fortitude')
+        const isGoodSaveCheckedFort = document.getElementById('fortitude_is_good_save');
+
+        const refSlider = document.getElementById('reflexSlider');
+        const refSliderValueDisplay = document.getElementById('reflexSliderValue');
+        const expected_cr_for_reflex = document.getElementById('expected_cr_for_reflex')
+        const isGoodSaveCheckedRef = document.getElementById('reflex_is_good_save');
+
+        const willSlider = document.getElementById('willSlider');
+        const willSliderValueDisplay = document.getElementById('willSliderValue');
+        const expected_cr_for_will = document.getElementById('expected_cr_for_will')
+        const isGoodSaveCheckedWill = document.getElementById('will_is_good_save');
+
+        const attackSlider = document.getElementById('attackSlider');
+        const attackSliderValueDisplay = document.getElementById('attackSliderValue');
+        const expectedCrForAttack = document.getElementById('expected_cr_for_attack');
+        const isPrimarilyAttackerCheck = document.getElementById('primarily_attacker');
+
+        const dcSlider = document.getElementById('dcSlider');
+        const dcSliderValueDisplay = document.getElementById('dcSliderValue');
+        const expectedCrForDc = document.getElementById('expected_cr_for_dc');
+        const isReliantOnAbilites = document.getElementById('ability_reliant');
+        const averageDcForCr = document.getElementById('average_dc_for_cr');
+        const messageDisplayDc = document.getElementById('dcDeviationMessage');
+
+        const damageSlider = document.getElementById('damageSlider');
+        const damageSliderValueDisplay = document.getElementById('damageSliderValue');
+        const expectedCrForDamage = document.getElementById('expected_cr_for_damage');
+        const averageDamageForCr = document.getElementById('average_damage_for_cr');
+
+        function updateSliderCR() {
+            const crSliderValue = crSlider.value;
+            crSliderValueDisplay.textContent = crSliderValue;
+            const isGoodSaveCheckedRefChecked = document.getElementById('reflex_is_good_save').checked;
+            const isGoodSaveCheckedFortChecked = document.getElementById('fortitude_is_good_save').checked;
+            const isGoodSaveCheckedWillChecked = document.getElementById('will_is_good_save').checked;
+            const isPrimarilyAttackerChecked = document.getElementById('primarily_attacker').checked;
+            const isReliantOnAbilitesChecked = document.getElementById('ability_reliant').checked;
+
+            const requestCR = fetch('/update-monster-balancer-cr', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    crSliderValue: crSliderValue,
+                    isGoodSaveRef: isGoodSaveCheckedRefChecked,
+                    isGoodSaveFort: isGoodSaveCheckedFortChecked,
+                    isGoodSaveWill: isGoodSaveCheckedWillChecked,
+                    isPrimarilyAttacker: isPrimarilyAttackerChecked,
+                    isAbilityReliant: isReliantOnAbilitesChecked,
+                })
+            })
+            .then(response => response.json())
+            .then((crData) => {
+                console.log(crData);
+                average_ac_for_cr.textContent = crData.average_ac_for_cr;
+                expected_hp_for_cr.textContent = crData.expected_hp_for_cr;
+                average_save_for_cr_reflex.textContent = crData.average_save_for_cr_reflex;
+                average_save_for_cr_fortitude.textContent = crData.average_save_for_cr_fortitude;
+                average_save_for_cr_will.textContent = crData.average_save_for_cr_will;
+                average_attack_for_cr.textContent = crData.average_attack_for_cr;
+                averageDcForCr.textContent = crData.average_dc_for_cr;
+                averageDamageForCr.textContent = crData.average_damage_for_cr;
+
+                if (crData.ac_deviation < 0) {
+                    messageDisplay.textContent = "Observe that the AC of the creature is very low for the target CR! If a creature's AC deviates by more than 5 from the target AC, then the CR of the creature will change.";
+                } else if (crData.ac_deviation > 0) {
+                    messageDisplay.textContent = "Observe that the AC of the creature is very high for the target CR! If a creature's AC deviates by more than 5 from the target AC, then the CR of the creature will change.";
+                } else {
+                    messageDisplay.textContent = ""; // Clear the message if deviation is 0
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function updateSlidersAC() {
+            const acSliderValue = acSlider.value;
+            acSliderValueDisplay.textContent = acSliderValue;
+
+            fetch('/update-monster-balancer-ac', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ acSliderValue: acSliderValue})
+            })
+            .then(response => response.json())
+            .then(acData => {
+                console.log(acData);
+                cr_value_for_ac.textContent = acData.cr_value_for_ac;
+                if (acData.ac_deviation < 0) {
+                    messageDisplay.textContent = "Observe that the AC of the creature is very low for the target CR! If a creature's AC deviates by more than 5 from the target AC, then the CR of the creature will change.";
+                } else if (acData.ac_deviation > 0) {
+                    messageDisplay.textContent = "Observe that the AC of the creature is very high for the target CR! If a creature's AC deviates by more than 5 from the target AC, then the CR of the creature will change.";
+                } else {
+                    messageDisplay.textContent = ""; // Clear the message if deviation is 0
+                }
+                document.getElementById("defensiveCR").textContent = acData.average_cr_defense;
+                })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function updateSlidersHP() {
+            const hpSliderValue = hpSlider.value;
+            hpSliderValueDisplay.textContent = hpSliderValue;
+
+            fetch('/update-monster-balancer-hp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ hpSliderValue: hpSliderValue })
+            })
+            .then(response => response.json())
+            .then(hpData => {
+                console.log(hpData);
+                expected_cr_for_hp.textContent = hpData.expected_cr_for_hp;
+                document.getElementById("defensiveCR").textContent = hpData.average_cr_defense;
+            })
+        }
+
+        function updateSlidersSave (saveType) {
+            const slider = document.getElementById(`${saveType}Slider`);
+            const sliderValueDisplay = document.getElementById(`${saveType}SliderValue`);
+            const isGoodSaveChecked = document.getElementById(`${saveType}_is_good_save`).checked;
+            const expectedCrForSave = document.getElementById(`expected_cr_for_${saveType}`);
+
+            const sliderValue = slider.value;
+            sliderValueDisplay.textContent = sliderValue
+            fetch('/update-monster-balancer-saves', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    save: saveType,
+                    sliderValue: sliderValue,
+                    isGoodSave: isGoodSaveChecked,
+                })
+            })
+            .then(response => response.json())
+            .then(saveData => {
+                console.log(saveData);
+                expectedCrForSave.textContent = saveData.expected_cr_for_save;
+                document.getElementById("defensiveCR").textContent = saveData.average_cr_defense;
+            })
+        }
+
+        function updateIsGoodSave(saveType) {
+            const isGoodSaveChecked = document.getElementById(`${saveType}_is_good_save`).checked;
+            const slider = document.getElementById(`${saveType}Slider`);
+            const sliderValueDisplay = document.getElementById(`${saveType}SliderValue`);
+            const averageSaveForCr = document.getElementById(`average_save_for_cr_${saveType}`);
+            const expectedCrForSave = document.getElementById(`expected_cr_for_${saveType}`);
+
+            const sliderValue = slider.value;
+            console.log({
+                save: saveType,
+                isGoodSave: isGoodSaveChecked,
+                sliderValue: sliderValue,
+            });
+            fetch('/update-monster-balancer-saves-checked-box', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    save: saveType,
+                    isGoodSave: isGoodSaveChecked,
+                    sliderValue: sliderValue,
+                })
+            })
+            .then(response => response.json())
+            .then(saveData => {
+                console.log(saveData);
+                slider.min = saveData.min_save;
+                slider.max = saveData.max_save;
+                expectedCrForSave.textContent = saveData.expected_cr_for_save;
+                averageSaveForCr.textContent = saveData.average_save_for_cr;
+                sliderValueDisplay.textContent = saveData.slider_value;
+                slider.value = saveData.slider_value;
+                document.getElementById("defensiveCR").textContent = saveData.average_cr_defense;
+            })
+        }
+
+        function updateSlidersAttack() {
+            const highValuesChecked = document.getElementById(`primarily_attacker`).checked;
+            const slider = document.getElementById(`attackSlider`);
+            const sliderValueDisplay = document.getElementById(`attackSliderValue`);
+            const expectedCrForValue = document.getElementById('expected_cr_for_attack');
+
+            const sliderValue = slider.value;
+            sliderValueDisplay.textContent = sliderValue
+            fetch('/update-monster-balancer-attack', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    sliderValue: sliderValue,
+                    primarilyAttacker: highValuesChecked,
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                expectedCrForValue.textContent = data.expected_cr_for_attack;
+                document.getElementById("offensiveCR").textContent = data.average_cr_offense;
+            })
+        }
+
+        function updateSlidersDc() {
+            const highValuesChecked = document.getElementById(`ability_reliant`).checked;
+            const slider = document.getElementById(`dcSlider`);
+            const sliderValueDisplay = document.getElementById(`dcSliderValue`);
+            const expectedCrForValue = document.getElementById('expected_cr_for_dc');
+
+            const sliderValue = slider.value;
+            sliderValueDisplay.textContent = sliderValue
+            console.log({
+                    sliderValue: sliderValue,
+                    abilityReliant: highValuesChecked,
+                })
+            fetch('/update-monster-balancer-dc', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    sliderValue: sliderValue,
+                    abilityReliant: highValuesChecked,
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                expectedCrForValue.textContent = data.expected_cr_for_dc;
+                if (data.dc_below_minimum) {
+                    messageDisplayDc.textContent = "Observe that the average DC is below the recommended minimum for target CR.";
+                } else {
+                    messageDisplayDc.textContent = ""; // Clear the message if deviation is 0
+                }
+                document.getElementById("offensiveCR").textContent = data.average_cr_offense;
+            })
+        }
+
+        function updateHighValueIsCheckedDc() {
+            const highValuesChecked = document.getElementById(`ability_reliant`).checked;
+            const slider = document.getElementById(`dcSlider`);
+            const sliderValueDisplay = document.getElementById(`dcSliderValue`);
+            const averageValueForCr = document.getElementById(`average_dc_for_cr`);
+            const expectedCrForValue = document.getElementById(`expected_cr_for_dc`);
+
+            const sliderValue = slider.value;
+            console.log({
+                boxChecked: highValuesChecked,
+                sliderValue: sliderValue,
+            });
+            fetch('/update-monster-balancer-dc-checked-box', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    abilityReliant: highValuesChecked,
+                    sliderValue: sliderValue,
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                slider.min = data.min_value;
+                slider.max = data.max_value;
+                expectedCrForValue.textContent = data.expected_cr_for_value;
+                averageValueForCr.textContent = data.average_value_for_cr;
+                sliderValueDisplay.textContent = data.slider_value;
+                slider.value = data.slider_value;
+                document.getElementById("offensiveCR").textContent = data.average_cr_offense;
+            })
+        }
+
+        function updateHighValueIsChecked() {
+            const highValuesChecked = document.getElementById(`primarily_attacker`).checked;
+            const slider = document.getElementById(`attackSlider`);
+            const sliderValueDisplay = document.getElementById(`attackSliderValue`);
+            const averageValueForCr = document.getElementById(`average_attack_for_cr`);
+            const expectedCrForValue = document.getElementById(`expected_cr_for_attack`);
+
+            const sliderValue = slider.value;
+            console.log({
+                boxChecked: highValuesChecked,
+                sliderValue: sliderValue,
+            });
+            fetch('/update-monster-balancer-attack-checked-box', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    primarilyAttacker: highValuesChecked,
+                    sliderValue: sliderValue,
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                slider.min = data.min_value;
+                slider.max = data.max_value;
+                expectedCrForValue.textContent = data.expected_cr_for_value;
+                averageValueForCr.textContent = data.average_value_for_cr;
+                sliderValueDisplay.textContent = data.slider_value;
+                slider.value = data.slider_value;
+                document.getElementById("offensiveCR").textContent = data.average_cr_offense;
+            })
+        }
+        
+        function updateSlidersDamage() {
+            const damageSliderValue = damageSlider.value;
+            damageSliderValueDisplay.textContent = damageSliderValue;
+
+            fetch('/update-monster-balancer-damage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ damageSliderValue: damageSliderValue })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                expected_cr_for_damage.textContent = data.expected_cr_for_damage;
+                document.getElementById("offensiveCR").textContent = data.average_cr_offense;
+            })
+        }
+
+        crSlider.addEventListener('input', updateSliderCR);
+        acSlider.addEventListener('input', updateSlidersAC);
+        hpSlider.addEventListener('input', updateSlidersHP);
+
+        refSlider.addEventListener('input', () => updateSlidersSave('reflex'));
+        fortSlider.addEventListener('input', () => updateSlidersSave('fortitude'));
+        willSlider.addEventListener('input', () => updateSlidersSave('will'));
+
+        isGoodSaveCheckedRef.addEventListener('change', () => updateIsGoodSave('reflex'));
+        isGoodSaveCheckedFort.addEventListener('change', () => updateIsGoodSave('fortitude'));
+        isGoodSaveCheckedWill.addEventListener('change', () => updateIsGoodSave('will'));
+
+        isPrimarilyAttackerCheck.addEventListener('change', updateHighValueIsChecked);
+        attackSlider.addEventListener('input', updateSlidersAttack);
+
+        dcSlider.addEventListener('input', updateSlidersDc);
+        isReliantOnAbilites.addEventListener('change', updateHighValueIsCheckedDc);
+        
+        damageSlider.addEventListener('input', updateSlidersDamage);
+    });
+</script>
+
+{% include 'footer.html' %}

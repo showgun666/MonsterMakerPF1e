@@ -2,3 +2,58 @@ body {
     padding-top: 4em;
     padding-bottom: 2em;
 }
+.grid {
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1em;
+    grid-column: 1 / 5;
+}
+.sliders-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1em;
+}
+
+.target-cr {
+    grid-column: 1 / 3;
+    grid-row: 1 / 1;
+}
+.hp {
+    grid-column: 1 / 3;
+    grid-row: 3 / 3;
+}
+.ac {
+    grid-column: 3 / 5;
+    grid-row: 3 / 3;
+}
+.saves-grid {
+    grid-column: 1 / 5;
+    grid-row: 4 / 4;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1em;
+}
+.attack {
+    grid-column: 1 / 3;
+    grid-row: 6 / 6;
+}
+.damage {
+    grid-column: 3 / 5;
+    grid-row: 6 / 6;
+}
+.dc {
+    grid-column: 1 / 5;
+    grid-row: 7 / 7;
+}
+.defensive-cr {
+    grid-column: 3 / 4;
+    grid-row: 2 / 2;
+}
+.offensive-cr {
+    grid-column: 4 / 5;
+    grid-row: 2 / 2;
+}
+.estimated-cr {
+    grid-column: 3 / 4;
+    grid-row: 1 / 1;
+}

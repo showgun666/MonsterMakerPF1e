@@ -1,0 +1,33 @@
+Two-Handed Melee Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
+Axe, Orc Double;60;1d6/1d6;1d8/1d8;x3;—;15;S;double;PZO1110
+Axe, Butchering;65;1d12;3d6;×3;—;25;S;see text;PPZO94102
+Battle Ladder, gnome;20;1d4/1d4;1d6/1d6;x2;—;8;B;trip;PPZO94102
+Boarding gaff;8;1d4/1d4;1d6/1d6;x2;—;8;S;double, reach, trip;PPZO94102
+Chain-hammer;35;1d4/1d4;1d6/1d6;×2;20 ft.;8;B;double, see text;PPZO94102
+Chain, spiked;25;1d6;2d4;x2;—;10;P;disarm, trip;PZO1110
+Crook;1;1d4;1d6;x2;—;5;B;reach, trip;PZO9468
+Curve blade, elven;80;1d8;1d10;18–20/x2;—;7;S;—;PZO1110
+Dorn-Dergar, dwarven;50;1d8;1d10;x2;—;15;B;reach, see text;PPZO94102
+Double spear;25;1d6/1d6;1d8/1d8;×3;—;12;P;double;PPC:MAH
+Elven branched spear;20;1d6;1d8;x3;—;10;P;brace, reach;PZO9468
+Fauchard;14;1d8;1d10;18-20/x2;—;10;S;reach, trip;PPZO94102
+Flail, dire;90;1d6/1d6;1d8/1d8;x2;—;10;B;disarm, double, trip;PZO1110
+Flailpole;15;1d6;1d8;x2;—;10;B;disarm, reach, trip;PC:GoG
+Flambard;50;1d8;1d10;19-20/x2;—;6;S;sunder;PPZO9410
+Flying blade;40;1d10;1d12;x3;—;12;S;performance, reach;PZO1118
+Garrote;3;1d4;1d6;x2;—;1;S;grapple, see text;PPZO9410
+Giant-Sticker, Dwarven;25;1d8;2d6;x3;—;12;P or S;brace, reach;PPC:HftF
+Hammer, Gnome hooked;20;1d6/1d4;1d8/1d6;x3/x4;—;6;B or P;double, trip;PZO1110
+Harpoon;5;1d6;1d8;x3;10 ft.;16;P;grapple;PPC:Pirates
+Longaxe, dwarven;50;1d10;1d12;x3;—;14;S;reach;PZO1121
+Longhammer, dwarven;70;1d10;2d6;x3;—;20;B;reach;PZO1121
+Mancatcher;15;1;1d2;x2;—;10;P;grapple, reach, see text;PZO1115
+Orc skull ram;15;1d8;1d10;x3;—;20;B;reach;PZO9468
+Piston maul, gnome;70;1d8;1d10;x2;—;15;B;see text;PPZO94102
+Ripsaw glaive, gnome;30;1d8;1d10;x3;—;12;S;reach, see text;PPZO94102
+Scarf, bladed;12;1d4;1d6;x2;—;2;S;disarm, trip;PZO9226-Revised
+Spear, totem;25;1d8;1d10;x3;10 ft.;6;P or S;see text;PZO1110
+Sphinx Hammer, Dwarven;45;1d8;1d10;x3;20 ft.;8;B;—;PPC:HftF
+Switchscythe;18;1d6;2d4;×4;—;10;P or S;trip;PPZO94102
+Sword, two-bladed;100;1d6/1d6;1d8/1d8;19-20/x2;—;10;S;double;PZO1110
+Urgrosh, dwarven;50;1d6/1d4;1d8/1d6;x3;—;12;P or S;brace, double;PZO1110

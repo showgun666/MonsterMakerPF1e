@@ -1,0 +1,13 @@
+Natural Attacks;Fine;Diminutive;Tiny;Dmg (S);Dmg (M);Large;Huge;Gargantuan;Colossal;Type;Attack Type
+Bite;1;1d2;1d3;1d4;1d6;1d8;2d6;2d8;4d6;B P S;Primary
+Claw;–;1;1d2;1d3;1d4;1d6;1d8;2d6;2d8;B S;Primary
+Gore;1;1d2;1d3;1d4;1d6;1d8;2d6;2d8;4d6;P;Primary
+Hoof;–;1;1d2;1d3;1d4;1d6;1d8;2d6;2d8;B;Secondary
+Tentacle;–;1;1d2;1d3;1d4;1d6;1d8;2d6;2d8;B;Secondary
+Wing;–;1;1d2;1d3;1d4;1d6;1d8;2d6;2d8;B;Secondary
+Pincers;1;1d2;1d3;1d4;1d6;1d8;2d6;2d8;4d6;B;Secondary
+Tail Slap;1;1d2;1d3;1d4;1d6;1d8;2d6;2d8;4d6;B;Secondary
+Slam;–;1;1d2;1d3;1d4;1d6;1d8;2d6;2d8;B;Primary
+Sting;–;1;1d2;1d3;1d4;1d6;1d8;2d6;2d8;P;Primary
+Talons;–;1;1d2;1d3;1d4;1d6;1d8;2d6;2d8;S;Primary
+Other;–;1;1d2;1d3;1d4;1d6;1d8;2d6;2d8;B P S;Secondary

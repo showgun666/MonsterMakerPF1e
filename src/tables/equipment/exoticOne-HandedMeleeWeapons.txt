@@ -1,0 +1,23 @@
+One-Handed Melee Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
+Axe-Gauntlet, Dwarven Heavy;21;1d6;1d8;x3;—;5;S;blocking, disarm;PPC:HftF
+Axe, hooked;20;1d6;1d8;x3;—;7;S;disarm, performance, trip;PZO1118
+Broken-back seax;40;1d8;1d10;19–20/×2;—;4;P & S;see text;PPC:MAH
+Estoc;50;2d3;2d4;18–20/x2;—;4;P;—;PZO9468
+Falcata;18;1d6;1d8;19-20/x3;—;4;S;—;PZO1115
+Flickmace;20;1d6;1d8;x2;—;10 lb;B;reach, trip;PC:GoG
+Flindbar;9;1d6;1d8;x2;—;6;B and P;disarm, trip;MC
+Khopesh;20;1d6;1d8;19-20/x2;—;8;S;trip;PZO1115
+Knobkerrie;5;1d4;1d6;x2;20;4;B;see text;PPC:RTT
+Ram Hammer, Dwarven;25;1d6;1d8;x3;10;5;B;—;PPC:HftF
+Rapier, spiral;80;1d4;1d6;18–20/×2;—;3;P;blocking, disarm, see text;PPZO94102
+Rhoka;5;1d6;1d8;18-20/x2;—;6;S;—;PPZO9410
+Sabre, sawtoothAG;35;1d6;1d8;19-20/x2;—;2;S;—;PZO9226-Revised
+Shotel;30;1d6;1d8;x3;—;3;P;performance;PZO1118
+Sickle-sword;20;1d6;1d8;19–20/×2;—;4;S;distracting, see text;PPZO94102
+Split-blade sword;200;1d10;2d6;×2;—;8;S;disarm, trip, see text;PPC:MAH
+Sword, dueling;20;1d6;1d8;19-20/x2;—;3 lbs;S;—;PZO9226-Revised
+Sword, bastard;35;1d8;1d10;19-20/x2;—;6;S;—;PZO1110
+Tongi;18;1d4;1d6;19-20/x3;—;4;P;—;PZO9468
+Waraxe, dwarven;30;1d8;1d10;x3;—;8;S;—;PZO1110
+Waraxe, dwarven double;60;1d8;1d10;x3;—;12;S;see text;PZO1121
+Whip;1;1d2;1d3;x2;—;2;S;disarm, nonlethal, reach, trip;PZO1110

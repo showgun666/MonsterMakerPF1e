@@ -1,0 +1,174 @@
+THIS SPRINT
+# 1 Access to the tables for monster creation.
+
+
+# 2 Determine based on integer values what expected CR value a given statistic is closest to.
+#    CR 10 AC == 24
+#    Given AC == 20
+#    Determined CR for AC == 7.0
+    
+#    Given AC == 26
+#    Determined CR for AC == 11.5
+
+#    previous value + next value + given value / 3 == expected value
+
+#    The above works for:
+#        HP          # Integer
+#        AC          # Integer
+#        Good save   # Integer
+#        Poor save   # Integer
+#        Primary DC
+
+# 3 Determine CR value for the following:
+        # Attack (High or low based on flag, otherwise same as #2)
+
+        # Damage Average + high and low to see maximum and minimum values for that CR, requires #5
+
+        # Secondary DC (THIS IS THE MINIMUM VALUE) # Needs minimum DC value tagged as used for offense
+
+# 4 Need to determine Damage:
+#    Need high value and low value to see the outer limits for what is considered that CR value for dmg.
+#    Average value to have a static value to aim for. Because damage dice are rounded down, this value will also be rounded down.
+
+#5 overlap handling for damage values.
+#    Sometimes the high value for CR is higher than the low value for the CR++.
+#    Damage CR 2
+#        Low == 7
+#        High == 10
+#        Average == 17/2 == 8.5
+ #   Damage CR 3
+#        Low == 9
+#        High == 13
+#        Average == 22/2 == 11
+ """   
+    get average values
+    find average value between the average values
+    average of averages == 19.5/2 == 9.75
+
+    use this value for determining high and low instead.
+    If the value goes above or below this value, also check if it is still within the original high and low, which would still be considered within reason of this CR.
+"""
+# 6 Check if AC values is within 5 of target CR AC.
+
+#7 Attributes that we Need
+#    Target CR (The CR that we are aiming for and originating our scale from)
+#    Suggested CR (The CR that the app determines that the creature probably has based on values for defense and offense)
+#    Offensive CR (The calculated offensive CR of creature)
+#    Defensive CR (The calculated defensive CR of creature)
+
+#    HP
+#    AC
+#    Saves
+
+#    Damage
+#    Attack
+#    DC
+
+#    Toggle for Attack based or DC based offense
+
+# 8 Determine Offensive CR
+
+# 9 Determine Defensive CR
+
+#10 Determine suggested CR
+#    This should be done based off of determined offensive and defensive CR.
+
+#    I personally believe if a CR is very close by decimals to a different CR than the whole number, then it should be rounded in that direction
+#    but within .26 and .74 or something it might be better to round down for high offense / low defense and round up for vice versa
+
+# 11 Frontend
+#     Saves could be on one row.
+#     Offensive should be collected.
+#     Defensive should be collected.
+
+# 12 Attack bonus Checkbox
+#     For creatures that dont rely on attacks to deal damage, such as pure ability or spell users that lack even touch attacks.
+#     We dont want to include the attack bonus into CR calculation because a low attack bonus for a creature that doesnt even use attacks will artificially reduce the CR of the creature in a harmful way.
+
+FUTURE SPRINTS / Ideas for the project
+    Refactor code and cut down on repeating code.
+        Attacks, saves and DCs use the same pattern.
+            Checkboxes
+            Values
+    Monster tiers system
+    Monster stats below CR 1/2
+        Extrapolate stats below CR 1 and above CR 30 from stats.
+        Think about how HD and BAB interacts with HP and number of attacks and how dmg and hp scaling thus works.
+        CR 2 is 50% more experience than CR 1 but CR 1 is 100% more experience compared to CR 1/8.
+        A logical conclusion would be that 2 CR 1/2 would cause a party to expend the same amount of resources as 1 CR 1 creature.
+        Look at how CR 1/2 is different from CR 2 compared to CR 1.
+        Just using the advanced template wont really work at CRs below CR 1.
+    When trying to find the correct row in stats by CR, it should start at the same CR as the target CR and move step by step up or down instead of starting at index 0.
+    Implement Monster Archetypes presets for designer.
+    Implement setting for adjusting on per CR value setting, so slider for hp would go 10 15 20 instead of 10 11 12 13 etc.
+    Allow user to add attacks, input attack bonus and damage for each attack(damage could be input as a dice expression with bonus or as a number)
+    Creature Type Implementation
+        Dice expression suggestions for hit points based on creature type.
+        Good saves selected based off creature type
+    Creature Size
+        Suggested stats based off size stats:
+            Minimum damage bonus on attacks
+            Minimum bonus to hp
+
+Adding attacks and calculate damage and attack bonus from those
+    Checkboxes:
+        AoE (double damage value)
+        Attack action´
+        Standard action
+        per day
+
+Adding ability score damage (poison)
+    How to calculate poison damage?
+     Normally I would calculate damage over time effects as if they deal damage twice, or two failed saves before a successful save
+        Poison is reapplied and deals its damage with every attack.
+        1 attack per round for 3 rounds with save every 3 attemps, win iniative
+            1 round == 1 instance of damage (Application)
+            2 round == 2 instances of damage (application and DoT)
+            3 round == 1 instance of damage (saved against reapplication and failed against DoT)
+            4 round == 1 instance of damage (Failed against DoT and no reapplication because creature is dead)
+            5 round == 0 instances, saved against DoT
+            Result is that damage dealt from poison is 5 instances over 3 rounds
+        if same scenario but lose initiative:
+            1 round == 2 inst (appl + dot)
+            2 round == 1 inst (dot)
+            3 round == 2 inst (appl + dot)
+            4 round == 0
+            Result is equal but front loaded.
+
+        One big issue with this approach is that poison scales crazy if more attacks can apply poison
+
+        2 attack per round for 3 rounds with save 1 of 3 attemps
+            1 round == 2 instances of damage (applx2)
+            2 round == 2 instances of dmg (applx1, dot)
+            3 round == 2 instances of dmg (applx2, save dot)
+
+            or
+            1 round == 2 inst (applx1, dot)
+            2 round == 2 inst (applx2, save dot)
+            3 round == 2 inst (applx1, dot)
+            4 round == 1 inst (dot)
+            Result == 7 instances in 4 rounds.
+        
+        3 attacks per round.
+            1 round == 3 inst (2appl, dot) +2 dc
+            2 round == 3 inst (2 appl, dot) +6 dc
+            3 round == 3 round (3 appl, dot) +12 dc(probably not saving)
+
+Different modes for:
+    per slider, the option to move per step of the CR column for statistics. example 10 15 20 30 or such instead of 10 11 12 13 14
+    For hit point slider, the option to move per available hp bonus per hd, following hd. hp bonus of +1 +2 +3 +4 then multiplied by number of hd.
+    This mode would be incompatible with the above mode.
+    Also option to increase and decreaes number of hd. Both the standard 1 2 3 4 as well as per cr which could be 1 2 3 5 7 etc, depending on type.
+
+Display actual CR values instead of list indexes for CR.
+
+Add option to calculate CR values based off of Effective HP and Effective DMG values.
+    When implementing this, consider the individual CR of APL equal to target CR.
+    Consider also how long the creature is going to be dealing damage. If Effective HP is x2 then realistically it would be alive for twice as long and thus deal x2 damage over its lifetime.
+
+
+BONUS
+    Primary attack Ranged Toggle (Flying + ranged combo at lower levels is dangerous af and might be cause for +1CR bump)
+    Flying Toggle
+    Incorporeal Toggle (Incorporeal at low level is dangerous af and might be grounds for doubling hp values for calc)
+    Swarm toggle (Swarms at low level is dangerous af and might be grounds for doubling hp values for calc)
