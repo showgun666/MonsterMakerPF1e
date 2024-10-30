@@ -7,7 +7,7 @@ import traceback
 import os
 import re
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
-from src.monster_balancer.monster_balancer import get_average_damage_column, get_statistic_column, armor_class_deviated, determine_cr_float, generate_list_of_dictionaries, MONSTER_STATISTICS_BY_CR
+from src.monster_balancer.monster_balancer import calculate_average_cr, calculate_average_offensive_cr, calculate_average_defensive_cr, get_average_damage_column, get_statistic_column, armor_class_deviated, determine_cr_float, generate_list_of_dictionaries, MONSTER_STATISTICS_BY_CR
 
 app = Flask(__name__)
 app.secret_key = re.sub(r"[^a-z\d]", "", os.path.realpath(__file__))
@@ -118,10 +118,13 @@ def monster_balancer():
     }
 
     # Attacks
+    is_primarily_attacker = session.get('is_primarily_attacker', False)
+    session['is_primarily_attacker'] = is_primarily_attacker
     if not session.get("attack", None):
         session["attack"] = get_statistic_column("High Attack")[0]
-    min_attack = get_statistic_column("Low Attack")[0]
-    max_attack = get_statistic_column("Low Attack")[-1]
+    attack_column = get_statistic_column("High Attack" if session.get("is_primarily_attacker") else "Low Attack")
+    min_attack = attack_column[0]
+    max_attack = attack_column[-1]
 
     if session.get('average_attack_for_cr', None):
         average_attack_for_cr = session['average_attack_for_cr']
@@ -132,14 +135,12 @@ def monster_balancer():
         expected_cr_for_attack = session['expected_cr_for_attack']
     else:
         expected_cr_for_attack = determine_cr_float("Low Attack", int(session["attack"]))
-
-    is_primarily_attacker = session.get('is_primarily_attacker', False)
+        session['expected_cr_for_attack'] = expected_cr_for_attack
 
     # Dice Checks
     if not session.get("dc", None):
         session["dc"] = get_statistic_column("Primary Ability DC")[0]
-    if not session.get("ability_reliant", None):
-        session["ability_reliant"] = False
+    session["ability_reliant"] = session.get("ability_reliant", False)
     dc_column = get_statistic_column("Primary Ability DC" if session.get("ability_reliant") else "Secondary Ability DC")
     min_dc = dc_column[0]
     max_dc = dc_column[-1]
@@ -153,6 +154,7 @@ def monster_balancer():
         expected_cr_for_dc = session['expected_cr_for_dc']
     else:
         expected_cr_for_dc = determine_cr_float("Secondary Ability DC", int(session["dc"]))
+    expected_cr_for_dc = session["expected_cr_for_dc"]
 
     # Damage
     damage_column = get_average_damage_column()
@@ -164,6 +166,30 @@ def monster_balancer():
         current_damage = damage_column[0]
     expected_cr_for_damage = determine_cr_float("Damage", int(current_damage))
     session["average_damage_for_cr"] = determine_cr_float("Damage", int(session["damage"]))
+    session["cr_value_for_damage"] = expected_cr_for_damage
+
+    session["expected_cr_for_hp"] = determine_cr_float("Hit Points", int(session["hp"]))
+    session["expected_cr_for_fortitude"] = expected_cr_for_save["fortitude"]
+    session["expected_cr_for_reflex"] = expected_cr_for_save["reflex"]
+    session["expected_cr_for_will"] = expected_cr_for_save["will"]
+    average_cr_defense = calculate_average_defensive_cr(
+        cr_value_for_ac=session["cr_value_for_ac"],
+        cr_value_for_hp=session["expected_cr_for_hp"],
+        cr_value_for_fort=session["expected_cr_for_fortitude"],
+        cr_value_for_reflex=session["expected_cr_for_reflex"],
+        cr_value_for_will=session["expected_cr_for_will"],
+    )
+    average_cr_offense = calculate_average_offensive_cr(
+        session['expected_cr_for_attack'],
+        session["cr_value_for_damage"],
+        session["expected_cr_for_dc"],
+        session['is_primarily_attacker'],
+        session["ability_reliant"],
+    )
+    session["average_cr_defense"] = average_cr_defense
+    session["average_cr_offense"] = average_cr_offense
+    session["average_cr_total"] = calculate_average_cr(session["average_cr_defense"], session["average_cr_offense"])
+
     return render_template(
         "monster-balancer.html",
         current_ac = session["ac"],
@@ -202,12 +228,15 @@ def monster_balancer():
         average_dc_for_cr=average_dc_for_cr,
         expected_cr_for_dc=expected_cr_for_dc,
         current_dc=session["dc"],
-        relies_on_abilities=session.get('relies_on_abilities', False),
+        ability_reliant=session['ability_reliant'],
         min_damage=min_damage,
         max_damage=max_damage,
         current_damage=current_damage,
         expected_cr_for_damage=expected_cr_for_damage,
         average_damage_for_cr=session["average_damage_for_cr"],
+        average_cr_defense=average_cr_defense,
+        average_cr_offense=average_cr_offense,
+        average_cr_total=session["average_cr_total"]
         )
 
 @app.route('/update-monster-balancer-saves', methods=['POST'])
@@ -221,9 +250,20 @@ def update_content_monster_balancer_saves():
     else:
         expected_cr_for_save = determine_cr_float("Poor Save", int(session["current_" + save]))
         session[save + 'isGoodSave'] = False
-
+    session["expected_cr_for_" + save] = expected_cr_for_save 
+    average_cr_defense = calculate_average_defensive_cr(
+        cr_value_for_ac=session["cr_value_for_ac"],
+        cr_value_for_hp=session["expected_cr_for_hp"],
+        cr_value_for_fort=session["expected_cr_for_fortitude"],
+        cr_value_for_reflex=session["expected_cr_for_reflex"],
+        cr_value_for_will=session["expected_cr_for_will"],
+    )
+    session["average_cr_defense"] = average_cr_defense
+    session["average_cr_total"] = calculate_average_cr(session["average_cr_defense"], session["average_cr_offense"])
     return jsonify(
         expected_cr_for_save=expected_cr_for_save,
+        average_cr_defense=average_cr_defense,
+        average_cr_total=session["average_cr_total"],
                    )
 
 @app.route('/update-monster-balancer-saves-checked-box', methods=['POST'])
@@ -248,12 +288,23 @@ def update_content_monster_balancer_saves_checked_box():
         session[save + 'IsGoodSave'] = False
 
     session["current_" + save] = slider_value
+    average_cr_defense = calculate_average_defensive_cr(
+        cr_value_for_ac=session["cr_value_for_ac"],
+        cr_value_for_hp=session["expected_cr_for_hp"],
+        cr_value_for_fort=session["expected_cr_for_fortitude"],
+        cr_value_for_reflex=session["expected_cr_for_reflex"],
+        cr_value_for_will=session["expected_cr_for_will"],
+    )
+    session["average_cr_defense"] = average_cr_defense
+    session["average_cr_total"] = calculate_average_cr(session["average_cr_defense"], session["average_cr_offense"])
     return jsonify(
         min_save=min_save,
         max_save=max_save,
         expected_cr_for_save=expected_cr_for_save,
         average_save_for_cr=average_save_for_cr,
         slider_value=slider_value,
+        average_cr_defense=average_cr_defense,
+        average_cr_total=session["average_cr_total"],
                    )
 
 @app.route('/update-monster-balancer-attack', methods=['POST'])
@@ -265,9 +316,19 @@ def update_content_monster_balancer_attack():
     else:
         expected_cr_for_attack = determine_cr_float("Low Attack", int(session["attack"]))
     session["expected_cr_for_attack"] = expected_cr_for_attack
-
+    average_cr_offense = calculate_average_offensive_cr(
+        session['expected_cr_for_attack'],
+        session["cr_value_for_damage"],
+        session["expected_cr_for_dc"],
+        session['is_primarily_attacker'],
+        session["ability_reliant"],
+    )
+    session["average_cr_offense"] = average_cr_offense
+    session["average_cr_total"] = calculate_average_cr(session["average_cr_defense"], session["average_cr_offense"])
     return jsonify(
         expected_cr_for_attack=expected_cr_for_attack,
+        average_cr_offense=average_cr_offense,
+        average_cr_total=session["average_cr_total"],
                    )
 
 @app.route('/update-monster-balancer-dc', methods=['POST'])
@@ -278,15 +339,27 @@ def update_content_monster_balancer_dc():
         expected_cr_for_dc = determine_cr_float("Primary Ability DC", slider_value)
     else:
         expected_cr_for_dc = determine_cr_float("Secondary Ability DC", slider_value)
+        session["ability_reliant"] = request.json['abilityReliant']
     session["expected_cr_for_dc"] = expected_cr_for_dc
 
     dc_below_minimum = slider_value < get_statistic_column("Secondary Ability DC")[int(session["cr"])]
 
 
     session["dc"] = slider_value
+    average_cr_offense = calculate_average_offensive_cr(
+        session['expected_cr_for_attack'],
+        session["cr_value_for_damage"],
+        session["expected_cr_for_dc"],
+        session['is_primarily_attacker'],
+        session["ability_reliant"],
+    )
+    session["average_cr_offense"] = average_cr_offense
+    session["average_cr_total"] = calculate_average_cr(session["average_cr_defense"], session["average_cr_offense"])
     return jsonify(
         expected_cr_for_dc=expected_cr_for_dc,
         dc_below_minimum=dc_below_minimum,
+        average_cr_offense=average_cr_offense,
+        average_cr_total=session["average_cr_total"],
                    )
 
 @app.route('/update-monster-balancer-attack-checked-box', methods=['POST'])
@@ -309,12 +382,24 @@ def update_content_monster_balancer_attack_checked_box():
 
     session["attack"] = slider_value
     session["is_primarily_attacker"] = request.json['primarilyAttacker']
+    session['expected_cr_for_attack'] = expected_cr_for_value
+    average_cr_offense = calculate_average_offensive_cr(
+        session['expected_cr_for_attack'],
+        session["cr_value_for_damage"],
+        session["expected_cr_for_dc"],
+        session['is_primarily_attacker'],
+        session["ability_reliant"],
+    )
+    session["average_cr_offense"] = average_cr_offense
+    session["average_cr_total"] = calculate_average_cr(session["average_cr_defense"], session["average_cr_offense"])
     return jsonify(
         min_value=min_value,
         max_value=max_value,
         expected_cr_for_value=expected_cr_for_value,
         average_value_for_cr=average_value_for_cr,
         slider_value=slider_value,
+        average_cr_offense=average_cr_offense,
+        average_cr_total=session["average_cr_total"],
                    )
 
 @app.route('/update-monster-balancer-dc-checked-box', methods=['POST'])
@@ -334,14 +419,25 @@ def update_content_monster_balancer_dc_checked_box():
         slider_value = min(slider_value, max_value)
         expected_cr_for_value = determine_cr_float("Secondary Ability DC", slider_value)
         average_value_for_cr = get_statistic_column("Secondary Ability DC")[int(session["cr"])]
-    session["relies_on_abilities"] = request.json['abilityReliant']
+    session["ability_reliant"] = request.json['abilityReliant']
     session["dc"] = slider_value
+    average_cr_offense = calculate_average_offensive_cr(
+        session['expected_cr_for_attack'],
+        session["cr_value_for_damage"],
+        session["expected_cr_for_dc"],
+        session['is_primarily_attacker'],
+        session["ability_reliant"],
+    )
+    session["average_cr_offense"] = average_cr_offense
+    session["average_cr_total"] = calculate_average_cr(session["average_cr_defense"], session["average_cr_offense"])
     return jsonify(
         min_value=min_value,
         max_value=max_value,
         expected_cr_for_value=expected_cr_for_value,
         average_value_for_cr=average_value_for_cr,
         slider_value=slider_value,
+        average_cr_offense=average_cr_offense,
+        average_cr_total=session["average_cr_total"],
                    )
 
 @app.route('/update-monster-balancer-ac', methods=['POST'])
@@ -350,18 +446,40 @@ def update_content_monster_balancer_ac():
     session["ac"] = request.json['acSliderValue']
     session["ac_deviation"] = armor_class_deviated(session["ac"], session["cr"])
     session["cr_value_for_ac"] = determine_cr_float("Armor Class", int(session["ac"]))
+    average_cr_defense = calculate_average_defensive_cr(
+        cr_value_for_ac=session["cr_value_for_ac"],
+        cr_value_for_hp=session["expected_cr_for_hp"],
+        cr_value_for_fort=session["expected_cr_for_fortitude"],
+        cr_value_for_reflex=session["expected_cr_for_reflex"],
+        cr_value_for_will=session["expected_cr_for_will"],
+    )
+    session["average_cr_defense"] = average_cr_defense
+    session["average_cr_total"] = calculate_average_cr(session["average_cr_defense"], session["average_cr_offense"])
     return jsonify(
         ac_deviation=session["ac_deviation"],
         cr_value_for_ac=session["cr_value_for_ac"],
+        average_cr_defense=average_cr_defense,
+        average_cr_total=session["average_cr_total"],
                    )
 
 @app.route('/update-monster-balancer-hp', methods=['POST'])
 def update_content_monster_balancer_hp():
     """ HP Update route for monster balancer"""
     session["hp"] = request.json['hpSliderValue']
-
+    session["expected_cr_for_hp"] = determine_cr_float("Hit Points", int(session["hp"]))
+    average_cr_defense = calculate_average_defensive_cr(
+        cr_value_for_ac=session["cr_value_for_ac"],
+        cr_value_for_hp=session["expected_cr_for_hp"],
+        cr_value_for_fort=session["expected_cr_for_fortitude"],
+        cr_value_for_reflex=session["expected_cr_for_reflex"],
+        cr_value_for_will=session["expected_cr_for_will"],
+    )
+    session["average_cr_defense"] = average_cr_defense
+    session["average_cr_total"] = calculate_average_cr(session["average_cr_defense"], session["average_cr_offense"])
     return jsonify(
-        expected_cr_for_hp = determine_cr_float("Hit Points", int(session["hp"]))
+        expected_cr_for_hp = session["expected_cr_for_hp"],
+        average_cr_defense=average_cr_defense,
+        average_cr_total=session["average_cr_total"],
                    )
 
 @app.route('/update-monster-balancer-cr', methods=['POST'])
@@ -420,9 +538,21 @@ def update_content_monster_balancer_damage():
     """ Damage Update route for monster balancer"""
     session["damage"] = request.json['damageSliderValue']
 
+    session["cr_value_for_damage"] = determine_cr_float("Damage", float(session["damage"]))
+    average_cr_offense = calculate_average_offensive_cr(
+        session['expected_cr_for_attack'],
+        session["cr_value_for_damage"],
+        session["expected_cr_for_dc"],
+        session['is_primarily_attacker'],
+        session["ability_reliant"],
+        )
+    session["average_cr_offense"] = average_cr_offense
+    session["average_cr_total"] = calculate_average_cr(session["average_cr_defense"], session["average_cr_offense"])
     return jsonify(
-        expected_cr_for_damage = determine_cr_float("Damage", float(session["damage"]))
-                   )
+        expected_cr_for_damage = session["cr_value_for_damage"],
+        average_cr_offense=average_cr_offense,
+        average_cr_total=session["average_cr_total"],
+        )
 
 @app.errorhandler(404)
 def page_not_found(e):
