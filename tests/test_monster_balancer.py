@@ -7,6 +7,7 @@ from src.monster_balancer.monster_balancer import determine_cr_float
 from src.monster_balancer.monster_balancer import armor_class_deviated
 from src.monster_balancer.monster_balancer import calculate_average_defensive_cr
 from src.monster_balancer.monster_balancer import calculate_average_offensive_cr
+from src.monster_balancer.monster_balancer import calculate_average_cr
 
 class TestMonsterBalancer(unittest.TestCase):
     "Tests for monster balancer module"
@@ -145,4 +146,103 @@ class TestMonsterBalancer(unittest.TestCase):
     
         self.assertEqual(result, 6.0)
 
+    def test_calculate_average_cr_just_outside_rounding_threshold(self):
+        """
+        Test calculate_average_cr with values just outside the rounding threshold
+        """
+        average_defensive_cr = 6.68
+        average_offensive_cr = 6.68
+        
+        result = calculate_average_cr(average_defensive_cr, average_offensive_cr)
+        
+        self.assertEqual(result, 7)
 
+    def test_calculate_average_cr_within_rounding_threshold(self):
+        """
+        Test calculate_average_cr with values just within rounding threshold
+        """
+        average_defensive_cr = 4.32
+        average_offensive_cr = 4.68
+        
+        result = calculate_average_cr(average_defensive_cr, average_offensive_cr)
+        
+        self.assertEqual(result, 4)
+
+    def test_calculate_average_cr_extreme_difference(self):
+        """
+        Test calculate_average_cr with extreme difference between defensive and offensive CR
+        """
+        average_defensive_cr = 20
+        average_offensive_cr = 1
+        
+        result = calculate_average_cr(average_defensive_cr, average_offensive_cr)
+        
+        # Expected result is 11 (rounded up from 10.5 due to high defense)
+        self.assertEqual(result, 10)
+
+    def test_calculate_average_cr_zero_values(self):
+        """
+        Test calculate_average_cr with zero values for both defensive and offensive CR
+        """
+        average_defensive_cr = 0
+        average_offensive_cr = 0
+        
+        result = calculate_average_cr(average_defensive_cr, average_offensive_cr)
+        
+        self.assertEqual(result, 0)
+
+    def test_calculate_average_cr_exact_midpoint(self):
+        """
+        Test calculate_average_cr with average_defensive_cr and average_offensive_cr both at 10.5
+        """
+        average_defensive_cr = 10.5
+        average_offensive_cr = 10.5
+        
+        result = calculate_average_cr(average_defensive_cr, average_offensive_cr)
+        
+        self.assertEqual(result, 10)
+
+    def test_calculate_average_cr_high_offense_rounding_down(self):
+        """
+        Test calculate_average_cr with high offense and low defense to verify rounding down
+        """
+        average_defensive_cr = 2.3
+        average_offensive_cr = 2.7
+        
+        result = calculate_average_cr(average_defensive_cr, average_offensive_cr)
+        
+        self.assertEqual(result, 2)
+
+    def test_calculate_average_cr_high_defense_rounding_up(self):
+        """
+        Test calculate_average_cr with high defense CR and slightly lower offense CR
+        """
+        average_defensive_cr = 7.8
+        average_offensive_cr = 8.1
+        
+        result = calculate_average_cr(average_defensive_cr, average_offensive_cr)
+        
+        self.assertEqual(result, 8)
+
+    def test_calculate_average_cr_rounding_behavior(self):
+        """
+        Test calculate_average_cr with average_defensive_cr = 3.6 and average_offensive_cr = 4.2
+        to check rounding behavior
+        """
+        average_defensive_cr = 3.6
+        average_offensive_cr = 4.2
+        
+        result = calculate_average_cr(average_defensive_cr, average_offensive_cr)
+        
+        # The average CR would be (3.6 + 4.2) / 2 = 3.9
+        # it should round up to 4
+        self.assertEqual(result, 4)
+
+    def test_calculate_average_cr_equal_values(self):
+        """
+        Test calculate_average_cr with equal defensive and offensive CR values
+        """
+        average_defensive_cr = 5
+        average_offensive_cr = 5
+        result = calculate_average_cr(average_defensive_cr, average_offensive_cr)
+        self.assertEqual(result, 5)
