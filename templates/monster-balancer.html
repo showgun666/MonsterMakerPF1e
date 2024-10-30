@@ -8,6 +8,8 @@
         {% include 'sliders/target-cr.html' %}
         {% include 'sliders/armor-class.html' %}
         {% include 'sliders/hit-points.html' %}
+        {% include 'components/defensive-cr.html' %}
+        {% include 'components/offensive-cr.html' %}
         <div class="saves-grid">
             {% include 'sliders/save-sliders.html' %}
         </div>
@@ -135,6 +137,7 @@
                 } else {
                     messageDisplay.textContent = ""; // Clear the message if deviation is 0
                 }
+                document.getElementById("defensiveCR").textContent = acData.average_cr_defense;
                 })
             .catch(error => console.error('Error:', error));
         }
@@ -154,6 +157,7 @@
             .then(hpData => {
                 console.log(hpData);
                 expected_cr_for_hp.textContent = hpData.expected_cr_for_hp;
+                document.getElementById("defensiveCR").textContent = hpData.average_cr_defense;
             })
         }
 
@@ -180,6 +184,7 @@
             .then(saveData => {
                 console.log(saveData);
                 expectedCrForSave.textContent = saveData.expected_cr_for_save;
+                document.getElementById("defensiveCR").textContent = saveData.average_cr_defense;
             })
         }
 
@@ -216,6 +221,7 @@
                 averageSaveForCr.textContent = saveData.average_save_for_cr;
                 sliderValueDisplay.textContent = saveData.slider_value;
                 slider.value = saveData.slider_value;
+                document.getElementById("defensiveCR").textContent = saveData.average_cr_defense;
             })
         }
 
@@ -241,6 +247,7 @@
             .then(data => {
                 console.log(data);
                 expectedCrForValue.textContent = data.expected_cr_for_attack;
+                document.getElementById("offensiveCR").textContent = data.average_cr_offense;
             })
         }
 
@@ -275,6 +282,7 @@
                 } else {
                     messageDisplayDc.textContent = ""; // Clear the message if deviation is 0
                 }
+                document.getElementById("offensiveCR").textContent = data.average_cr_offense;
             })
         }
 
@@ -309,6 +317,7 @@
                 averageValueForCr.textContent = data.average_value_for_cr;
                 sliderValueDisplay.textContent = data.slider_value;
                 slider.value = data.slider_value;
+                document.getElementById("offensiveCR").textContent = data.average_cr_offense;
             })
         }
 
@@ -343,6 +352,7 @@
                 averageValueForCr.textContent = data.average_value_for_cr;
                 sliderValueDisplay.textContent = data.slider_value;
                 slider.value = data.slider_value;
+                document.getElementById("offensiveCR").textContent = data.average_cr_offense;
             })
         }
         
@@ -361,6 +371,7 @@
             .then(data => {
                 console.log(data);
                 expected_cr_for_damage.textContent = data.expected_cr_for_damage;
+                document.getElementById("offensiveCR").textContent = data.average_cr_offense;
             })
         }
 
@@ -383,7 +394,6 @@
         isReliantOnAbilites.addEventListener('change', updateHighValueIsCheckedDc);
         
         damageSlider.addEventListener('input', updateSlidersDamage);
-        
     });
 </script>
 
