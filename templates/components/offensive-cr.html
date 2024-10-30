@@ -1,0 +1,30 @@
+{% set total = 0 %}
+{% set count = 0 %}
+
+{# Check conditions and include values accordingly #}
+{% if is_primarily_attacker %}
+    {% set total = total + expected_cr_for_attack %}
+    {% set count = count + 1 %}
+{% endif %}
+
+{% set total = total + expected_cr_for_damage %}
+{% set count = count + 1 %}
+
+{% if relies_on_abilities %}
+    {% set total = total + expected_cr_for_dc %}
+    {% set count = count + 1 %}
+{% endif %}
+
+{# Calculate the average only if count is greater than 0 to avoid division by zero #}
+{% if count > 0 %}
+    {% set cr_total = total / count %}
+{% else %}
+    {% set cr_total = 0 %}
+{% endif %}
+
+{% set average_cr_offense = cr_total | round(3) %}
+<div>
+    <h3>
+        Estimated Offensive CR: <span id="offensiveCR">{{ average_cr_offense }}</span>
+    </h3>
+</div>
