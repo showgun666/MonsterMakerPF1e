@@ -80,6 +80,54 @@ def determine_cr_float(statistic, given_value):
     ### ERROR HANDLING HERE?
     return round(return_value, 2)
 
+def calculate_average_defensive_cr(cr_value_for_ac, cr_value_for_hp, cr_value_for_fort, cr_value_for_reflex, cr_value_for_will):
+    """ Calculate average CR for defensive stats"""
+    # Ensure that all values are floats and default to 0 if not provided
+    cr_value_for_ac = float(cr_value_for_ac) if cr_value_for_ac is not None else 0.0
+    cr_value_for_hp = float(cr_value_for_hp) if cr_value_for_hp is not None else 0.0
+    cr_value_for_fort = float(cr_value_for_fort) if cr_value_for_fort is not None else 0.0
+    cr_value_for_reflex = float(cr_value_for_reflex) if cr_value_for_reflex is not None else 0.0
+    cr_value_for_will = float(cr_value_for_will) if cr_value_for_will is not None else 0.0
+
+
+    # Calculate the average of saves
+    saves = [cr_value_for_fort, cr_value_for_reflex, cr_value_for_will]
+    cr_value_for_saves = sum(saves) / 3 if sum(saves) != 0 else 0.0
+
+    total_defensive = cr_value_for_ac + cr_value_for_hp + cr_value_for_saves
+    count = 0
+
+    if cr_value_for_ac > 0:
+        count += 1
+    if cr_value_for_hp > 0:
+        count += 1
+    if cr_value_for_saves > 0:
+        count += 1
+
+    if count > 0:
+        average_defensive_cr = total_defensive / 3
+    else:
+        average_defensive_cr = 0.0
+
+    return round(average_defensive_cr, 3)
+
+def calculate_average_offensive_cr(cr_value_for_attack, cr_value_for_damage, cr_value_for_dc, primarily_attacker, ability_reliant):
+    """ Calculate average CR for offensive stats"""
+    # Ensure that all values are floats and default to 0 if not provided
+    cr_value_for_attack = float(cr_value_for_attack) if cr_value_for_attack is not None else 0.0
+    cr_value_for_damage = float(cr_value_for_damage) if cr_value_for_damage is not None else 0.0
+    cr_value_for_dc = float(cr_value_for_dc) if cr_value_for_dc is not None else 0.0
+
+    values = [cr_value_for_damage]
+    if primarily_attacker:
+        values.append(cr_value_for_attack)
+    if ability_reliant:
+        values.append(cr_value_for_dc)
+    count = len(values)
+    total_offensive = sum(values) / count if sum(values) != 0 else 0.0
+
+    return round(total_offensive, 3)
+
 def armor_class_deviated(armor_class, target_cr):
     """
     Checks if armor class is deviating by 6 or more from target cr AC.
