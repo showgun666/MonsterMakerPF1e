@@ -1,5 +1,5 @@
 {% for save in saves %}
-<form method="POST" action="{{ url_for('monster_balancer') }}" class="save">
+<form method="POST" action="{{ url_for('monster_balancer') }}" class="save slider defensive-slider">
     <div>
         <h3>{{ save|capitalize }} save: <span id="{{ save }}SliderValue"> {{ current_saves[save] }}</span></h3>
         <label>

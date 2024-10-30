@@ -1,4 +1,4 @@
-<form method="POST" action="{{ url_for('monster_balancer') }}" class="ac">
+<form method="POST" action="{{ url_for('monster_balancer') }}" class="ac slider defensive-slider">
     <div>
         <h3>Armor Class: <span id="acSliderValue">{{ current_ac }}</span></h3>
         <input type="range" id="acSlider" min="{{ min_ac }}" max="{{ max_ac }}" value="{{ current_ac }}">

@@ -1,4 +1,4 @@
-<form method="POST" action="{{ url_for('monster_balancer') }}" class="hp">
+<form method="POST" action="{{ url_for('monster_balancer') }}" class="hp slider defensive-slider">
     <div>
         <h3>Hit Points: <span id="hpSliderValue">{{ current_hp }}</span></h3>
         <input type="range" id="hpSlider" min="{{ min_hp }}" max="{{ max_hp }}" value="{{ current_hp }}">

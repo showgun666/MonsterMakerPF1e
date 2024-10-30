@@ -1,4 +1,4 @@
-<form method="POST" action="{{ url_for('monster_balancer') }}" class="damage">
+<form method="POST" action="{{ url_for('monster_balancer') }}" class="damage slider offensive-slider">
     <div>
         <h3> Average Damage: <span id="damageSliderValue">{{ current_damage }}</span></h3>
         <input type="range" id="damageSlider" min="{{ min_damage }}" max="{{ max_damage }}" value="{{ current_damage }}">
