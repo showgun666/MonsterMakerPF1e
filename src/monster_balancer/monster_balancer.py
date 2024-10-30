@@ -171,3 +171,30 @@ def get_dc_column(primary_ability_user):
     if primary_ability_user:
         return get_statistic_column("Primary Ability DC")
     return get_statistic_column("Secondary Ability DC")
+
+def calculate_average_cr(average_defensive_cr, average_offensive_cr):
+    """
+    Calculates the average CR for the given defensive and offensive averages.
+    Determines the suggested CR based on both the defensive and offensive CR values.
+    
+    If the result is close to an integer, it rounds in that direction:
+    - If average CR is within 0.33 to 0.66, it rounds down for high offense / low defense
+      and rounds up for high defense / low offense to suggest the nearest whole CR.
+    """
+    total_cr_values = average_defensive_cr + average_offensive_cr
+    average_cr = total_cr_values / 2
+
+    # Define the cutoff ranges for special rounding
+    rounded_cr = round(average_cr)
+    if abs(average_cr - rounded_cr) >= 0.33 and abs(average_cr - rounded_cr) <= 0.66:
+        # High offense, low defense: round down if closer to lower bound
+        if average_offensive_cr >= average_defensive_cr:
+            average_cr = rounded_cr - 0.5 if average_cr < rounded_cr else rounded_cr
+        # High defense, low offense: round up if closer to upper bound
+        else:
+            average_cr = rounded_cr + 0.5 if average_cr > rounded_cr else rounded_cr
+    else:
+        # Standard rounding outside of the cutoff range
+        average_cr = round(average_cr)
+
+    return int(average_cr // 1)
