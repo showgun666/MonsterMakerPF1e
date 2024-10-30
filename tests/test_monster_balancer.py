@@ -5,6 +5,8 @@
 import unittest
 from src.monster_balancer.monster_balancer import determine_cr_float
 from src.monster_balancer.monster_balancer import armor_class_deviated
+from src.monster_balancer.monster_balancer import calculate_average_defensive_cr
+from src.monster_balancer.monster_balancer import calculate_average_offensive_cr
 
 class TestMonsterBalancer(unittest.TestCase):
     "Tests for monster balancer module"
@@ -65,3 +67,82 @@ class TestMonsterBalancer(unittest.TestCase):
 
         # Max value OK
         self.assertEqual(high_low5, 0)
+    def test_calculate_average_offensive_cr_none_and_zeros(self):
+        """
+        Test calculate_average_offensive_cr with None for attack and zeros for damage and DC
+        """
+        cr_value_for_attack = None
+        cr_value_for_damage = 0
+        cr_value_for_dc = 0
+        primarily_attacker = True
+        ability_reliant = True
+    
+        result = calculate_average_offensive_cr(cr_value_for_attack, cr_value_for_damage, cr_value_for_dc, primarily_attacker, ability_reliant)
+        
+        self.assertEqual(result, 0.0)
+    def test_calculate_average_defensive_cr(self):
+        """correctly calculates average defensive cr"""
+        cr_values = [1, 3, 5, 7, 9, 11, 0]
+        average_cr_all_zero = calculate_average_defensive_cr(cr_values[6], cr_values[6], cr_values[6], cr_values[6], cr_values[6])
+        self.assertEqual(average_cr_all_zero, 0.0)
+        average_cr_saves_zero = calculate_average_defensive_cr(cr_values[2], cr_values[3], cr_values[6], cr_values[6], cr_values[6])
+        self.assertEqual(average_cr_saves_zero, 4.0)
+        average_cr_all_same = calculate_average_defensive_cr(cr_values[1],cr_values[1],cr_values[1],cr_values[1],cr_values[1])
+        self.assertEqual(average_cr_all_same, 3.0)
+        average_cr_some_different = calculate_average_defensive_cr(cr_values[0], cr_values[1], cr_values[2], cr_values[3], cr_values[3])
+        self.assertEqual(average_cr_some_different, 3.444)
+    def test_calculate_average_offensive_cr_only_damage(self):
+        """
+        Test calculate_average_offensive_cr with only damage included
+        """
+        cr_value_for_attack = 5.0
+        cr_value_for_damage = 7.0
+        cr_value_for_dc = 6.0
+        primarily_attacker = False
+        ability_reliant = False
+    
+        result = calculate_average_offensive_cr(cr_value_for_attack, cr_value_for_damage, cr_value_for_dc, primarily_attacker, ability_reliant)
+    
+        self.assertEqual(result, 7.0)
+    def test_calculate_average_offensive_cr_primarily_attacker_and_ability_reliant(self):
+        """
+        Test calculate_average_offensive_cr with primarily_attacker and ability_reliant set to True
+        """
+        cr_value_for_attack = 5.0
+        cr_value_for_damage = 7.0
+        cr_value_for_dc = 6.0
+        primarily_attacker = True
+        ability_reliant = True
+    
+        result = calculate_average_offensive_cr(cr_value_for_attack, cr_value_for_damage, cr_value_for_dc, primarily_attacker, ability_reliant)
+    
+        expected_average = (5.0 + 7.0 + 6.0) / 3
+        self.assertAlmostEqual(result, round(expected_average, 3))
+    def test_calculate_average_offensive_cr_only_dc(self):
+        """
+        Test calculate_average_offensive_cr with only DC included
+        """
+        cr_value_for_attack = 5.0
+        cr_value_for_damage = 7.0
+        cr_value_for_dc = 6.0
+        primarily_attacker = False
+        ability_reliant = True
+    
+        result = calculate_average_offensive_cr(cr_value_for_attack, cr_value_for_damage, cr_value_for_dc, primarily_attacker, ability_reliant)
+    
+        self.assertEqual(result, 6.5)
+    def test_calculate_average_offensive_cr_primarily_attacker_only(self):
+        """
+        Test calculate_average_offensive_cr with primarily_attacker set to True and ability_reliant set to False
+        """
+        cr_value_for_attack = 5.0
+        cr_value_for_damage = 7.0
+        cr_value_for_dc = 6.0
+        primarily_attacker = True
+        ability_reliant = False
+    
+        result = calculate_average_offensive_cr(cr_value_for_attack, cr_value_for_damage, cr_value_for_dc, primarily_attacker, ability_reliant)
+    
+        self.assertEqual(result, 6.0)
+
+
