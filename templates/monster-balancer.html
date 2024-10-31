@@ -5,17 +5,22 @@
         <h1>Monster Balancer</h1>
     </div>
     <div class="sliders-grid">
-        {% include 'sliders/target-cr.html' %}
-        {% include 'sliders/armor-class.html' %}
-        {% include 'sliders/hit-points.html' %}
         {% include 'components/defensive-cr.html' %}
         {% include 'components/offensive-cr.html' %}
-        <div class="saves-grid">
-            {% include 'sliders/save-sliders.html' %}
+        {% include 'components/total-cr.html' %}
+        {% include 'sliders/target-cr.html' %}
+        <div class="defensive-block grid">
+            {% include 'sliders/armor-class.html' %}
+            {% include 'sliders/hit-points.html' %}
+            <div class="saves-grid">
+                {% include 'sliders/save-sliders.html' %}
+            </div>
         </div>
-        {% include 'sliders/attack.html' %}
-        {% include 'sliders/damage.html' %}
-        {% include 'sliders/dice-check.html' %}
+        <div class="offensive-block grid">
+            {% include 'sliders/attack.html' %}
+            {% include 'sliders/damage.html' %}
+            {% include 'sliders/dice-check.html' %}
+        </div>
     </div>
 </div>
 
@@ -68,6 +73,15 @@
         const damageSliderValueDisplay = document.getElementById('damageSliderValue');
         const expectedCrForDamage = document.getElementById('expected_cr_for_damage');
         const averageDamageForCr = document.getElementById('average_damage_for_cr');
+
+        // Debounce function to limit execution frequency
+        function debounce(func, delay) {
+            let debounceTimer;
+            return function (...args) {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => func.apply(this, args), delay);
+            };
+        }
 
         function updateSliderCR() {
             const crSliderValue = crSlider.value;
@@ -138,6 +152,7 @@
                     messageDisplay.textContent = ""; // Clear the message if deviation is 0
                 }
                 document.getElementById("defensiveCR").textContent = acData.average_cr_defense;
+                document.getElementById("totalCR").textContent = acData.average_cr_total;
                 })
             .catch(error => console.error('Error:', error));
         }
@@ -158,6 +173,7 @@
                 console.log(hpData);
                 expected_cr_for_hp.textContent = hpData.expected_cr_for_hp;
                 document.getElementById("defensiveCR").textContent = hpData.average_cr_defense;
+                document.getElementById("totalCR").textContent = hpData.average_cr_total;
             })
         }
 
@@ -185,6 +201,7 @@
                 console.log(saveData);
                 expectedCrForSave.textContent = saveData.expected_cr_for_save;
                 document.getElementById("defensiveCR").textContent = saveData.average_cr_defense;
+                document.getElementById("totalCR").textContent = saveData.average_cr_total;
             })
         }
 
@@ -222,6 +239,7 @@
                 sliderValueDisplay.textContent = saveData.slider_value;
                 slider.value = saveData.slider_value;
                 document.getElementById("defensiveCR").textContent = saveData.average_cr_defense;
+                document.getElementById("totalCR").textContent = saveData.average_cr_total;
             })
         }
 
@@ -248,6 +266,7 @@
                 console.log(data);
                 expectedCrForValue.textContent = data.expected_cr_for_attack;
                 document.getElementById("offensiveCR").textContent = data.average_cr_offense;
+                document.getElementById("totalCR").textContent = data.average_cr_total;
             })
         }
 
@@ -283,6 +302,7 @@
                     messageDisplayDc.textContent = ""; // Clear the message if deviation is 0
                 }
                 document.getElementById("offensiveCR").textContent = data.average_cr_offense;
+                document.getElementById("totalCR").textContent = data.average_cr_total;
             })
         }
 
@@ -318,6 +338,7 @@
                 sliderValueDisplay.textContent = data.slider_value;
                 slider.value = data.slider_value;
                 document.getElementById("offensiveCR").textContent = data.average_cr_offense;
+                document.getElementById("totalCR").textContent = data.average_cr_total;
             })
         }
 
@@ -353,6 +374,7 @@
                 sliderValueDisplay.textContent = data.slider_value;
                 slider.value = data.slider_value;
                 document.getElementById("offensiveCR").textContent = data.average_cr_offense;
+                document.getElementById("totalCR").textContent = data.average_cr_total;
             })
         }
         
@@ -372,28 +394,43 @@
                 console.log(data);
                 expected_cr_for_damage.textContent = data.expected_cr_for_damage;
                 document.getElementById("offensiveCR").textContent = data.average_cr_offense;
+                document.getElementById("totalCR").textContent = data.average_cr_total;
             })
         }
 
-        crSlider.addEventListener('input', updateSliderCR);
-        acSlider.addEventListener('input', updateSlidersAC);
-        hpSlider.addEventListener('input', updateSlidersHP);
+        const debouncedUpdateSlidersAC = debounce(updateSlidersAC, 50);
+        const debouncedUpdateSlidersHP = debounce(updateSlidersHP, 50);
+        const debouncedUpdateSlidersCR = debounce(updateSliderCR, 50);
+        crSlider.addEventListener('input', debouncedUpdateSlidersCR);
+        acSlider.addEventListener('input', debouncedUpdateSlidersAC);
+        hpSlider.addEventListener('input', debouncedUpdateSlidersHP);
 
-        refSlider.addEventListener('input', () => updateSlidersSave('reflex'));
-        fortSlider.addEventListener('input', () => updateSlidersSave('fortitude'));
-        willSlider.addEventListener('input', () => updateSlidersSave('will'));
+        const debouncedUpdateSlidersSaveRef = debounce(() => updateSlidersSave('reflex'), 50);
+        const debouncedUpdateSlidersSaveFort = debounce(() => updateSlidersSave('fortitude'), 50);
+        const debouncedUpdateSlidersSaveWill = debounce(() => updateSlidersSave('will'), 50);
+        refSlider.addEventListener('input', debouncedUpdateSlidersSaveRef);
+        fortSlider.addEventListener('input', debouncedUpdateSlidersSaveFort);
+        willSlider.addEventListener('input', debouncedUpdateSlidersSaveWill);
 
-        isGoodSaveCheckedRef.addEventListener('change', () => updateIsGoodSave('reflex'));
-        isGoodSaveCheckedFort.addEventListener('change', () => updateIsGoodSave('fortitude'));
-        isGoodSaveCheckedWill.addEventListener('change', () => updateIsGoodSave('will'));
+        const debouncedUpdateIsGoodSaveRef = debounce(() => updateIsGoodSave('reflex'), 50);
+        const debouncedUpdateIsGoodSaveFort = debounce(() => updateIsGoodSave('fortitude'), 50);
+        const debouncedUpdateIsGoodSaveWill = debounce(() => updateIsGoodSave('will'), 50);
+        isGoodSaveCheckedRef.addEventListener('change', debouncedUpdateIsGoodSaveRef);
+        isGoodSaveCheckedFort.addEventListener('change', debouncedUpdateIsGoodSaveFort);
+        isGoodSaveCheckedWill.addEventListener('change', debouncedUpdateIsGoodSaveWill);
 
-        isPrimarilyAttackerCheck.addEventListener('change', updateHighValueIsChecked);
-        attackSlider.addEventListener('input', updateSlidersAttack);
+        const debouncedUpdateIsPrimarilyAttackerCheck = debounce(updateHighValueIsChecked, 50);
+        const debouncedUpdateUpdateSlidersAttack = debounce(updateSlidersAttack, 50);
+        isPrimarilyAttackerCheck.addEventListener('change', debouncedUpdateIsPrimarilyAttackerCheck);
+        attackSlider.addEventListener('input', debouncedUpdateUpdateSlidersAttack);
 
-        dcSlider.addEventListener('input', updateSlidersDc);
-        isReliantOnAbilites.addEventListener('change', updateHighValueIsCheckedDc);
-        
-        damageSlider.addEventListener('input', updateSlidersDamage);
+        const debouncedUpdateIsAbilityReliant = debounce(updateHighValueIsChecked, 50);
+        const debouncedUpdateUpdateSlidersDC = debounce(updateSlidersDc, 50);
+        dcSlider.addEventListener('input', debouncedUpdateUpdateSlidersAttack);
+        isReliantOnAbilites.addEventListener('change', debouncedUpdateIsAbilityReliant);
+
+        const debouncedUpdateUpdateSlidersDamage = debounce(updateSlidersDamage, 50);
+        damageSlider.addEventListener('input', debouncedUpdateUpdateSlidersDamage);
     });
 </script>
 
