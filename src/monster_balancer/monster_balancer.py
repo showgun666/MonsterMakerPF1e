@@ -42,7 +42,7 @@ def get_average_damage_column():
         i += 1
     return average_damage_column
 
-def determine_cr_float(statistic, given_value):
+def determine_cr_float(statistic, given_value, target_cr=10):
     """
     statistic is the statistic that we are looking at, e.g. Hit Points or Armor Class
     given_value is the value that we have for that statistic and want to compare to.
@@ -53,30 +53,54 @@ def determine_cr_float(statistic, given_value):
         statistic_column = get_statistic_column(statistic)
     else:
         statistic_column = get_average_damage_column()
+
+    if target_cr:
+        target_cr = int(target_cr)
+        index = target_cr
+    else:
+        index = len(statistic_column) // 2
+
     # Iterate through and find the right row in column.
-    index = 0
+    print("\n\n\n\n")
+    print(statistic_column)
+    print(f'given value: {given_value}')
     given_value = float(given_value)
-    for value in statistic_column:
+    up = False
+    down = False
+    while index >= 0 and index < len(statistic_column):
         # If value is exactly same as an average value entry in the table, then simply return that CR value.
         # 0 means CR1/2
-        if given_value == value:
-            return_value = statistic_column.index(value)
-            break
+        value = statistic_column[index]
+
+        print(f'index: {index}\nvalue: {value}\ngiven value: {given_value}')
         # If given value is lower than the lowest value in table
         # we have to raise an error now.
-        elif given_value < statistic_column[0]:
+        if given_value < statistic_column[0]:
             raise ValueError(f'Given value {given_value} is lower than the lowest entry {statistic_column[0]} in table for {statistic}')
         elif given_value > statistic_column[-1]:
             raise ValueError(f'Given value {given_value} is higher than the highest entry {statistic_column[0]} in table for {statistic}')
+        elif given_value == value:
+            return_value = statistic_column.index(value)
+            break
         # If it is not exactly the same as an average value entry in the table, then we do some math.
-        elif value > given_value:
+        elif given_value > value:
+            print(f'\ngiven value {given_value} is higher than {value}')
+            index += 1
+            up = True
+        else:
+            print(f'\ngiven value {given_value} is lower than {value}')
+            index -= 1
+            down = True
+        if up and down:
             low_value = statistic_column[index - 1]
             high_value = statistic_column[index]
             whole = high_value - low_value
             difference = given_value - low_value
             return_value = index - 1 + difference / whole
             break
-        index += 1
+
+
+    print(f"\nSuccessful!\n Returning {round(return_value, 2)}")
     ### ERROR HANDLING HERE?
     return round(return_value, 2)
 
@@ -198,3 +222,21 @@ def calculate_average_cr(average_defensive_cr, average_offensive_cr):
         average_cr = round(average_cr)
 
     return int(average_cr // 1)
+
+def get_min_max_value(statistic_column, target_cr_index, deviation=3):
+    """
+    Gets the minimum and maximum CR values that fall within the deviation range of the target CR.
+    """
+    deviation = int(deviation)
+    target_cr = int(target_cr_index)
+    length_of_column = len(statistic_column)
+    # Handling out of range for minimum and maximum so we don't accidentally try to access indexes outside of range.
+    if target_cr - deviation < 0:
+        minimum = statistic_column[0]
+    else:
+        minimum = statistic_column[int(target_cr) - deviation]
+    if target_cr + deviation > length_of_column:
+        maximum = statistic_column[length_of_column - 1]
+    else:
+        maximum = statistic_column[int(target_cr) + deviation]
+    return minimum, maximum
