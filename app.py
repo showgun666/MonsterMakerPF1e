@@ -7,7 +7,7 @@ import traceback
 import os
 import re
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
-from src.monster_balancer.monster_balancer import calculate_average_cr, calculate_average_offensive_cr, calculate_average_defensive_cr, get_average_damage_column, get_statistic_column, armor_class_deviated, determine_cr_float, generate_list_of_dictionaries, MONSTER_STATISTICS_BY_CR
+from src.monster_balancer.monster_balancer import get_min_max_value, calculate_average_cr, calculate_average_offensive_cr, calculate_average_defensive_cr, get_average_damage_column, get_statistic_column, armor_class_deviated, determine_cr_float, generate_list_of_dictionaries, MONSTER_STATISTICS_BY_CR
 
 app = Flask(__name__)
 app.secret_key = re.sub(r"[^a-z\d]", "", os.path.realpath(__file__))
@@ -51,23 +51,24 @@ def monster_balancer():
     session["average_ac_for_cr"] = get_statistic_column("Armor Class")[int(session["cr"])]
     session["ac_deviation"] = armor_class_deviated(session["ac"], session["cr"])
     session["cr_value_for_ac"] = determine_cr_float("Armor Class", int(session["ac"]))
-
+    session["deviation_cr_ac"] = session.get("deviation_cr_ac", 3)
     # Armor Class
     ac_column = get_statistic_column("Armor Class")
-    min_ac = ac_column[0]
-    max_ac = ac_column[-1]
+    session["deviation_cr_ac"] = session.get("deviation_cr_ac", 3)
+    min_ac, max_ac = get_min_max_value(ac_column, session["cr"], session["deviation_cr_ac"])
 
     # Hit Points
     hp_column = get_statistic_column("Hit Points")
-    min_hp = hp_column[0]
-    max_hp = hp_column[-1]
+    session["deviation_cr_hp"] = session.get("deviation_cr_hp", 3)
+    min_hp, max_hp = get_min_max_value(hp_column, session["cr"], session["deviation_cr_ac"])
 
     # Saving throws
     saves = ["fortitude", "reflex", "will"]
     good_save_column = get_statistic_column("Good Save")
     poor_save_column = get_statistic_column("Poor Save")
-    min_good_save, max_good_save = good_save_column[0], good_save_column[-1]
-    min_poor_save, max_poor_save = poor_save_column[0], poor_save_column[-1]
+    session["deviation_cr_saves"] = session.get("deviation_cr_saves", 3)
+    min_good_save, max_good_save = get_min_max_value(good_save_column, session["cr"], session["deviation_cr_saves"])
+    min_poor_save, max_poor_save = get_min_max_value(poor_save_column, session["cr"], session["deviation_cr_saves"])
     saves_checkbox = {
         "fortitude": session.get('fortitudeIsGoodSave', False),
         "reflex": session.get('reflexIsGoodSave', False),
@@ -122,9 +123,10 @@ def monster_balancer():
     session['is_primarily_attacker'] = is_primarily_attacker
     if not session.get("attack", None):
         session["attack"] = get_statistic_column("High Attack")[0]
+
+    session["deviation_cr_attack"] = session.get("deviation_cr_attack", 3)
     attack_column = get_statistic_column("High Attack" if session.get("is_primarily_attacker") else "Low Attack")
-    min_attack = attack_column[0]
-    max_attack = attack_column[-1]
+    min_attack, max_attack = get_min_max_value(attack_column, session["cr"], session["deviation_cr_attack"])
 
     if session.get('average_attack_for_cr', None):
         average_attack_for_cr = session['average_attack_for_cr']
@@ -142,24 +144,19 @@ def monster_balancer():
         session["dc"] = get_statistic_column("Primary Ability DC")[0]
     session["ability_reliant"] = session.get("ability_reliant", False)
     dc_column = get_statistic_column("Primary Ability DC" if session.get("ability_reliant") else "Secondary Ability DC")
-    min_dc = dc_column[0]
-    max_dc = dc_column[-1]
+    session["deviation_cr_dc"] = session.get("deviation_cr_dc", 3)
+    min_dc, max_dc = get_min_max_value(dc_column, session["cr"], session["deviation_cr_dc"])
 
     if session.get('average_dc_for_cr', None):
         average_dc_for_cr = session['average_dc_for_cr']
     else:
         average_dc_for_cr = get_statistic_column("Secondary Ability DC")[int(session["cr"])]
-
-    if session.get('expected_cr_for_dc', None):
-        expected_cr_for_dc = session['expected_cr_for_dc']
-    else:
-        expected_cr_for_dc = determine_cr_float("Secondary Ability DC", int(session["dc"]))
-    expected_cr_for_dc = session["expected_cr_for_dc"]
+    session['expected_cr_for_dc'] = session.get('expected_cr_for_dc', determine_cr_float("Secondary Ability DC", int(session["dc"])))
 
     # Damage
     damage_column = get_average_damage_column()
-    min_damage = damage_column[0]
-    max_damage = damage_column[-1]
+    session["deviation_cr_damage"] = session.get("deviation_cr_damage", 3)
+    min_damage, max_damage = get_min_max_value(damage_column, session["cr"], session["deviation_cr_damage"])
     if session.get('damage', None):
         current_damage = session['damage']
     else:
@@ -226,7 +223,7 @@ def monster_balancer():
         min_dc=min_dc,
         max_dc=max_dc,
         average_dc_for_cr=average_dc_for_cr,
-        expected_cr_for_dc=expected_cr_for_dc,
+        expected_cr_for_dc=session["expected_cr_for_dc"],
         current_dc=session["dc"],
         ability_reliant=session['ability_reliant'],
         min_damage=min_damage,
