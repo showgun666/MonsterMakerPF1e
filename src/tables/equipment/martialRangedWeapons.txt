@@ -1,4 +1,4 @@
-Ranged Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
+Martial Ranged Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
 Ammentum;—;1d4;1d6;x2;50;1;P;performance;PZO1118
 Chakram;1;1d6;1d8;x2;30;1;S;—;PZO1115
 Dart, jolting;100;1d3;1d4;x2;20;0.5;P;see text;PZO1121

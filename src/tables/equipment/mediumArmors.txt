@@ -1,0 +1,15 @@
+Medium Armor;Cost;Armor/Shield Bonus;Maximum Dex Bonus;Armor Check Penalty;Arcane Spell Failure Chance;Speed 30;Speed 20;Weight;Source
+Armored coat;50;4;3;-2;20;20;15;20;PZO1115
+Chain coat;75;4;5;-2;30;20;15;40;PPZO94102
+Hide;15;4;4;-3;20;20;15;25;PZO1110
+Ice coat;80;4;3;-2;20;20;15;24;PPZO94102
+Do-maru;200;5;4;-4;25;20;15;30;PRG:UE
+Kikko;250;5;4;-3;20;20;15;25;PRG:UE
+Lamellar (horn);100;5;3;-4;25;20;15;30;PRG:UE
+Scale mail;50;5;3;-4;25;20;15;30;PZO1110
+Breastplate;200;6;3;-4;25;20;15;30;PZO1110
+Breastplate (agile);400;6;3;-4;25;20;15;25;PZO1115
+Chainmail;150;6;2;-5;30;20;15;40;PZO1110
+Four mirror;125;6;2;-5;30;20;15;45;PRG:UE
+Lamellar (steel);150;6;3;-5;25;20;15;35;PRG:UE
+Mountain pattern;250;6;3;-4;30;20;15;40;PRG:UE

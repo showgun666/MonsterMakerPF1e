@@ -123,10 +123,10 @@ class TestCreature(unittest.TestCase):
         """
         creature_2 = Creature("Humanoid", "20")
         creature_3 = Creature("Humanoid", "10", "Large")
-        creature_2.add_attack(self.eq.find_weapon("Greatsword"), creature_2.hit_dice.get_bab(), STR, STR, [], creature_2.size)
-        creature_2.add_attack(self.eq.find_weapon("Longsword"), creature_3.hit_dice.get_bab(), STR, STR, [], creature_3.size)
-        for attack in creature_3.attacks:
-            print("\n\n\n")
-            print(attack)
+        creature_2_size = creature_2.size["Creature Size"].split(" ")[0]
+        creature_3_size = creature_3.size["Creature Size"].split(" ")[0]
+        creature_2.add_attack(self.eq.find_weapon("Greatsword"), creature_2.hit_dice.get_bab(), STR, STR, [], creature_2_size)
+        creature_3.add_attack(self.eq.find_weapon("Longsword"), creature_3.hit_dice.get_bab(), STR, STR, [], creature_3_size)
+
         self.assertEqual(creature_2.get_attack_bonus_average(), 17.5)
-        self.assertEqual(creature_3.get_attack_bonus_average(), 12.5)
+        self.assertEqual(creature_3.get_attack_bonus_average(), 5.0)

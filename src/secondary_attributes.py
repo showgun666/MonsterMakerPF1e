@@ -41,6 +41,10 @@ class SecondaryAttributes:
         """set armor class or dice check"""
         return int(10 + hd // 2 + self.attributes.get_ability_modifier(ability_mod) + bonuses + penalties)
 
+
+# NEEED TO MAKE SURE THAT IT CAN EITHER HANDLE NONE AS ARGUMENT FOR GETTING HIT POINTS OR SOMETHING ELSE
+# THINK CONSTRUCTS
+# A GOOD THING WOULD BE TO MAKE AN ACTUAL GETTER THAT AUTOMATICALLY CHECKS IF UNDEAD OR CONSTRUCT
     def get_hit_points(self, ability_score, bonuses=0, penalties=0, static_bonus=0):
         """set hit points"""
         hp = 0.0

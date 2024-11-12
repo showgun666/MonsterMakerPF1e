@@ -25,7 +25,7 @@ class HitDie:
     def get_type(self):
         "get type as string"
         return str(self._creature_type)
-    
+
     def get_creature_type(self):
         "Get creature object for die"
         return self._creature_type

@@ -1,4 +1,4 @@
-Two-Handed Melee Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
+Martial Two-Handed Melee Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
 Bardiche;13;1d8;1d10;19-20/x2;—;14;S;brace, reach, see text;PZO1115
 Bec de corbin;15;1d8;1d10;x3;—;12;B or P;brace, reach, see text;PZO1115
 Bill;11;1d6;1d8;x3;—;11;S;brace, disarm, reach, see text;PZO1115

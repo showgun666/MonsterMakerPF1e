@@ -1,4 +1,4 @@
-Armor;Cost;Armor/Shield Bonus;Maximum Dex Bonus;Armor Check Penalty;Arcane Spell Failure Chance;Speed 30;Speed 20;Weight;Source
+Heavy Armor;Cost;Armor/Shield Bonus;Maximum Dex Bonus;Armor Check Penalty;Arcane Spell Failure Chance;Speed 30;Speed 20;Weight;Source
 Banded mail;250;7;1;-6;35;202;152;35;PZO1110
 Field plate;1200;7;1;-5;35;202;152;50;PCS:ISWG
 Kusari gusoku;350;7;1;-7;35;202;152;45;PRG:UE

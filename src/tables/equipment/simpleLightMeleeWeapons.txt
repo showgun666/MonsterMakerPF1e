@@ -1,16 +1,16 @@
-Light Melee Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
+Simple Light Melee Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
 Battle aspergillum;5;1d4;1d6;x2;—;4;B;see text;PZO1115
-Brass knife;2;1d3;1d4;19-20/x2;10;1;P or S;fragile;PPC:Pirates
+Brass knife;2;1d3;1d4;19-20/x2;10 ft.;1;P or S;fragile;PPC:Pirates
 Brass knuckles;1;1d2;1d3;x2;—;1;B;monk;PPZO9410/PZO1115
 Cestus;5;1d3;1d4;19-20/x2;—;1;B or P;monk;PZO1115
-Dagger;2;1d3;1d4;19-20/x2;10;1;P or S;—;PZO1110
+Dagger;2;1d3;1d4;19-20/x2;10 ft.;1;P or S;—;PZO1110
 Dagger, punching;2;1d3;1d4;x3;—;1;P;—;PZO1110
 Gauntlet, spiked;5;1d3;1d4;x2;—;1;P;attached;PZO1110
 Handwraps;1;—;—;—;—;—;—;See text;PPC:MAH
 Traveling kettle;5;1d4;1d6;×2;—;2;B;monk, see text;PPC:MAH
 Hook hand;10;1d3;1d4;x2;—;1;S;disarm, attached, see text;PPC:Pirates
-Kunai;2;1d3;1d4;x2;10;2;B or P;tool;PPC:RTT
+Kunai;2;1d3;1d4;x2;10 ft.;2;B or P;tool;PPC:RTT
 Mace, light;5;1d4;1d6;x2;—;4;B;—;PZO1110
 Sickle;6;1d4;1d6;x2;—;2;S;trip;PZO1110
-Spring blade;70;1d3;1d4;x2;10;1;P or S;see text;PZO1134
-Wooden stake;—;1d3;1d4;x2;10;1;P;—;PZO1115
+Spring blade;70;1d3;1d4;x2;10 ft.;1;P or S;see text;PZO1134
+Wooden stake;—;1d3;1d4;x2;10 ft.;1;P;—;PZO1115

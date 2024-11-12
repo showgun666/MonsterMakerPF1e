@@ -1,4 +1,4 @@
-Two-Handed Melee Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
+Exotic Two-Handed Melee Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
 Axe, Orc Double;60;1d6/1d6;1d8/1d8;x3;—;15;S;double;PZO1110
 Axe, Butchering;65;1d12;3d6;×3;—;25;S;see text;PPZO94102
 Battle Ladder, gnome;20;1d4/1d4;1d6/1d6;x2;—;8;B;trip;PPZO94102

@@ -1,4 +1,4 @@
-Ranged Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
+Simple Ranged Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
 Blowgun;2;1;1d2;x2;20;1;P;—;PZO1110
 Crossbow, heavy;50;1d8;1d10;19-20/x2;120;8;P;—;PZO1110
 Crossbow, heavy (underwater);100;1d8;1d10;19-20/x2;120;8;P;—;PZO1121

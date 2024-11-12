@@ -1,4 +1,4 @@
-Ranged Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
+Exotic Ranged Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
 Darts, featherweight (10);1;—;—;—;—;—;—;—;PZO1134
 Bola;5;1d3;1d4;x2;10;2;B;nonlethal, trip;PZO1110
 Bola, Brutal;15;1d3;1d4;x2;10;2;B and P;trip;PZO9226-Revised
