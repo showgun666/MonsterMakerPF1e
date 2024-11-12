@@ -86,7 +86,10 @@ class CreatureMaker:
         return self.get_average_integer_from_dictionary(expected_cr_stats)
 
     def get_average_integer_from_dictionary(self, dictionary_with_int_values):
-        """ Returns average integer value rounded down from given dictionary that only contains integer values"""
+        """
+        Returns average integer value rounded down
+        from given dictionary that only contains integer values
+        """
         cr_valued_stats = list(dictionary_with_int_values.values())
         expected_cr = 0
         for value in cr_valued_stats:
@@ -103,7 +106,8 @@ class CreatureMaker:
         for attack in creature.attacks:
             average_attack_bonus += sum(attack.attack_bonuses.values())
         # AVERAGE ATTACK BONUS ROUNDED DOWN
-        average_attack_bonus = int((average_attack_bonus / len(creature.attacks)) // 1) ### DIVIDE BY ZERO IF 0 ATTACKS
+        average_attack_bonus = int((average_attack_bonus / len(creature.attacks)) // 1)
+        ### DIVIDE BY ZERO IF 0 ATTACKS ON ABOVE LINE, NEEDS TO FIX??? 0 ATTACKS IMPOSSIBLE???
 
         stat_map = {
             "Hit Points": creature.secondary_attributes.get_hit_points(creature.hp_ability_score)[0],
