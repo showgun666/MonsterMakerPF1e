@@ -24,6 +24,9 @@ class Attack:
     tags: List[str] = field(default_factory=list)  # Tags for feats or other interactions
     _weapon_size: str = "Medium"
 
+    def __post__init__(self):
+        self.weapon_size = self._weapon_size
+
     if _weapon_size != "Medium":
         damage_dice = damage_dice_by_size_conversion(damage_dice, "Medium", _weapon_size)
 
@@ -45,7 +48,7 @@ class Attack:
         return self._weapon_size
 
     @weapon_size.setter
-    def weapon_size(self, value="Medium"):
+    def weapon_size(self, value):
         """
         Setter for weapon size
         """
