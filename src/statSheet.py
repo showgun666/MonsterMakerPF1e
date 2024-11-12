@@ -135,7 +135,7 @@ class StatBlock:
         stat_block_string += "flat-footed " + str(self.ac_flat_footed) + "\n"
 
         stat_block_string += "hp " + str(self.hp) + " ("
-        stat_block_string += str(self.hd) + "d" + str(self.hd_size) + "+" + str(self.bonus_hp) + ")\n"# NEED TO ADD HP MODIFIER HERE. CON OR CHA OR WHATEVER IT IS FOR THE CREATURE
+        stat_block_string += str(self.hd) + "d" + str(self.hd_size) + "+" + str(self.bonus_hp) + ")\n"
         stat_block_string += "Fort +" + str(self.fortitude) + ", Ref +" + str(self.reflex) + ", Will +" + str(self.will) +"\n"
 
         defenses = []
