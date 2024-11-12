@@ -55,20 +55,20 @@ def monster_balancer():
     # Armor Class
     ac_column = get_statistic_column("Armor Class")
     session["deviation_cr_ac"] = session.get("deviation_cr_ac", 3)
-    min_ac, max_ac = get_min_max_value(ac_column, session["cr"], session["deviation_cr_ac"])
+    session["min_ac"], session["max_ac"] = get_min_max_value(ac_column, session["cr"], session["deviation_cr_ac"])
 
     # Hit Points
     hp_column = get_statistic_column("Hit Points")
     session["deviation_cr_hp"] = session.get("deviation_cr_hp", 3)
-    min_hp, max_hp = get_min_max_value(hp_column, session["cr"], session["deviation_cr_ac"])
+    session["min_hp"], session["max_hp"] = get_min_max_value(hp_column, session["cr"], session["deviation_cr_ac"])
 
     # Saving throws
     saves = ["fortitude", "reflex", "will"]
     good_save_column = get_statistic_column("Good Save")
     poor_save_column = get_statistic_column("Poor Save")
     session["deviation_cr_saves"] = session.get("deviation_cr_saves", 3)
-    min_good_save, max_good_save = get_min_max_value(good_save_column, session["cr"], session["deviation_cr_saves"])
-    min_poor_save, max_poor_save = get_min_max_value(poor_save_column, session["cr"], session["deviation_cr_saves"])
+    session["min_good_save"], session["max_good_save"] = get_min_max_value(good_save_column, session["cr"], session["deviation_cr_saves"])
+    session["min_poor_save"], session["max_poor_save"] = get_min_max_value(poor_save_column, session["cr"], session["deviation_cr_saves"])
     saves_checkbox = {
         "fortitude": session.get('fortitudeIsGoodSave', False),
         "reflex": session.get('reflexIsGoodSave', False),
@@ -76,14 +76,14 @@ def monster_balancer():
     }
 
     min_saves = {
-        "fortitude": min_good_save if saves_checkbox["fortitude"] else min_poor_save,
-        "reflex": min_good_save if saves_checkbox["reflex"] else min_poor_save,
-        "will": min_good_save if saves_checkbox["will"] else min_poor_save,
+        "fortitude": session["min_good_save"] if saves_checkbox["fortitude"] else session["min_poor_save"],
+        "reflex": session["min_good_save"] if saves_checkbox["reflex"] else session["min_poor_save"],
+        "will": session["min_good_save"] if saves_checkbox["will"] else session["min_poor_save"],
     }
     max_saves = {
-        "fortitude": max_good_save if saves_checkbox["fortitude"] else max_poor_save,
-        "reflex": max_good_save if saves_checkbox["reflex"] else max_poor_save,
-        "will": max_good_save if saves_checkbox["will"] else max_poor_save,
+        "fortitude": session["max_good_save"] if saves_checkbox["fortitude"] else session["max_poor_save"],
+        "reflex": session["max_good_save"] if saves_checkbox["reflex"] else session["max_poor_save"],
+        "will": session["max_good_save"] if saves_checkbox["will"] else session["max_poor_save"],
     }
 
     session["current_fortitude"] = session.get('current_fortitude', good_save_column[int(session["cr"])])
@@ -126,7 +126,7 @@ def monster_balancer():
 
     session["deviation_cr_attack"] = session.get("deviation_cr_attack", 3)
     attack_column = get_statistic_column("High Attack" if session.get("is_primarily_attacker") else "Low Attack")
-    min_attack, max_attack = get_min_max_value(attack_column, session["cr"], session["deviation_cr_attack"])
+    session["min_attack"], session["max_attack"] = get_min_max_value(attack_column, session["cr"], session["deviation_cr_attack"])
 
     if session.get('average_attack_for_cr', None):
         average_attack_for_cr = session['average_attack_for_cr']
@@ -145,7 +145,7 @@ def monster_balancer():
     session["ability_reliant"] = session.get("ability_reliant", False)
     dc_column = get_statistic_column("Primary Ability DC" if session.get("ability_reliant") else "Secondary Ability DC")
     session["deviation_cr_dc"] = session.get("deviation_cr_dc", 3)
-    min_dc, max_dc = get_min_max_value(dc_column, session["cr"], session["deviation_cr_dc"])
+    session["min_dc"], session["max_dc"] = get_min_max_value(dc_column, session["cr"], session["deviation_cr_dc"])
 
     if session.get('average_dc_for_cr', None):
         average_dc_for_cr = session['average_dc_for_cr']
@@ -156,7 +156,7 @@ def monster_balancer():
     # Damage
     damage_column = get_average_damage_column()
     session["deviation_cr_damage"] = session.get("deviation_cr_damage", 3)
-    min_damage, max_damage = get_min_max_value(damage_column, session["cr"], session["deviation_cr_damage"])
+    session["min_damage"], session["max_damage"] = get_min_max_value(damage_column, session["cr"], session["deviation_cr_damage"])
     if session.get('damage', None):
         current_damage = session['damage']
     else:
@@ -194,10 +194,10 @@ def monster_balancer():
         current_hp = session["hp"],
         average_ac_for_cr = session["average_ac_for_cr"],
         ac_deviation = session["ac_deviation"],
-        min_ac = min_ac,
-        max_ac = max_ac,
-        min_hp = min_hp,
-        max_hp = max_hp,
+        min_ac = session["min_ac"],
+        max_ac = session["max_ac"],
+        min_hp = session["min_hp"],
+        max_hp = session["max_hp"],
         expected_cr_for_hp = determine_cr_float("Hit Points", int(session["hp"])),
         expected_hp_for_cr = get_statistic_column("Hit Points")[int(session["cr"])],
         cr_value_for_ac=session["cr_value_for_ac"],
@@ -206,28 +206,28 @@ def monster_balancer():
         max_saves=max_saves,
         current_saves=current_saves,
         saves_checkbox=saves_checkbox,
-        min_good_save=min_good_save,
-        max_good_save=max_good_save,
-        min_poor_save=min_poor_save,
-        max_poor_save=max_poor_save,
+        min_good_save=session["min_good_save"],
+        max_good_save=session["max_good_save"],
+        min_poor_save=session["min_poor_save"],
+        max_poor_save=session["max_poor_save"],
         average_good_save_for_cr=average_good_save_for_cr,
         average_poor_save_for_cr=average_poor_save_for_cr,
         expected_cr_for_save=expected_cr_for_save,
         average_saves_for_cr=average_saves_for_cr,
         current_attack=session["attack"],
-        min_attack=min_attack,
-        max_attack=max_attack,
+        min_attack=session["min_attack"],
+        max_attack=session["max_attack"],
         average_attack_for_cr=average_attack_for_cr,
         expected_cr_for_attack=expected_cr_for_attack,
         is_primarily_attacker=is_primarily_attacker,
-        min_dc=min_dc,
-        max_dc=max_dc,
+        min_dc=session["min_dc"],
+        max_dc=session["max_dc"],
         average_dc_for_cr=average_dc_for_cr,
         expected_cr_for_dc=session["expected_cr_for_dc"],
         current_dc=session["dc"],
         ability_reliant=session['ability_reliant'],
-        min_damage=min_damage,
-        max_damage=max_damage,
+        min_damage=session["min_damage"],
+        max_damage=session["max_damage"],
         current_damage=current_damage,
         expected_cr_for_damage=expected_cr_for_damage,
         average_damage_for_cr=session["average_damage_for_cr"],
