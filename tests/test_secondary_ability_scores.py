@@ -6,6 +6,7 @@ import unittest
 from src.secondary_attributes import SecondaryAttributes
 from src.ability_scores import AbilityScores
 from src.hit_dice import HitDice
+from src.constants import CON
 
 class TestSecondaryAttributesScores(unittest.TestCase):
     """
@@ -60,3 +61,8 @@ class TestSecondaryAttributesScores(unittest.TestCase):
         hp = self.sas.get_hit_points(2, 5, -5)
         self.assertEqual(hp[0], int((4.5*5)//1) + 5*-2 +5 -5)
         self.assertEqual(hp[1], 5*-2 +5 -5)
+
+        self.abscrs.set_ability_score(CON, 18)
+        hp = self.sas.get_hit_points(CON)
+        self.assertEqual(hp[0], int((4.5*5)//1) + 5*4)
+        self.assertEqual(hp[1], 5*4)
