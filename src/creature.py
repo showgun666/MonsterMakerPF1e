@@ -26,7 +26,8 @@ class Creature:
         self.melee_attacks = {}
         self.natural_attacks = {}
         self.ranged_attacks = {}
-        self._size = size
+        self.size = size
+
         self.hp_ability_score = CON # Default Constitution
         self._damage = 0
         if creature_type == "Undead":
@@ -34,7 +35,6 @@ class Creature:
 
         #### CONSIDER CACHING SKILL MODIFIERS AND SKILLS EVERY TIME THEY CHANGE
         ####  IF THIS DATA WILL BE CHANGED OFTEN
-
         self.ac_bonuses = [
             int(self.size["Size Modifier"]), #Size bonus
                            ]
@@ -65,9 +65,9 @@ class Creature:
         Setter method for size dictionary of creature
         """
         sizes = helper_module.generate_list_of_dictionaries(CREATURE_SIZES)
-        for size in sizes:
-            if size["Creature Size"] == given_size:
-                self._size = size
+        for entry in sizes:
+            if entry["Creature Size"].split(" ")[0] == given_size:
+                self._size = entry
 
     def set_cr(self, given_cr):
         "sets cr value"
@@ -98,22 +98,6 @@ class Creature:
     def get_d20pfsrd_stat_block(self):
         """create d20pfsrd format stat block as .txt file"""
         return stat_sheet_class.StatBlock(self).generate_stat_block_string_d20pfsrd()
-
-    """    def update_statistics_by_hit_dice(self):
-        "updates statistics based off of hd"
-        # Feats by hd
-        self._feats_from_hd = str((int(self.get_hd()) // 2) + 1)
-        # Skill ranks
-        self._skill_ranks_from_hd = int(self.creature_type_statistics["Skill Ranks"]) * int(self.get_hd())
-        # saves
-        # hp
-        # bab
-        self._bab = str(int(bool(self.creature_type_statistics["Base Attack Bonus (BAB)"]) * int(self.get_hd()) // 1))
-        # bab updates cmb and cmd
-        # DCs
-        # Ability Scores for creatures with class levels
-    """
-
 
     def get_xp_reward_by_cr(self, given_cr):
         """
@@ -225,6 +209,7 @@ class Creature:
             damage_types=damage_types,
             special_abilities=special,
             tags=tags,
+            _weapon_size=size,
         )
         self.attacks.append(attack)
         ### Also add iterative attacks
@@ -240,6 +225,7 @@ class Creature:
                 damage_types,
                 special,
                 tags,
+                size,
                 )
 
     def add_iterative_attacks(
@@ -254,6 +240,7 @@ class Creature:
             damage_types,
             special,
             tags,
+            size,
             ):
         """
         Adds iterative attacks based on first attack.
@@ -262,6 +249,8 @@ class Creature:
         bab_bonus = full_bab
         while bab_bonus >= 1 and bab_bonus >= full_bab - 10:
             bab_bonus -= 5
+            if bab_bonus <= 0:
+                break
             iterated_attack_modifiers_list = []
             iterated_attack_modifiers_list.append(attack_modifiers.copy())
             iterated_attack_modifiers_list[-1]["BAB"] = bab_bonus
@@ -277,6 +266,7 @@ class Creature:
             damage_types,
             special,
             tags,
+            _weapon_size=size,
             )
             self.attacks.append(attack)
 
@@ -296,16 +286,16 @@ class Creature:
         get string representation of attack
         e.g. Shortsword +3 1d6+3
         """
-        posnegattack = "+"
+        plus_minus_symbol_attack = "+"
         if attack.attack_bonus < 0:
-            posnegattack = "-"
-        posnegdmg = "+"
+            plus_minus_symbol_attack = "-"
+        plus_minus_symbol_damage = "+"
         if self.ability_scores.get_ability_modifier(attack.damage_ability_score) < 0:
-            posnegdmg = "-"
+            plus_minus_symbol_damage = "-"
         elif self.ability_scores.get_ability_modifier(attack.damage_ability_score) == 0:
-            posnegdmg = "" # If no damage bonus modifier. Doesn't account for minor bonuses.
+            plus_minus_symbol_damage = "" # If no damage bonus modifier. Doesn't account for minor bonuses.
 
-        return f'{attack.name} {posnegattack}{attack.attack_bonus} {posnegdmg}{attack.damage_dice}'
+        return f'{attack.name} {plus_minus_symbol_attack}{attack.attack_bonus} {plus_minus_symbol_damage}{attack.damage_dice}'
 
     @property
     def damage(self):
