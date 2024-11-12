@@ -22,17 +22,19 @@ class TestMonsterBalancer(unittest.TestCase):
         correctly determines value
         """
         values = [
-            determine_cr_float("Hit Points", 10), # 0.0
-            determine_cr_float("Hit Points", 33), # 3.3
-            determine_cr_float("Hit Points", 370), # 20
-            determine_cr_float("Primary Ability DC", 27), # 20
-            determine_cr_float("Armor Class", 22), # 20
+            determine_cr_float("Hit Points", 10, 3), # 0.0
+            determine_cr_float("Hit Points", 33, 4), # 3.3
+            determine_cr_float("Hit Points", 370, 18), # 20
+            determine_cr_float("Primary Ability DC", 27, 17), # 20
+            determine_cr_float("Armor Class", 22, 10), # 8.5
+            determine_cr_float("Hit Points", 29, 4), # 2.9
         ]
-        self.assertEqual(values[0], 0)
+        self.assertEqual(values[5], 2.9)
+        self.assertEqual(values[4], 8.5)
         self.assertEqual(values[1], 3.3)
         self.assertEqual(values[2], 20)
         self.assertEqual(values[3], 20)
-        self.assertEqual(values[4], 8.5)
+        self.assertEqual(values[0], 0)
 
     def test_determine_cr_float_low_value_raises_value_error(self):
         """
@@ -77,9 +79,9 @@ class TestMonsterBalancer(unittest.TestCase):
         cr_value_for_dc = 0
         primarily_attacker = True
         ability_reliant = True
-    
+
         result = calculate_average_offensive_cr(cr_value_for_attack, cr_value_for_damage, cr_value_for_dc, primarily_attacker, ability_reliant)
-        
+
         self.assertEqual(result, 0.0)
     def test_calculate_average_defensive_cr(self):
         """correctly calculates average defensive cr"""
@@ -101,9 +103,9 @@ class TestMonsterBalancer(unittest.TestCase):
         cr_value_for_dc = 6.0
         primarily_attacker = False
         ability_reliant = False
-    
+
         result = calculate_average_offensive_cr(cr_value_for_attack, cr_value_for_damage, cr_value_for_dc, primarily_attacker, ability_reliant)
-    
+
         self.assertEqual(result, 7.0)
     def test_calculate_average_offensive_cr_primarily_attacker_and_ability_reliant(self):
         """
@@ -114,9 +116,9 @@ class TestMonsterBalancer(unittest.TestCase):
         cr_value_for_dc = 6.0
         primarily_attacker = True
         ability_reliant = True
-    
+
         result = calculate_average_offensive_cr(cr_value_for_attack, cr_value_for_damage, cr_value_for_dc, primarily_attacker, ability_reliant)
-    
+
         expected_average = (5.0 + 7.0 + 6.0) / 3
         self.assertAlmostEqual(result, round(expected_average, 3))
     def test_calculate_average_offensive_cr_only_dc(self):
@@ -128,9 +130,9 @@ class TestMonsterBalancer(unittest.TestCase):
         cr_value_for_dc = 6.0
         primarily_attacker = False
         ability_reliant = True
-    
+
         result = calculate_average_offensive_cr(cr_value_for_attack, cr_value_for_damage, cr_value_for_dc, primarily_attacker, ability_reliant)
-    
+
         self.assertEqual(result, 6.5)
     def test_calculate_average_offensive_cr_primarily_attacker_only(self):
         """
@@ -141,9 +143,9 @@ class TestMonsterBalancer(unittest.TestCase):
         cr_value_for_dc = 6.0
         primarily_attacker = True
         ability_reliant = False
-    
+
         result = calculate_average_offensive_cr(cr_value_for_attack, cr_value_for_damage, cr_value_for_dc, primarily_attacker, ability_reliant)
-    
+
         self.assertEqual(result, 6.0)
 
     def test_calculate_average_cr_just_outside_rounding_threshold(self):
@@ -152,9 +154,9 @@ class TestMonsterBalancer(unittest.TestCase):
         """
         average_defensive_cr = 6.68
         average_offensive_cr = 6.68
-        
+
         result = calculate_average_cr(average_defensive_cr, average_offensive_cr)
-        
+
         self.assertEqual(result, 7)
 
     def test_calculate_average_cr_within_rounding_threshold(self):
@@ -163,9 +165,9 @@ class TestMonsterBalancer(unittest.TestCase):
         """
         average_defensive_cr = 4.32
         average_offensive_cr = 4.68
-        
+
         result = calculate_average_cr(average_defensive_cr, average_offensive_cr)
-        
+
         self.assertEqual(result, 4)
 
     def test_calculate_average_cr_extreme_difference(self):
@@ -174,9 +176,9 @@ class TestMonsterBalancer(unittest.TestCase):
         """
         average_defensive_cr = 20
         average_offensive_cr = 1
-        
+
         result = calculate_average_cr(average_defensive_cr, average_offensive_cr)
-        
+
         # Expected result is 11 (rounded up from 10.5 due to high defense)
         self.assertEqual(result, 10)
 
@@ -186,9 +188,9 @@ class TestMonsterBalancer(unittest.TestCase):
         """
         average_defensive_cr = 0
         average_offensive_cr = 0
-        
+
         result = calculate_average_cr(average_defensive_cr, average_offensive_cr)
-        
+
         self.assertEqual(result, 0)
 
     def test_calculate_average_cr_exact_midpoint(self):
@@ -197,9 +199,9 @@ class TestMonsterBalancer(unittest.TestCase):
         """
         average_defensive_cr = 10.5
         average_offensive_cr = 10.5
-        
+
         result = calculate_average_cr(average_defensive_cr, average_offensive_cr)
-        
+
         self.assertEqual(result, 10)
 
     def test_calculate_average_cr_high_offense_rounding_down(self):
@@ -208,9 +210,9 @@ class TestMonsterBalancer(unittest.TestCase):
         """
         average_defensive_cr = 2.3
         average_offensive_cr = 2.7
-        
+
         result = calculate_average_cr(average_defensive_cr, average_offensive_cr)
-        
+
         self.assertEqual(result, 2)
 
     def test_calculate_average_cr_high_defense_rounding_up(self):
@@ -219,9 +221,9 @@ class TestMonsterBalancer(unittest.TestCase):
         """
         average_defensive_cr = 7.8
         average_offensive_cr = 8.1
-        
+
         result = calculate_average_cr(average_defensive_cr, average_offensive_cr)
-        
+
         self.assertEqual(result, 8)
 
     def test_calculate_average_cr_rounding_behavior(self):
@@ -231,9 +233,9 @@ class TestMonsterBalancer(unittest.TestCase):
         """
         average_defensive_cr = 3.6
         average_offensive_cr = 4.2
-        
+
         result = calculate_average_cr(average_defensive_cr, average_offensive_cr)
-        
+
         # The average CR would be (3.6 + 4.2) / 2 = 3.9
         # it should round up to 4
         self.assertEqual(result, 4)
