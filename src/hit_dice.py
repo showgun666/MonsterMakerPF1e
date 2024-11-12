@@ -39,6 +39,18 @@ class HitDice:
 
         return saves_bonuses
 
+    def get_bab(self):
+        """ Returns BAB from hit dice. """
+        type_bab = {}
+        for hit_die in self.get_hit_dice():
+            type_bab[hit_die.get_type()] = 0
+        for hit_die in self.get_hit_dice():
+            type_bab[hit_die.get_type()] += hit_die.get_bab()
+        bab = 0
+        for dice_type in type_bab.values():
+            bab += int(dice_type // 1)
+        return bab
+
     def get_hit_dice(self):
         """Get a list of all hit dice"""
         return self._hit_dice
