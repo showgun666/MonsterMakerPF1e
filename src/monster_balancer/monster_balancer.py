@@ -61,9 +61,6 @@ def determine_cr_float(statistic, given_value, target_cr=10):
         index = len(statistic_column) // 2
 
     # Iterate through and find the right row in column.
-    print("\n\n\n\n")
-    print(statistic_column)
-    print(f'given value: {given_value}')
     given_value = float(given_value)
     up = False
     down = False
@@ -72,7 +69,6 @@ def determine_cr_float(statistic, given_value, target_cr=10):
         # 0 means CR1/2
         value = statistic_column[index]
 
-        print(f'index: {index}\nvalue: {value}\ngiven value: {given_value}')
         # If given value is lower than the lowest value in table
         # we have to raise an error now.
         if given_value < statistic_column[0]:
@@ -84,11 +80,9 @@ def determine_cr_float(statistic, given_value, target_cr=10):
             break
         # If it is not exactly the same as an average value entry in the table, then we do some math.
         elif given_value > value:
-            print(f'\ngiven value {given_value} is higher than {value}')
             index += 1
             up = True
         else:
-            print(f'\ngiven value {given_value} is lower than {value}')
             index -= 1
             down = True
         if up and down:
