@@ -1,4 +1,4 @@
-Armor;Cost;Armor/Shield Bonus;Maximum Dex Bonus;Armor Check Penalty;Arcane Spell Failure Chance;Speed 30; Speed 20;Weight;Source
+Light Armor;Cost;Armor/Shield Bonus;Maximum Dex Bonus;Armor Check Penalty;Arcane Spell Failure Chance;Speed 30; Speed 20;Weight;Source
 Armored kilt;20;1;6;0;0;30;20;10;PPZO9410
 Dancing scarves;150;See text;—;0;—;30;20;8;PPZO94102
 Haramaki;3;1;—;0;0;30;20;1;PRG:UE

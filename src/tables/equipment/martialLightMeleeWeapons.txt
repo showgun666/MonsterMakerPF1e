@@ -1,4 +1,4 @@
-Light Melee Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
+Martial Light Melee Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
 Axe, boarding;6;1d4;1d6;x3;—;3;P or S;—;PPZO94102
 Axe, throwing;8;1d4;1d6;x2;10;2;S;—;PZO1110
 Blade boot;25;1d3;1d4;x2;—;2;P;see text;PPZO9410

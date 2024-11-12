@@ -1,4 +1,4 @@
-One-Handed Melee Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
+Martial One-Handed Melee Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
 Ankus;8;1d6;1d8;x2;—;5;P;disarm, trip;PZO9468
 Battleaxe;10;1d6;1d8;x3;—;6;S;—;PZO1110
 Combat scabbard;1;1d4;1d6;x2;—;1;B;improvised, see text;PPZO9410

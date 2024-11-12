@@ -1,4 +1,4 @@
-Light Melee Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
+Exotic Light Melee Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
 Aklys;5;1d4;1d6;x2;20;2;B;performance, trip;PZO1118
 Axe-Gauntlet, Dwarven Light;16;1d4;1d6;x3;—;5;S;blocking, disarm;PPC:HftF
 Axe, knuckle;9;1d4;1d6;x3;—;2;S;monk, performance;PZO1118

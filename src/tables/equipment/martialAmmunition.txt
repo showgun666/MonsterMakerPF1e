@@ -1,4 +1,4 @@
-Ammunition;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
+Martial Ammunition;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
 Arrows, common (20);1;—;—;—;—;3;P;—;PZO1110
 Arrows/bolts, barbed (20);2;see text;see text;see text;see text;3;P;grapple;PPC:RTT
 Arrow, bleeding (1);360;see text;see text;see text;see text;see text;see text;see text;PPC:Elves

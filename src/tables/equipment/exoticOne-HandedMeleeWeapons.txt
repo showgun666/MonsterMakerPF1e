@@ -1,4 +1,4 @@
-One-Handed Melee Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
+Exotic One-Handed Melee Weapons;Cost;Dmg (S);Dmg (M);Critical;Range;Weight;Type;Special;Source
 Axe-Gauntlet, Dwarven Heavy;21;1d6;1d8;x3;—;5;S;blocking, disarm;PPC:HftF
 Axe, hooked;20;1d6;1d8;x3;—;7;S;disarm, performance, trip;PZO1118
 Broken-back seax;40;1d8;1d10;19–20/×2;—;4;P & S;see text;PPC:MAH
